@@ -158,7 +158,7 @@ type WorkingOverride = {
   end_time: string | null;
 };
 
-const apiBase = import.meta.env.VITE_API_BASE;
+const apiBase = import.meta.env.VITE_API_BASE || "/api";
 const tenantId = 1;
 
 const overrides = ref<WorkingOverride[]>([]);

@@ -45,7 +45,7 @@ const emit = defineEmits<{
   (e: "next"): void;
 }>();
 
-const apiBase = import.meta.env.VITE_API_BASE;
+const apiBase = import.meta.env.VITE_API_BASE || "/api";
 const bookableDates = ref<string[]>([]);
 
 const availableDays = computed<AvailableDay[]>(() => {

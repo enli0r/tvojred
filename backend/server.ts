@@ -35,6 +35,10 @@ const allowedOrigins = [
     'http://192.168.1.65:5173',
     'http://localhost:3000',
     'http://192.168.1.65:3000',
+    'http://tvojred.rs',
+    'http://www.tvojred.rs',
+    'https://tvojred.rs',
+    'https://www.tvojred.rs',
 ];
 
 function normalizeBool(value: number | boolean) {

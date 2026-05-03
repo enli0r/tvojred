@@ -391,7 +391,7 @@ type ShiftDayForm = {
   end_time: string;
 };
 
-const apiBase = import.meta.env.VITE_API_BASE;
+const apiBase = import.meta.env.VITE_API_BASE || "/api";
 const route = useRoute();
 const barberId = Number(route.params.barberId || 8);
 

@@ -131,7 +131,7 @@ type EditForm = {
   end_time: string;
 };
 
-const apiBase = import.meta.env.VITE_API_BASE;
+const apiBase = import.meta.env.VITE_API_BASE || "/api";
 
 const workingHours = ref<WorkingHour[]>([]);
 const loading = ref(true);

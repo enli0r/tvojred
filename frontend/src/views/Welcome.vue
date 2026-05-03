@@ -207,7 +207,7 @@ import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Carousel from "../components/Carousel.vue";
 
-const apiBase = import.meta.env.VITE_API_BASE;
+const apiBase = import.meta.env.VITE_API_BASE || "/api";
 
 const router = useRouter();
 const route = useRoute();
