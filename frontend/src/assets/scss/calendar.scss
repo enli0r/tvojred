@@ -1,0 +1,101 @@
+.hero-calendar {
+    // border: 1px solid red;
+    padding-bottom: 8px;
+}
+
+.section-head-calendar {
+    display: flex;
+    margin-bottom: 14px;
+
+    h2 {
+        margin: 0;
+        color: #151821;
+        font-size: 19px;
+        line-height: 1;
+        font-weight: 750;
+        letter-spacing: -0.06em;
+    }
+
+    p {
+        margin: 6px 0 0;
+        color: rgba(45, 51, 78, 0.48);
+        font-size: 13px;
+        line-height: 1.25;
+        font-weight: 600;
+        letter-spacing: -0.015em;
+    }
+}
+
+.date-rail {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scroll-behavior: smooth;
+
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.date-card {
+    flex: 0 0 72px;
+    min-height: 98px;
+    border: 0;
+    border-radius: 24px;
+    padding: 14px 10px;
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: 7px;
+
+    color: rgba(29, 34, 50, 0.74);
+    background: rgba(255, 255, 255, 1);
+
+    box-shadow:
+        0 1px 4px rgba(22, 34, 52, 0.05),
+        0 1px 1px rgba(22, 34, 52, 0.02),
+        inset 0 1px 0 rgba(255, 255, 255, 0.94);
+
+    border: 1px solid rgba(64, 93, 122, 0.03);
+
+    transition:
+        transform 0.2s ease,
+        background 0.22s ease,
+        color 0.22s ease,
+        border-color 0.22s ease;
+
+    span,
+    small {
+        font-size: 10px;
+        font-weight: 850;
+        letter-spacing: 0.08em;
+        line-height: 1;
+    }
+
+    strong {
+        font-size: 24px;
+        line-height: 0.9;
+        font-weight: 850;
+        letter-spacing: -0.08em;
+    }
+
+    &:active {
+        transform: scale(0.975);
+    }
+
+    &.active {
+        color: #fff;
+        background: linear-gradient(180deg, #405d7a 0%, #2f465f 100%);
+
+        box-shadow:
+            0 2px 6px rgba(47, 70, 95, 0.12),
+            0 1px 2px rgba(47, 70, 95, 0.05),
+            inset 0 1px 0 rgba(185, 205, 230, 0.06);
+
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+}

@@ -1,0 +1,145 @@
+:root {
+   /* ================== TYPOGRAPHY ================== */
+   --font-family-base: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+
+   --font-section-title: 28px;
+   --font-section-title-mobile: 24px;
+   --font-step-title: 28px;
+   --font-step-title-mobile: 24px;
+
+   --line-height-tight: 1.05;
+   --letter-spacing-tightest: -0.04em;
+
+   /* ================== TEXT ================== */
+   --color-text: #112d4e;
+   --color-text-soft: #1a3a61;
+   --color-text-secondary: #35557d;
+   --color-text-muted: #5f7390;
+   --color-text-light: #7d8ea6;
+   --color-text-disabled: #98a6ba;
+   --color-text-faint: #aeb8c7;
+   --color-text-subtle: #8f9db1;
+   --color-text-muted-cell: #b4bfcd;
+   --color-text-white: #ffffff;
+   --color-text-accent: #3f72af;
+
+   /* ================== BACKGROUNDS ================== */
+   --color-background: #f9f7f7;
+   --color-surface: #ffffff;
+   --color-surface-soft: #fdfcfc;
+   --color-surface-softer: #f7f4f4;
+   --color-surface-muted: #eef2f8;
+   --color-surface-subtle: #eef3f9;
+   --color-surface-hover: #f3f6fb;
+   --color-surface-pill: #eef2f8;
+   --color-surface-avatar: #dbe2ef;
+   --color-surface-tabs: #e7edf6;
+
+   /* ================== ACTIVE / ACCENT SURFACES ================== */
+   --gradient-surface: linear-gradient(180deg, #ffffff 0%, #f9f7f7 100%);
+   --gradient-surface-soft: linear-gradient(180deg, #ffffff 0%, #f4f1f1 100%);
+   --gradient-active: linear-gradient(180deg, #eef4fb 0%, #dfeaf8 100%);
+   --gradient-active-soft: linear-gradient(180deg, #f2f7fd 0%, #e3edf9 100%);
+   --gradient-active-strong: linear-gradient(180deg, #dbe8f8 0%, #c8dcf4 100%);
+
+   /* ================== PRIMARY ================== */
+   --color-primary: #3f72af;
+   --color-primary-light: #5a8bc7;
+   --color-primary-lighter: #709dd5;
+   --color-primary-soft: #8bb1de;
+   --color-primary-ring: rgba(63, 114, 175, 0.12);
+
+   --gradient-primary: linear-gradient(90deg, #5a8bc7, #3f72af);
+   --gradient-primary-vertical: linear-gradient(180deg, #5a8bc7, #3f72af);
+   --gradient-badge: linear-gradient(180deg, #5a8bc7 0%, #3f72af 100%);
+
+   /* ================== BORDERS ================== */
+   --color-border: #d6deea;
+   --color-border-soft: #dbe2ef;
+   --color-border-subtle: #e6ebf3;
+   --color-border-muted: #c3cedd;
+   --color-border-hover: #bcc8d9;
+   --color-border-soft-blue: rgba(63, 114, 175, 0.22);
+   --color-border-transparent: transparent;
+
+   /* ================== UI NEUTRALS ================== */
+   --color-track: #d3dce8;
+   --color-node-future: #b4c0cf;
+   --color-line: #ccd6e3;
+   --color-dot: #c1cada;
+   --color-dot-soft: #b4c0d0;
+   --color-dot-skeleton: #cfd7e3;
+   --color-handle: #c2cada;
+
+   /* ================== OVERLAY ================== */
+   --color-overlay: rgba(17, 45, 78, 0.18);
+
+   /* ================== SHADOWS ================== */
+   --shadow-soft: 0 6px 18px rgba(17, 45, 78, 0.05);
+   --shadow-soft-lg: 0 8px 18px rgba(17, 45, 78, 0.06);
+   --shadow-card: 0 8px 22px rgba(17, 45, 78, 0.06);
+   --shadow-card-soft: 0 8px 20px rgba(17, 45, 78, 0.05);
+   --shadow-card-xs: 0 4px 12px rgba(17, 45, 78, 0.04);
+   --shadow-floating: 0 10px 28px rgba(17, 45, 78, 0.07);
+   --shadow-modal: 0 -10px 30px rgba(17, 45, 78, 0.10);
+   --shadow-notice: 0 18px 40px rgba(17, 45, 78, 0.12);
+
+   --shadow-primary: 0 8px 20px rgba(63, 114, 175, 0.22);
+   --shadow-primary-soft: 0 8px 18px rgba(63, 114, 175, 0.18);
+   --shadow-primary-medium: 0 10px 20px rgba(63, 114, 175, 0.20);
+   --shadow-primary-strong: 0 12px 24px rgba(63, 114, 175, 0.22);
+   --shadow-primary-notice: 0 12px 24px rgba(63, 114, 175, 0.18);
+
+   --shadow-primary-glow: 0 0 0 4px rgba(63, 114, 175, 0.10);
+   --shadow-primary-glow-strong: 0 0 0 6px rgba(63, 114, 175, 0.12);
+
+   --shadow-inset-white-soft: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+   --shadow-inset-white: inset 0 1px 0 rgba(255, 255, 255, 0.92);
+   --shadow-inset-white-strong: inset 0 1px 0 rgba(255, 255, 255, 0.94);
+   --shadow-inset-white-xl: inset 0 1px 6px rgba(255, 255, 255, 0.85);
+   --shadow-inset-white-avatar: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+
+   --shadow-active:
+      0 10px 26px rgba(17, 45, 78, 0.10),
+      0 1px 3px rgba(17, 45, 78, 0.06),
+      inset 0 1px 2px rgba(255, 255, 255, 0.78),
+      inset 0 -3px 8px rgba(63, 114, 175, 0.08);
+
+   --shadow-active-soft:
+      0 6px 16px rgba(17, 45, 78, 0.08),
+      0 2px 6px rgba(17, 45, 78, 0.05),
+      inset 0 1px 2px rgba(255, 255, 255, 0.72),
+      inset 0 -2px 6px rgba(63, 114, 175, 0.10);
+
+   --shadow-tab:
+      0 1px 0 rgba(255, 255, 255, 0.92) inset,
+      0 6px 16px rgba(17, 45, 78, 0.06);
+
+   --shadow-badge: 0 8px 18px rgba(63, 114, 175, 0.18);
+
+   /* ================== SKELETON ================== */
+   --color-skeleton-start: #e7edf5;
+   --color-skeleton-middle: #d7e0ec;
+   --color-skeleton-end: #e7edf5;
+   --gradient-skeleton: linear-gradient(90deg, #e7edf5, #d7e0ec, #e7edf5);
+
+   /* ================== RADII ================== */
+   --radius-xs: 12px;
+   --radius-sm: 13px;
+   --radius-md: 14px;
+   --radius-lg: 15px;
+   --radius-xl: 16px;
+   --radius-2xl: 18px;
+   --radius-3xl: 22px;
+   --radius-4xl: 24px;
+   --radius-sheet: 26px;
+   --radius-pill: 999px;
+
+   --bottom-bar-height: 175.5px;
+
+   /* ================== TRANSITIONS ================== */
+   --transition-fast: 0.18s ease;
+   --transition-medium: 0.22s ease;
+   --transition-smooth: 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+   --transition-sheet: 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}

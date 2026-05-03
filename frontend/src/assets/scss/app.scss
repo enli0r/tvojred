@@ -1,0 +1,264 @@
+@use 'variables.scss';
+@use 'calendar.scss';
+@use 'barbers.scss';
+@use 'appointments.scss';
+@use 'bottom-menu.scss';
+@use 'passkey.scss';
+@use 'services.scss';
+@use 'welcome.scss';
+@use 'admin.scss';
+@use 'settings.scss';
+@use 'lokal.scss';
+@use 'frizeri.scss';
+@use 'klijenti.scss';
+@use 'usluge.scss';
+@use 'test321.scss';
+@use 'book.scss';
+@use 'navbar.scss';
+@use 'booktest.scss';
+
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    min-height: 100%;
+    // Ostavljeno bez overflow: hidden i bez overscroll-behavior: none
+    // da bi browser zadržao prirodan mobile bounce.
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    --primary: #f59e0b;
+    --ptext: rgba(255, 255, 255, 0.96);
+    --stext: rgba(255, 255, 255, 0.8);
+    --mbg: #18181A;
+    --sbg: #1c1c1f;
+    --cardbg: white;
+    --twotone: #9BCBFF;
+    --accent: #0A84FF;
+    --surface: rgba(16, 19, 28, 0.92);
+    --card: rgba(18, 22, 31, 0.96);
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.14);
+    --text: rgba(255, 255, 255, 0.96);
+    --muted: rgba(255, 255, 255, 0.58);
+    --muted-2: rgba(255, 255, 255, 0.38);
+    --accent-line: rgba(128, 147, 255, 0.3);
+    --v9-surface: rgba(16, 19, 28, 0.92);
+    --v9-card: rgba(18, 22, 31, 0.96);
+    --v9-card-soft: rgba(20, 24, 34, 0.92);
+    --v9-border: rgba(255, 255, 255, 0.08);
+    --v9-border-strong: rgba(255, 255, 255, 0.14);
+    --v9-text: rgba(255, 255, 255, 0.96);
+    --v9-muted: rgba(255, 255, 255, 0.54);
+    --v9-muted-2: rgba(255, 255, 255, 0.36);
+    --v9-accent-line: rgba(128, 147, 255, 0.3);
+
+    -webkit-tap-highlight-color: transparent;
+
+
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+* {
+    scrollbar-width: none;
+}
+
+* {
+    -ms-overflow-style: none;
+}
+
+.page {
+    display: flex;
+    flex-direction: column;
+}
+
+html {
+    // Važno da overscroll/background na telefonu povuče tamnu boju, ne belu.
+    background: #0b0f17;
+}
+
+
+
+body {
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-variation-settings: "GRAD" 0;
+
+    background: linear-gradient(180deg, #0b0f17 0%, #0d121b 52%, #0e141c 100%);
+
+
+    min-height: 100dvh;
+    position: relative;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    // Ovo pomaže da scroll na iPhone-u / mobilnim browserima ostane nativan i inertan.
+    -webkit-overflow-scrolling: touch;
+
+    // Ostavljeno AUTO, da ne ugasi bounce.
+    // overscroll-behavior-y: auto;
+
+    // Dozvoljava normalan vertikalni gesture bez čudnog ponašanja.
+    // touch-action: pan-y;
+    overscroll-behavior-y: auto; // dozvoljava bounce
+    // touch-action: pan-y;
+
+    margin: 0;
+
+    .container {
+        max-width: 1200px;
+    }
+}
+
+.concept-v2-page {
+    position: relative;
+    min-height: 100dvh;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.concept-v2-page__bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.booking-page.concept-v2-booking {
+    position: relative;
+    z-index: 1;
+}
+
+.bg-light {
+    position: absolute;
+    border-radius: 999px;
+    pointer-events: none;
+    filter: blur(0px);
+
+    // &--one {
+    //     width: 350px;
+    //     height: 350px;
+    //     top: -220px;
+    //     left: 50%;
+    //     transform: translateX(-50%);
+    //     background: radial-gradient(circle,
+    //             rgba(128, 146, 255, 0.2) 0%,
+    //             rgba(128, 146, 255, 0.08) 34%,
+    //             rgba(128, 146, 255, 0) 72%);
+    // }
+
+    &--two {
+        width: 260px;
+        height: 260px;
+        bottom: -110px;
+        right: -70px;
+        // bottom: 10px;
+        background: radial-gradient(circle,
+                rgba(92, 109, 222, 0.16) 0%,
+                rgba(92, 109, 222, 0.05) 38%,
+                rgba(92, 109, 222, 0) 74%);
+    }
+}
+
+.bg-noise {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.045;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.85) 0.45px,
+            transparent 0.45px);
+    background-size: 8px 8px;
+    mask-image: linear-gradient(180deg,
+            rgba(0, 0, 0, 0.6) 0%,
+            rgba(0, 0, 0, 0.18) 42%,
+            rgba(0, 0, 0, 0.05) 100%);
+    -webkit-mask-image: linear-gradient(180deg,
+            rgba(0, 0, 0, 0.6) 0%,
+            rgba(0, 0, 0, 0.18) 42%,
+            rgba(0, 0, 0, 0.05) 100%);
+}
+
+
+.header>* {
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes bookingEnter {
+    from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.985);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+* {
+    --surface: rgba(16, 19, 28, 0.92);
+    --card: rgba(18, 22, 31, 0.96);
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.14);
+    --text: rgba(255, 255, 255, 0.96);
+    --muted: rgba(255, 255, 255, 0.58);
+    --muted-2: rgba(255, 255, 255, 0.38);
+    --accent-line: rgba(128, 147, 255, 0.3);
+}
+
+.booking-step-intro {
+    margin-bottom: 10px;
+    border: 1px solid red;
+
+    &__kicker {
+        display: inline-block;
+        font-size: 10px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: rgba(184, 197, 213, 0.62);
+        margin-bottom: 5px;
+    }
+
+    &__title {
+        margin: 0 0 2px;
+        font-size: 26px;
+        line-height: 0.98;
+        letter-spacing: -0.05em;
+        font-weight: 800;
+        color: #eef3fb;
+        margin-bottom: 7px;
+    }
+
+    &__description {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.5;
+        color: rgba(192, 205, 220, 0.7);
+        margin-top: -5px;
+    }
+}
+
+
+.step-section {
+    padding: 0 16px;
+}
