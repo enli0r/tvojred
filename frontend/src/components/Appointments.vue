@@ -56,10 +56,10 @@
           <div v-else class="slot-grid">
             <button
               v-for="appointment in filteredItems"
-              :key="appointment.id"
+              :key="appointment.start_time"
               type="button"
               class="slot-pill"
-              :class="{ active: modelValue?.id === appointment.id }"
+              :class="{ active: modelValue?.start_time === appointment.start_time }"
               @click="selectAppointment(appointment)"
             >
               <strong class="slot-pill__time">
