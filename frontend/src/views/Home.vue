@@ -11,6 +11,7 @@
         <div class="page-content">
           <Navbar
             :show-quick-booking="showQuickBookHero"
+            :loading-quick-booking="loadingQuickBooking"
             :quick-booking-time="quickBookingTime"
             :quick-booking-barber-name="quickBookingBarberName"
             :quick-booking-date-label="quickBookingDateLabel"
@@ -68,7 +69,7 @@
         :can-continue="canContinue"
         :can-finish="!!selectedAppointment"
         :steps="summarySteps"
-        :visible="true"
+        :visible="!showReviewSheet"
         :is-auto-advancing="isAutoAdvancing"
         @back="goBack"
         @next="goNext"
@@ -76,156 +77,107 @@
         @go-to-step="goToStep"
       />
 
-      <Transition name="overlay-fade">
+      <Transition name="confirm-sheet">
         <div
           v-if="showReviewSheet"
-          class="sheet-overlay"
-          @click="closeReviewSheet"
-        ></div>
-      </Transition>
-
-      <Transition name="sheet-slide">
-        <div
-          v-if="showReviewSheet"
-          class="review-sheet"
+          class="confirm-overlay"
+          @click.self="closeReviewSheet"
           @wheel.stop
           @touchmove.stop
         >
-          <div class="sheet-handle"></div>
+          <section
+            class="confirm-page"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Potvrda termina"
+          >
+            <div class="confirm-page__handle"></div>
 
-          <div class="sheet-head">
-            <span>Pregled</span>
-            <h2>Potvrdi termin</h2>
-            <p>Proveri detalje pre konačne potvrde.</p>
-          </div>
+            <main class="confirm-content">
+              <template v-if="!bookingResultStatus">
+                <div class="booking-summary-card">
+                  <header class="confirm-popup-head">
+                    <div class="confirm-popup-head__main">
+                      <div class="confirm-popup-head__accent"></div>
 
-          <div class="review-list">
-            <div class="review-row">
-              <span>Korisnik</span>
-              <strong>{{ currentUser?.name || "Nije prijavljen" }}</strong>
-            </div>
+                      <div class="confirm-popup-head__copy">
+                        <span>Pregled termina</span>
+                        <h2>Potvrdi termin</h2>
+                        <p>Proverite detalje rezervacije.</p>
+                      </div>
+                    </div>
 
-            <div class="review-row">
-              <span>Telefon</span>
-              <strong>{{ currentUser?.phone || "-" }}</strong>
-            </div>
+                    <button
+                      class="confirm-popup-head__close"
+                      type="button"
+                      :disabled="bookingLoading"
+                      @click="closeReviewSheet"
+                      aria-label="Zatvori"
+                    >
+                      <svg viewBox="0 0 24 24" fill="none">
+                        <path
+                          d="M6 6l12 12M18 6 6 18"
+                          stroke="currentColor"
+                          stroke-width="2.1"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </button>
+                  </header>
 
-            <div class="review-row">
-              <span>Dan</span>
-              <strong>{{ selectedDateLong }}</strong>
-            </div>
+                  <section
+                    class="confirm-summary"
+                    aria-label="Pregled izabranog termina"
+                  >
+                    <div class="confirm-summary-row">
+                      <span>Dan</span>
+                      <strong>{{ selectedDateLong }}</strong>
+                    </div>
 
-            <div class="review-row">
-              <span>Frizer</span>
-              <strong>{{ selectedBarber?.name || "-" }}</strong>
-            </div>
+                    <div class="confirm-summary-row">
+                      <span>Vreme</span>
+                      <strong>{{ selectedAppointmentTime || "-" }}</strong>
+                    </div>
 
-            <div class="review-row">
-              <span>Vreme</span>
-              <strong>{{ selectedAppointmentTime || "-" }}</strong>
-            </div>
-          </div>
+                    <div class="confirm-summary-row">
+                      <span>Frizer</span>
+                      <strong>{{ selectedBarber?.name || "-" }}</strong>
+                    </div>
 
-          <div class="sheet-actions">
-            <button
-              class="sheet-button sheet-button-ghost"
-              type="button"
-              @click="closeReviewSheet"
-              :disabled="bookingLoading"
-            >
-              Zatvori
-            </button>
+                    <div class="confirm-summary-row">
+                      <span>Studio</span>
+                      <strong>Test Studio</strong>
+                    </div>
+                  </section>
+                </div>
 
-            <div
-              v-if="isLoggedIn && currentUser"
-              class="review-auth-state review-auth-state--logged"
-            >
-              <div>
-                <span>Prijavljen si kao</span>
-                <strong>{{ currentUser.name }}</strong>
-              </div>
+                <PasskeyTest
+                  :is-logged-in="isLoggedIn"
+                  :current-user="currentUser"
+                  :loading="bookingLoading"
+                  @close="closeReviewSheet"
+                  @auth-change="handleAuthChange"
+                  @confirm-booking="confirmBooking"
+                />
+              </template>
 
-              <button
-                type="button"
-                class="logout-btn"
-                @click="logoutFromBooking"
-              >
-                Logout
-              </button>
-            </div>
-
-            <button
-              class="sheet-button sheet-button-primary"
-              type="button"
-              @click="confirmBooking"
-              :disabled="bookingLoading || !selectedAppointment"
-            >
-              {{ bookingLoading ? "Zakazujem..." : "Potvrdi" }}
-            </button>
-          </div>
-        </div>
-      </Transition>
-
-      <Transition name="overlay-fade">
-        <div
-          v-if="showAuthSheet"
-          class="sheet-overlay"
-          @click="cancelAuthSheet"
-        ></div>
-      </Transition>
-
-      <Transition name="sheet-slide">
-        <div
-          v-if="showAuthSheet"
-          class="review-sheet auth-sheet"
-          @wheel.stop
-          @touchmove.stop
-        >
-          <div class="sheet-handle"></div>
-
-          <div class="sheet-head">
-            <span>Brza potvrda</span>
-            <h2>Prijavi se za zakazivanje</h2>
-            <p>
-              Unesi podatke i potvrdi passkey-em. Nakon prijave termin se
-              automatski zakazuje.
-            </p>
-          </div>
-
-          <PasskeyTest
-            @close="cancelAuthSheet"
-            @auth-change="handleAuthChange"
-          />
-        </div>
-      </Transition>
-
-      <Transition name="overlay-fade">
-        <div
-          v-if="bookingResultStatus"
-          class="sheet-overlay"
-          @click="closeBookingResult"
-        ></div>
-      </Transition>
-
-      <Transition name="sheet-slide">
-        <div
-          v-if="bookingResultStatus"
-          class="review-sheet result-sheet"
-          @wheel.stop
-          @touchmove.stop
-        >
-          <div class="sheet-handle"></div>
-
-          <BookingResultSheet
-            :status="bookingResultStatus"
-            :appointment="bookingResultAppointment"
-            :barber-name="selectedBarber?.name || '-'"
-            :message="bookingResultMessage"
-            @finish="closeBookingResult"
-            @close="closeBookingResult"
-            @retry="retryBooking"
-            @choose-another="chooseAnotherAppointment"
-          />
+              <template v-else>
+                <div class="booking-result-inside-popup">
+                  <BookingResultSheet
+                    v-if="bookingResultStatus"
+                    :status="bookingResultStatus"
+                    :message="bookingResultMessage"
+                    :date="bookingResultDate"
+                    :time="bookingResultTime"
+                    :barber-name="selectedBarber?.name || '-'"
+                    @close="finishBookingResult"
+                    @retry="retryBooking"
+                  />
+                </div>
+              </template>
+            </main>
+          </section>
         </div>
       </Transition>
     </div>
@@ -233,8 +185,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch, onBeforeUnmount } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
+
 import Navbar from "@/components/Navbar.vue";
 import Calendar from "@/components/Calendar.vue";
 import Barbers from "@/components/Barbers.vue";
@@ -291,9 +244,8 @@ const tenantSlug = computed(() => {
 });
 
 const isAutoAdvancing = ref(false);
+
 const showReviewSheet = ref(false);
-const showAuthSheet = ref(false);
-const pendingBookingAfterAuth = ref(false);
 const bookingLoading = ref(false);
 const bookingMessage = ref<string | null>(null);
 const bookingError = ref<string | null>(null);
@@ -435,23 +387,9 @@ const summarySteps = computed(() => {
   ];
 });
 
-async function handleAuthChange(payload: AuthChangePayload) {
+function handleAuthChange(payload: AuthChangePayload) {
   isLoggedIn.value = payload.isLoggedIn;
   currentUser.value = payload.user;
-
-  if (!payload.isLoggedIn || !payload.user) {
-    return;
-  }
-
-  showAuthSheet.value = false;
-
-  if (!pendingBookingAfterAuth.value) {
-    return;
-  }
-
-  pendingBookingAfterAuth.value = false;
-
-  await confirmBooking();
 }
 
 async function checkAuthFromHome() {
@@ -623,13 +561,17 @@ async function bookQuickOption() {
 }
 
 async function openReviewSheet() {
-  await checkAuthFromHome();
-
   if (!selectedAppointment.value) return;
+
+  showReviewSheet.value = true;
 
   bookingMessage.value = null;
   bookingError.value = null;
-  showReviewSheet.value = true;
+  bookingResultStatus.value = null;
+  bookingResultMessage.value = null;
+  bookingResultAppointment.value = null;
+
+  await checkAuthFromHome();
 }
 
 function closeReviewSheet() {
@@ -638,17 +580,7 @@ function closeReviewSheet() {
   showReviewSheet.value = false;
   bookingMessage.value = null;
   bookingError.value = null;
-}
-
-function openAuthSheet() {
-  showAuthSheet.value = true;
-}
-
-function cancelAuthSheet() {
-  if (bookingLoading.value) return;
-
-  showAuthSheet.value = false;
-  pendingBookingAfterAuth.value = false;
+  closeBookingResult();
 }
 
 async function confirmBooking() {
@@ -665,14 +597,11 @@ async function confirmBooking() {
   await checkAuthFromHome();
 
   if (!isLoggedIn.value || !currentUser.value) {
-    pendingBookingAfterAuth.value = true;
-    showReviewSheet.value = false;
-    openAuthSheet();
+    bookingError.value = "Potvrdi passkey pre zakazivanja termina.";
     return;
   }
 
   bookingLoading.value = true;
-  showReviewSheet.value = false;
 
   const bookedAppointment = selectedAppointment.value;
 
@@ -698,10 +627,10 @@ async function confirmBooking() {
     if (res.status === 401) {
       isLoggedIn.value = false;
       currentUser.value = null;
-      pendingBookingAfterAuth.value = true;
 
       closeBookingResult();
-      openAuthSheet();
+      showReviewSheet.value = true;
+      bookingError.value = "Sesija je istekla. Potvrdi ponovo.";
       return;
     }
 
@@ -727,8 +656,6 @@ async function confirmBooking() {
       await fetchAppointments();
       return;
     }
-
-    pendingBookingAfterAuth.value = false;
 
     openBookingResult(
       "success",
@@ -796,13 +723,9 @@ watch(selectedBarber, () => {
   fetchAppointments();
 });
 
-watch(
-  [showReviewSheet, showAuthSheet, bookingResultStatus],
-  ([isReviewOpen, isAuthOpen, resultStatus]) => {
-    document.body.style.overflow =
-      isReviewOpen || isAuthOpen || !!resultStatus ? "hidden" : "";
-  }
-);
+watch(showReviewSheet, (isReviewOpen) => {
+  document.body.style.overflow = isReviewOpen ? "hidden" : "";
+});
 
 onMounted(async () => {
   await checkAuthFromHome();
@@ -833,19 +756,6 @@ function toIso(date: Date) {
   return `${year}-${month}-${day}`;
 }
 
-async function logoutFromBooking() {
-  try {
-    await fetch(`${apiBase}/auth/logout`, {
-      method: "POST",
-      credentials: "include",
-    });
-  } finally {
-    isLoggedIn.value = false;
-    currentUser.value = null;
-    pendingBookingAfterAuth.value = false;
-  }
-}
-
 function openBookingResult(
   status: BookingResultStatus,
   message: string | null = null,
@@ -854,6 +764,7 @@ function openBookingResult(
   bookingResultStatus.value = status;
   bookingResultMessage.value = message;
   bookingResultAppointment.value = appointment;
+  showReviewSheet.value = true;
 }
 
 function closeBookingResult() {
@@ -862,16 +773,50 @@ function closeBookingResult() {
   bookingResultAppointment.value = null;
 }
 
+function finishBookingResult() {
+  if (bookingLoading.value) return;
+
+  closeReviewSheet();
+}
+
 function retryBooking() {
   closeBookingResult();
-
-  if (selectedAppointment.value) {
-    showReviewSheet.value = true;
-  }
+  showReviewSheet.value = true;
 }
 
 function chooseAnotherAppointment() {
-  closeBookingResult();
+  closeReviewSheet();
   selectedAppointment.value = null;
 }
+
+const bookingResultDate = computed(() => {
+  const sourceDate =
+    bookingResultAppointment.value?.start_time ||
+    selectedAppointment.value?.start_time;
+
+  if (!sourceDate) return selectedDateLong.value || "-";
+
+  const d = new Date(sourceDate);
+
+  const formatted = new Intl.DateTimeFormat("sr-Latn-RS", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  }).format(d);
+
+  return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+});
+
+const bookingResultTime = computed(() => {
+  const sourceDate =
+    bookingResultAppointment.value?.start_time ||
+    selectedAppointment.value?.start_time;
+
+  if (!sourceDate) return selectedAppointmentTime.value || "-";
+
+  return new Date(sourceDate).toLocaleTimeString("sr-Latn-RS", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+});
 </script>

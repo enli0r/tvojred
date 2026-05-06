@@ -1,7 +1,6 @@
 .appointments-section {
     display: flex;
     flex-direction: column;
-    // border: 1px solid red;
 }
 
 .section-head-app {
@@ -9,20 +8,19 @@
     align-items: flex-end;
     justify-content: space-between;
     margin-bottom: 5px;
-    // border: 1px solid blue;
     gap: 10px;
 
     h2 {
         margin: 0;
         color: #151821;
-        font-size: 19px;
+        font-size: 18px;
         line-height: 1;
         font-weight: 750;
         letter-spacing: -0.06em;
     }
 
     p {
-        margin: 6px 0 0;
+        margin: 3px 0 0;
         color: rgba(45, 51, 78, 0.48);
         font-size: 13px;
         line-height: 1.25;
@@ -30,8 +28,6 @@
         letter-spacing: -0.015em;
     }
 }
-
-
 
 .slot-head-copy {
     width: 100%;
@@ -50,17 +46,12 @@
 
 .slot-head-row {
     display: flex;
-    // align-items: center;
-    // justify-content: space-between;
     flex-direction: column;
-    // gap: 14px;
     align-items: start;
     gap: 5px;
     margin-bottom: 0px;
 
     .section-text {
-        margin-bottom: 8px;
-
         h2 {
             margin: 0;
             margin-bottom: 5px;
@@ -70,26 +61,58 @@
             margin: 0;
         }
     }
+}
 
+.slot-head-main {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 8px;
+}
 
+.section-head-app__icon {
+    width: 45px;
+    height: 45px;
+    flex: 0 0 45px;
+    border-radius: 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #405d7a;
+    background: #f9fbfd;
+
+    box-shadow:
+        inset 0 0 0 1px rgba(64, 93, 122, 0.08),
+        0 1px 2px rgba(22, 34, 52, 0.035);
+
+    svg {
+        width: 22px;
+        height: 22px;
+        display: block;
+        stroke-width: 1.9;
+    }
 }
 
 .slot-toggle-mini {
     position: relative;
     width: 100%;
     height: 46px;
-    padding: 4px;
+    padding: 5px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    border-radius: 999px;
+    border-radius: 99px;
     overflow: hidden;
+    margin-bottom: 10px;
 
     background: #ffffff;
+    border-color: rgba(64, 93, 122, 0.08);
 
     box-shadow:
-        0 1px 4px rgba(22, 34, 52, .05),
-        inset 0 1px 0 rgba(255, 255, 255, .92),
-        inset 0 0 0 1px rgba(64, 93, 122, .04);
+        0 1px 4px rgba(22, 34, 52, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.92),
+        inset 0 0 0 1px rgba(64, 93, 122, 0.09);
 
     &.afternoon .slot-toggle-mini__highlight {
         transform: translateX(100%);
@@ -98,20 +121,18 @@
 
 .slot-toggle-mini__highlight {
     position: absolute;
-    inset: 4px auto 4px 4px;
-    width: calc((100% - 8px)/2);
-    border-radius: 999px;
+    inset: 6px auto 6px 6px;
+    width: calc((100% - 12px) / 2);
+    border-radius: 99px;
 
-    background: linear-gradient(180deg,
-            #d7e2ea 0%,
-            #c7d5e0 100%);
+    background: linear-gradient(180deg, #eef5fb 0%, #dbe7f1 100%);
 
     box-shadow:
-        0 2px 6px rgba(31, 49, 71, .06),
-        inset 0 1px 0 rgba(255, 255, 255, .5),
-        inset 0 0 0 1px rgba(64, 93, 122, .05);
+        0 1px 3px rgba(22, 34, 52, 0.045),
+        inset 0 1px 0 rgba(255, 255, 255, 0.88),
+        inset 0 0 0 1px rgba(64, 93, 122, 0.12);
 
-    transition: transform .28s cubic-bezier(.22, 1, .36, 1);
+    transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .slot-toggle-mini__item {
@@ -131,7 +152,7 @@
     font-weight: 840;
     letter-spacing: -0.02em;
 
-    color: rgba(47, 70, 95, .56);
+    color: rgba(47, 70, 95, 0.52);
 
     span {
         min-width: 19px;
@@ -146,26 +167,29 @@
         font-size: 10px;
         font-weight: 900;
 
-        background: rgba(64, 93, 122, .06);
-        color: rgba(47, 70, 95, .68);
+        background: rgba(64, 93, 122, 0.07);
+        color: rgba(47, 70, 95, 0.62);
+
+        box-shadow:
+            inset 0 0 0 1px rgba(64, 93, 122, 0.05);
     }
 
     &.active {
-        color: #24384c;
+        color: #405d7a;
 
         span {
             background: #ffffff;
             color: #405d7a;
 
             box-shadow:
-                inset 0 0 0 1px rgba(64, 93, 122, .05);
+                inset 0 0 0 1px rgba(64, 93, 122, 0.1);
         }
     }
 }
 
 .slot-area {
     position: relative;
-    height: 270px;
+    height: 240px;
     overflow-y: auto;
     padding: 0 10px;
     scrollbar-width: none;
@@ -184,20 +208,21 @@
 
 .slot-pill {
     height: 45px;
-    border: 1px solid rgba(64, 93, 122, 0.03);
     border-radius: 999px;
 
-    background: rgba(255, 255, 255, 0.68);
-    color: rgba(28, 34, 50, 0.62);
+    background: white;
+    color: rgba(28, 34, 50, 0.68);
+    border: 1px solid rgba(0, 0, 0, 0.04);
 
     display: flex;
     align-items: center;
     justify-content: center;
 
     box-shadow:
-        0 1px 4px rgba(22, 34, 52, 0.05),
-        0 1px 1px rgba(22, 34, 52, 0.02),
-        inset 0 1px 0 rgba(255, 255, 255, 0.94);
+        0 2px 6px rgba(22, 34, 52, 0.07),
+        0 1px 1px rgba(22, 34, 52, 0.03),
+        inset 0 1px 0 rgba(255, 255, 255, 0.96),
+        inset 0 -1px 0 rgba(64, 93, 122, 0.04);
 
     font-size: 14px;
     font-weight: 800;
@@ -229,13 +254,10 @@
 
 .slot-pill__time {
     line-height: 1;
-}
-
-.slot-pill__time {
     font-size: 14px;
     font-weight: 800;
     letter-spacing: -0.035em;
-    color: rgba(28, 34, 50, 0.62);
+    color: rgba(28, 34, 50, 0.68);
 }
 
 .slot-pill--skeleton {
@@ -275,23 +297,23 @@
     height: 14px;
 }
 
-// @keyframes skeleton-move {
-//     0% {
-//         background-position: 200% 0;
-//     }
+@keyframes skeleton-move {
+    0% {
+        background-position: 200% 0;
+    }
 
-//     100% {
-//         background-position: -200% 0;
-//     }
-// }
+    100% {
+        background-position: -200% 0;
+    }
+}
 
-// .slots-fade-enter-active,
-// .slots-fade-leave-active {
-//     transition: all 0.26s ease;
-// }
+.slots-fade-enter-active,
+.slots-fade-leave-active {
+    transition: all 0.26s ease;
+}
 
-// .slots-fade-enter-from,
-// .slots-fade-leave-to {
-//     opacity: 0;
-//     transform: translateY(8px);
-// }
+.slots-fade-enter-from,
+.slots-fade-leave-to {
+    opacity: 0;
+    transform: translateY(8px);
+}

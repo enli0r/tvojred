@@ -1,8 +1,24 @@
 <template>
   <section class="hero-calendar">
     <div class="section-head-calendar">
+      <div class="section-head-calendar__icon" aria-hidden="true">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.7"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 5.25h13.5A1.5 1.5 0 0 1 20.25 6.75v12A1.5 1.5 0 0 1 18.75 20.25H5.25A1.5 1.5 0 0 1 3.75 18.75v-12A1.5 1.5 0 0 1 5.25 5.25Z"
+          />
+        </svg>
+      </div>
+
       <div>
-        <h2>Izaberi dan</h2>
+        <h2>Datum</h2>
         <p>Dostupni narednih 14 dana</p>
       </div>
     </div>

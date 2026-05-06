@@ -17,6 +17,8 @@ import Welcome from '../views/Welcome.vue';
 import NotFound from '../views/NotFound.vue';
 
 const routes = [
+  { path: '/', redirect: '/test-studio' },
+  { path: '/', name: 'Welcome', component: Welcome },
   { path: '/404', name: 'NotFound', component: NotFound },
   { path: '/:tenantSlug', name: 'Welcome', component: Welcome },
   { path: '/:tenantSlug/zakazi', name: 'Home', component: Home },

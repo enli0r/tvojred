@@ -33,62 +33,74 @@ const summaryBlocks = computed(() => {
   }));
 });
 
-const isPrimaryDisabled = computed(() => {
-  if (props.step < 3) return !props.canContinue || props.isAutoAdvancing;
-  return !props.canFinish;
+const hasFullSummary = computed(() => {
+  return summaryBlocks.value.every((item) => !item.isEmpty);
 });
 
-const primaryLabel = computed(() => {
-  if (props.step < 3) return "Nastavi";
-  return "Potvrdi termin";
+const isPrimaryDisabled = computed(() => {
+  return !props.canFinish || props.isAutoAdvancing;
+});
+
+const summaryTitle = computed(() => {
+  if (!hasFullSummary.value) {
+    return "Izaberi termin";
+  }
+
+  const [date, barber] = summaryBlocks.value;
+
+  return `${date.value} · ${barber.value}`;
+});
+
+const summaryMeta = computed(() => {
+  if (!hasFullSummary.value) {
+    return "Dan, frizer i vreme";
+  }
+
+  const [, , time] = summaryBlocks.value;
+
+  return time.value;
 });
 
 function handlePrimaryClick() {
   if (isPrimaryDisabled.value) return;
 
-  if (props.step < 3) {
-    emit("next");
-    return;
-  }
-
   emit("finish");
-}
-
-function handleStepClick(item: SummaryStep) {
-  if (!item.isClickable) return;
-  emit("go-to-step", item.step);
 }
 </script>
 
 <template>
   <footer
+    v-if="visible !== false"
     class="booking-bottom"
-    :class="{ 'is-ready': !isPrimaryDisabled, 'is-disabled': isPrimaryDisabled }"
+    :class="{
+      'is-ready': !isPrimaryDisabled,
+      'is-disabled': isPrimaryDisabled,
+      'has-summary': hasFullSummary,
+    }"
   >
-    <div class="bottom-summary" aria-label="Pregled izabranog termina">
-      <template v-for="(item, index) in summaryBlocks" :key="item.step">
-        <button
-          class="bottom-summary__item"
-          :class="{ filled: !item.isEmpty }"
-          type="button"
-          :disabled="!item.isClickable"
-          @click="handleStepClick(item)"
-        >
-          {{ item.isEmpty ? item.label : item.value }}
-        </button>
+    <div class="booking-bottom__inner">
+      <div class="booking-bottom__summary">
+        <strong>{{ summaryTitle }}</strong>
+        <span>{{ summaryMeta }}</span>
+      </div>
 
-        <i v-if="index < summaryBlocks.length - 1"></i>
-      </template>
+      <button
+        class="confirm-button"
+        type="button"
+        :disabled="isPrimaryDisabled"
+        @click="handlePrimaryClick"
+      >
+        Zakaži
+
+        <svg viewBox="0 0 24 24" fill="none">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+                />
+              </svg>
+      </button>
     </div>
-
-    <button
-      class="confirm-button"
-      type="button"
-      :disabled="isPrimaryDisabled"
-      @click="handlePrimaryClick"
-    >
-      {{ primaryLabel }}
-    </button>
   </footer>
 </template>
 

@@ -1,6 +1,5 @@
 .booking-section {
     position: relative;
-    // border: 1px solid red;
     padding-bottom: 8px;
 }
 
@@ -14,15 +13,56 @@
     h2 {
         margin: 0;
         color: #151821;
-        font-size: 19px;
+        font-size: 18px;
         line-height: 1;
         font-weight: 750;
         letter-spacing: -0.06em;
+    }
+
+    p {
+        margin: 3px 0 0;
+        color: rgba(45, 51, 78, 0.48);
+        font-size: 13px;
+        line-height: 1.25;
+        font-weight: 600;
+        letter-spacing: -0.015em;
     }
 }
 
 .section-head--compact {
     align-items: center;
+}
+
+.section-head-barber__main {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    min-width: 0;
+}
+
+.section-head-barber__icon {
+    width: 45px;
+    height: 45px;
+    flex: 0 0 45px;
+    border-radius: 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #405d7a;
+    background: #f9fbfd;
+
+    box-shadow:
+        inset 0 0 0 1px rgba(64, 93, 122, 0.08),
+        0 1px 2px rgba(22, 34, 52, 0.035);
+
+    svg {
+        width: 22px;
+        height: 22px;
+        display: block;
+        stroke-width: 1.9;
+    }
 }
 
 .section-count {
@@ -48,19 +88,11 @@
 
 .barber-list {
     border-radius: 28px;
-    padding: 16px 16px 10px 16px;
+    padding: 20px 20px 14px 20px;
     background: #ffffff;
     display: flex;
     flex-direction: column;
     gap: 20px;
-
-    box-shadow:
-        0 12px 30px rgba(22, 34, 52, 0.05),
-        0 1px 2px rgba(22, 34, 52, 0.03),
-        inset 0 1px 0 rgba(255, 255, 255, 0.88);
-
-    border: 1px solid rgba(64, 93, 122, 0.045);
-    // border: 1px solid red;
 }
 
 .barber-row {
@@ -74,7 +106,6 @@
     align-items: flex-start;
     gap: 10px;
     position: relative;
-    // border: 1px solid blue;
 
     transition:
         opacity 0.22s ease,
@@ -84,9 +115,9 @@
         content: "";
         position: absolute;
         left: -16px;
-        top: 0;
+        top: -2px;
         width: 3px;
-        height: 60px;
+        height: 55px;
         border-radius: 999px;
         background: linear-gradient(180deg, #405d7a 0%, #2f465f 100%);
         opacity: 0;
@@ -117,17 +148,17 @@
 }
 
 .barber-img {
-    width: 60px;
-    height: 60px;
-    border-radius: 18px;
+    width: 50px;
+    height: 50px;
+    border-radius: 22px;
     position: relative;
-    flex: 0 0 60px;
+    flex: 0 0 50px;
 
     &::after {
         content: "";
         position: absolute;
-        inset: -4px;
-        border-radius: 22px;
+        inset: -3px;
+        border-radius: 18px;
         opacity: 0;
         background: transparent;
         box-shadow:
@@ -144,7 +175,7 @@
         z-index: 1;
         width: 100%;
         aspect-ratio: 1 / 1;
-        border-radius: 18px;
+        border-radius: 16px;
         object-fit: cover;
         box-shadow: 0 8px 18px rgba(20, 30, 45, 0.06);
     }
@@ -158,7 +189,7 @@
 .barber-row__content {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 3px;
     position: relative;
     width: 100%;
     padding-bottom: 10px;
@@ -269,36 +300,37 @@
 
 .barber-row__availability {
     width: max-content;
-    padding: 5px 10px;
-    border-radius: 999px;
+    padding: 0;
+    border-radius: 0;
+    margin-top: 4px;
 
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 3px;
 
-    background: rgba(64, 93, 122, 0.045);
-    color: rgba(64, 93, 122, 0.72);
+    background: transparent;
+    color: rgba(43, 54, 73, 0.42);
 
     font-size: 12px;
-    font-weight: 740;
+    font-weight: 650;
+    letter-spacing: -0.015em;
 
     transition:
-        background 0.22s ease,
         color 0.22s ease,
-        box-shadow 0.22s ease;
+        opacity 0.22s ease;
 
     svg {
         width: 14px;
         height: 14px;
         stroke: currentColor;
-        opacity: 0.84;
+        opacity: 0.62;
     }
 }
 
 .barber-row.active .barber-row__availability {
-    background: rgba(64, 93, 122, 0.06);
-    color: rgba(64, 93, 122, 0.86);
-    box-shadow: inset 0 0 0 1px rgba(64, 93, 122, 0.04);
+    background: transparent;
+    color: rgba(64, 93, 122, 0.62);
+    box-shadow: none;
 }
 
 .barber-row--skeleton {

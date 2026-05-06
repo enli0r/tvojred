@@ -165,6 +165,7 @@ onMounted(async () => {
 .gallery-carousel {
   width: 100%;
   overflow: hidden;
+  padding-bottom: 16px;
 }
 
 .gallery-carousel__track {

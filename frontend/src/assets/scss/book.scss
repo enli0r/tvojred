@@ -1,6 +1,4 @@
 .concept-v2-booking {
-    color: #eef3fb;
-    font-family: Inter, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
     min-height: 100vh;
     color: #151821;
     background: #f4f6f9;
@@ -11,14 +9,13 @@
     max-width: 520px;
     margin: 0 auto;
     box-sizing: border-box;
-    // padding: 16px;
     padding: 16px 16px 150px;
 }
 
 .booking-stack {
     display: flex;
     flex-direction: column;
-    gap: 36px;
+    gap: 42px;
 }
 
 .booking-block {
@@ -33,7 +30,6 @@
     opacity: 0.55;
     transform: scale(0.9);
 }
-
 
 .quick-book-hero {
     appearance: none;
@@ -137,146 +133,6 @@
     transform: translateY(-8px);
 }
 
-.sheet-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 60;
-    background: rgba(6, 10, 16, 0.5);
-    backdrop-filter: blur(12px);
-}
-
-.review-sheet {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 70;
-    width: min(100%, 520px);
-    margin: 0 auto;
-    padding: 12px 12px calc(12px + env(safe-area-inset-bottom));
-    border-top-left-radius: 32px;
-    border-top-right-radius: 32px;
-    background:
-        linear-gradient(180deg, rgba(66, 92, 154, 0.34), rgba(31, 44, 71, 0.26));
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.06),
-        0 -18px 40px rgba(0, 0, 0, 0.28);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-
-    .sheet-handle {
-        width: 44px;
-        height: 5px;
-        border-radius: 999px;
-        background: rgba(196, 206, 219, 0.28);
-        margin: 0 auto 12px;
-    }
-
-    .sheet-head {
-        text-align: center;
-        margin-bottom: 14px;
-
-        span {
-            display: block;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            color: rgba(184, 197, 213, 0.62);
-            margin-bottom: 4px;
-            font-weight: 700;
-        }
-
-        h2 {
-            margin: 0 0 6px;
-            font-size: 24px;
-            line-height: 1.05;
-            letter-spacing: -0.05em;
-            color: #eef3fb;
-        }
-
-        p {
-            margin: 0;
-            font-size: 13px;
-            line-height: 1.5;
-            color: rgba(192, 205, 220, 0.72);
-        }
-    }
-
-    .review-list {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 14px;
-        border-top: 1px solid rgba(255, 255, 255, 0.05);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-
-        .review-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            padding: 13px 4px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-
-            &:last-child {
-                border-bottom: 0;
-            }
-
-            span {
-                font-size: 13px;
-                color: rgba(192, 205, 220, 0.72);
-            }
-
-            strong {
-                font-size: 14px;
-                font-weight: 700;
-                color: #eef3fb;
-                text-align: right;
-                line-height: 1.35;
-                letter-spacing: -0.02em;
-            }
-        }
-    }
-
-    .sheet-actions {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-
-        .sheet-button {
-            height: 48px;
-            border: none;
-            border-radius: 18px;
-            font-size: 14px;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            transition:
-                transform 0.18s ease,
-                box-shadow 0.22s ease,
-                background-color 0.22s ease;
-
-            &:active {
-                transform: scale(0.985);
-            }
-
-            &.sheet-button-ghost {
-                color: #eef3fb;
-                background: rgba(255, 255, 255, 0.06);
-                box-shadow:
-                    inset 0 1px 0 rgba(255, 255, 255, 0.05),
-                    0 10px 20px rgba(0, 0, 0, 0.18);
-            }
-
-            &.sheet-button-primary {
-                color: #ffffff;
-                background: linear-gradient(180deg, #899dff 0%, #6f82ff 100%);
-                box-shadow:
-                    0 14px 28px rgba(111, 130, 255, 0.24),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.18);
-            }
-        }
-    }
-}
-
 .step-transition-enter-active,
 .step-transition-leave-active {
     transition: all 0.2s ease;
@@ -290,29 +146,6 @@
 .step-transition-leave-to {
     opacity: 0;
     transform: translateY(-10px);
-}
-
-.overlay-fade-enter-active,
-.overlay-fade-leave-active {
-    transition: opacity 0.22s ease;
-}
-
-.overlay-fade-enter-from,
-.overlay-fade-leave-to {
-    opacity: 0;
-}
-
-.sheet-slide-enter-active,
-.sheet-slide-leave-active {
-    transition:
-        transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 0.22s ease;
-}
-
-.sheet-slide-enter-from,
-.sheet-slide-leave-to {
-    transform: translateY(100%);
-    opacity: 0;
 }
 
 .concept-v2-booking .calendar-section {
@@ -361,6 +194,7 @@
     z-index: 2;
     white-space: nowrap;
     cursor: pointer;
+
     transition:
         transform 0.24s cubic-bezier(0.22, 1, 0.36, 1),
         background-color 0.28s ease,
@@ -389,179 +223,691 @@
     width: calc(50% - 4px);
     height: calc(100% - 8px);
     border-radius: 14px;
+
     background: linear-gradient(180deg,
             rgba(123, 145, 255, 0.3),
             rgba(123, 145, 255, 0.14));
+
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
     transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* =========================
+   PASSKEY / AUTH AREA
+========================= */
 
-.concept-v2__bottom-top {
-    padding: 12px 12px 6px;
-}
-
-.concept-v2__summary {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
-}
-
-.concept-v2__summary-card {
+.booking-auth {
     position: relative;
-    min-width: 0;
-    height: 58px;
-    padding: 12px 12px 11px;
-    border: none;
-    border-radius: 18px;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 6px;
-    color: #eef3fb;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.024));
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.045),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.02);
-    -webkit-tap-highlight-color: transparent;
-    transition:
-        transform 0.2s ease,
-        background 0.22s ease,
-        box-shadow 0.22s ease,
-        opacity 0.22s ease,
-        color 0.22s ease;
-
-    &:active:not(:disabled) {
-        transform: scale(0.985);
-    }
-
-    &:disabled {
-        opacity: 1;
-    }
+    padding-bottom: 0;
 }
 
-.concept-v2__summary-card.is-clickable {
-    cursor: pointer;
-}
-
-.concept-v2__summary-card.is-active {
-    background: linear-gradient(180deg, rgba(126, 145, 255, 0.13), rgba(126, 145, 255, 0.06));
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.05),
-        inset 0 0 0 1px rgba(139, 157, 255, 0.11);
-}
-
-.concept-v2__summary-card.is-done .concept-v2__summary-value {
-    color: #f5f8ff;
-}
-
-.concept-v2__summary-card.is-empty .concept-v2__summary-label {
-    color: rgba(224, 232, 243, 0.72);
-}
-
-.concept-v2__summary-label {
-    font-size: 10px;
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: 0.02em;
-    color: rgba(224, 232, 243, 0.78);
-}
-
-.concept-v2__summary-value {
-    display: block;
-    max-width: 100%;
-    font-size: 13px;
-    font-weight: 800;
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    color: #eef3fb;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.concept-v2__summary-placeholder {
-    width: 12px;
-    height: 4px;
-    margin-top: 2px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.76);
-}
-
-.concept-v2__bottom-actions {
+.auth-divider {
     display: grid;
-    grid-template-columns: 48px 1fr;
-    gap: 10px;
-    padding: 0 12px 12px;
-    margin-top: 4px;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 16px;
+
+    span {
+        height: 1px;
+        border-radius: 999px;
+        background: linear-gradient(90deg,
+                transparent,
+                rgba(120, 136, 154, 0.24),
+                transparent);
+    }
+
+    p {
+        margin: 0;
+        color: #7a8796;
+        font-size: 10px;
+        line-height: 1;
+        font-weight: 900;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
 }
 
-.concept-v2__ghost,
-.concept-v2__primary {
+.auth-passkey-note,
+.auth-user-card {
+    margin-bottom: 18px;
+    padding: 14px;
+    border-radius: 24px;
+
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    background: #f4f7fa;
+
+    strong {
+        display: block;
+        color: #111b29;
+        font-size: 15px;
+        line-height: 1.1;
+        font-weight: 880;
+        letter-spacing: -0.05em;
+    }
+
+    p {
+        margin: 6px 0 0;
+        color: #7b8794;
+        font-size: 13px;
+        line-height: 1.28;
+        font-weight: 680;
+        letter-spacing: -0.035em;
+    }
+}
+
+.auth-passkey-icon {
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+    border-radius: 17px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #4f6e8d;
+    background: #ffffff;
+
+    svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+.auth-fields {
+    display: grid;
+    gap: 15px;
+}
+
+.auth-field {
+    display: grid;
+    gap: 8px;
+
+    label {
+        color: #69788a;
+        font-size: 13px;
+        font-weight: 780;
+        letter-spacing: -0.025em;
+
+        span {
+            color: red;
+        }
+    }
+
+    input {
+        width: 100%;
+        height: 45px;
+        box-sizing: border-box;
+        border: 0;
+        outline: none;
+        border-radius: 12px;
+        padding: 0 16px;
+
+        color: #111b29;
+        -webkit-text-fill-color: #111b29;
+        caret-color: #111b29;
+
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: none;
+
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+
+        transition:
+            background 0.18s ease,
+            opacity 0.18s ease;
+
+        &::placeholder {
+            color: black;
+            opacity: 0.5;
+            font-weight: 650;
+        }
+
+        &:focus {
+            border: 2px solid rgba(0, 0, 0, 1);
+            box-shadow: none;
+        }
+
+        &:disabled {
+            opacity: 0.62;
+        }
+
+        &:-webkit-autofill,
+        &:-webkit-autofill:hover,
+        &:-webkit-autofill:focus,
+        &:-webkit-autofill:active {
+            color: #111b29;
+            -webkit-text-fill-color: #111b29;
+            caret-color: #111b29;
+            box-shadow: 0 0 0 1000px #eef3f7 inset;
+            transition: background-color 9999s ease-in-out 0s;
+        }
+    }
+}
+
+.auth-message {
+    margin: 12px 0 0;
+    color: #b15a4c;
+    font-size: 13px;
+    line-height: 1.35;
+    font-weight: 760;
+    letter-spacing: -0.025em;
+}
+
+/* LOGGED USER */
+
+.auth-user-card {
+    display: grid;
+    grid-template-columns: 46px minmax(0, 1fr) auto;
+}
+
+.auth-user-card>div:not(.auth-passkey-icon) {
+    min-width: 0;
+
+    strong {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}
+
+.logout-pill {
+    height: 34px;
+    border: 0;
+    border-radius: 999px;
+    padding: 0 12px;
+
+    color: #c95050;
+    background: rgba(201, 80, 80, 0.09);
+
+    font-size: 12px;
+    font-weight: 850;
+    letter-spacing: -0.02em;
+
     appearance: none;
-    border: none;
     outline: none;
     -webkit-tap-highlight-color: transparent;
-    transition:
-        transform 0.18s ease,
-        background 0.22s ease,
-        color 0.22s ease,
-        box-shadow 0.22s ease,
-        opacity 0.22s ease;
 
-    &:active:not(:disabled) {
-        transform: scale(0.98);
+    &:active {
+        transform: scale(0.96);
     }
 }
 
-.concept-v2__ghost {
-    width: 48px;
-    height: 48px;
-    border-radius: 18px;
-    color: #eef3fb;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.028));
+/* BOTTOM ACTIONS INSIDE POPUP */
+
+.auth-actions,
+.confirm-bottom-bar {
+    position: sticky;
+    bottom: 0;
+    z-index: 20;
+
+    margin: 0px -20px 0;
+    padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: column;
+    gap: 14px;
+
+    .finger-face-id {
+        .images {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+
+            .divider {
+                font-size: 16px;
+                margin: 0;
+                font-weight: 350;
+                color: rgba(0, 0, 0, 0.2);
+            }
+
+            img {
+                width: 30px;
+                height: 30px;
+            }
+        }
+
+        p {
+            font-size: 10px;
+            color: rgba(0, 0, 0, 0.6);
+            font-weight: 500;
+        }
+    }
+}
+
+.auth-secondary-btn,
+.auth-primary-btn,
+.bottom-ghost-btn,
+.bottom-primary-btn {
+    height: 44px;
+    border: 0;
+    border-radius: 99px;
+    padding: 0 17px;
+    margin-top: 10px;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.045),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.018);
+    gap: 8px;
+
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 850;
+    letter-spacing: -0.025em;
+
+    appearance: none;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    background: linear-gradient(145deg, #111a26 0%, #182638 48%, #0d141f 100%);
+    transition:
+        transform 0.16s ease,
+        opacity 0.18s ease;
+
+    &:active:not(:disabled) {
+        transform: scale(0.975);
+    }
 
     &:disabled {
-        opacity: 0.42;
+        opacity: 0.55;
     }
+}
+
+.auth-secondary-btn,
+.bottom-ghost-btn {
+    color: #617286;
+    background: #eef3f7;
+}
+
+.auth-primary-btn,
+.bottom-primary-btn {
+    min-width: 128px;
+    width: 100%;
+
+    color: #ffffff;
+    background-color: black;
+}
+
+.auth-loader {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.34);
+    border-top-color: #ffffff;
+    animation: auth-spin 0.75s linear infinite;
+}
+
+@keyframes auth-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* LOGOUT CONFIRM */
+
+.logout-confirm {
+    position: fixed;
+    inset: 0;
+    z-index: 150;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 22px;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(16px) saturate(125%);
+    -webkit-backdrop-filter: blur(16px) saturate(125%);
+}
+
+.logout-confirm__card {
+    width: min(100%, 310px);
+    padding: 20px;
+    border-radius: 28px;
+
+    text-align: center;
+    background: #ffffff;
+
+    box-shadow:
+        0 28px 62px rgba(18, 27, 39, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.95);
+
+    span {
+        display: block;
+        margin-bottom: 8px;
+        color: #c95050;
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+    }
+
+    strong {
+        display: block;
+        color: #111b29;
+        font-size: 20px;
+        line-height: 1.05;
+        font-weight: 900;
+        letter-spacing: -0.055em;
+    }
+
+    p {
+        margin: 9px 0 18px;
+        color: #7b8794;
+        font-size: 14px;
+        line-height: 1.35;
+        font-weight: 680;
+        letter-spacing: -0.035em;
+    }
+}
+
+.logout-confirm__icon {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto 13px;
+    border-radius: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #c95050;
+    background: rgba(201, 80, 80, 0.09);
+
+    svg {
+        width: 25px;
+        height: 25px;
+    }
+}
+
+.logout-confirm__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+
+    button {
+        height: 44px;
+        border: 0;
+        border-radius: 16px;
+
+        font-size: 14px;
+        font-weight: 850;
+        letter-spacing: -0.025em;
+    }
+}
+
+.logout-confirm__cancel {
+    color: #617286;
+    background: #eef3f7;
+}
+
+.logout-confirm__danger {
+    color: #ffffff;
+    background: linear-gradient(180deg, #d86a6a 0%, #b84a4a 100%);
+}
+
+.mini-pop-enter-active,
+.mini-pop-leave-active {
+    transition:
+        opacity 0.18s ease,
+        transform 0.2s ease;
+}
+
+.mini-pop-enter-from,
+.mini-pop-leave-to {
+    opacity: 0;
+    transform: scale(0.98);
+}
+
+/* =========================
+   FINAL REVIEW / CONFIRM BOTTOM SHEET
+   Uses: <Transition name="confirm-sheet">
+========================= */
+
+.confirm-sheet-enter-active,
+.confirm-sheet-leave-active {
+    transition: opacity 0.22s ease;
+}
+
+.confirm-sheet-enter-from,
+.confirm-sheet-leave-to {
+    opacity: 0;
+}
+
+.confirm-sheet-enter-active .confirm-page,
+.confirm-sheet-leave-active .confirm-page {
+    transition:
+        transform 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.24s ease;
+}
+
+.confirm-sheet-enter-from .confirm-page,
+.confirm-sheet-leave-to .confirm-page {
+    opacity: 0;
+    transform: translate3d(0, 26px, 0) scale(0.98);
+}
+
+.confirm-sheet-enter-to .confirm-page,
+.confirm-sheet-leave-from .confirm-page {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+}
+
+.confirm-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+
+    padding: 0 12px calc(12px + env(safe-area-inset-bottom));
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+
+    color: #111b29;
+    background: rgba(9, 13, 20, 0.46);
+
+    overflow: hidden;
+    overscroll-behavior: contain;
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.confirm-page {
+    position: relative;
+
+    width: min(100%, 420px);
+    max-height: calc(100vh - 24px);
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+
+    border-radius: 30px;
+    background: #ffffff;
+    color: #111b29;
+
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+
+    border: 1px solid rgba(47, 70, 95, 0.06);
+
+    box-shadow:
+        0 24px 50px rgba(8, 12, 18, 0.22),
+        0 8px 18px rgba(8, 12, 18, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.96),
+        inset 0 0 0 1px rgba(64, 93, 122, 0.075);
+
+    transform-origin: center bottom;
+}
+
+.confirm-page__handle {
+    width: 38px;
+    height: 4px;
+    margin: 11px auto 16px;
+    flex: 0 0 auto;
+
+    border-radius: 999px;
+    background: rgba(64, 93, 122, 0.16);
+}
+
+.confirm-content {
+    flex: 1;
+    min-height: 0;
+
+    padding: 0 20px 0;
+
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+
+    scrollbar-width: none;
+}
+
+.confirm-content::-webkit-scrollbar {
+    display: none;
+}
+
+.booking-summary-card {
+    margin-top: 0;
+    margin-bottom: 24px;
+    padding: 0;
+}
+
+.confirm-popup-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.confirm-popup-head__main {
+    min-width: 0;
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+}
+
+.confirm-popup-head__copy {
+    min-width: 0;
+
+    span {
+        display: block;
+        color: #64809c;
+        font-size: 10px;
+        line-height: 1;
+        font-weight: 850;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+    }
+
+    h2 {
+        margin: 7px 0 0;
+        color: #102438;
+        font-size: 22px;
+        line-height: 1;
+        font-weight: 820;
+        letter-spacing: -0.055em;
+    }
+
+    p {
+        margin: 4px 0 0;
+        color: rgba(16, 36, 56, 0.48);
+        font-size: 13px;
+        line-height: 1.25;
+        font-weight: 620;
+        letter-spacing: -0.025em;
+    }
+}
+
+.confirm-popup-head__close {
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: 50%;
+    padding: 0;
+    flex: 0 0 38px;
+
+    display: grid;
+    place-items: center;
+
+    color: #405d7a;
+    background: #eef3f7;
+
+    box-shadow:
+        inset 0 0 0 1px rgba(64, 93, 122, 0.065),
+        inset 0 1px 0 rgba(255, 255, 255, 0.88);
+
+    appearance: none;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+
+    transition:
+        transform 0.16s ease,
+        opacity 0.18s ease;
 
     svg {
         width: 18px;
         height: 18px;
     }
+
+    &:active:not(:disabled) {
+        transform: scale(0.96);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+    }
 }
 
-.concept-v2__primary {
-    width: 100%;
-    height: 48px;
-    padding: 0 18px;
-    border-radius: 18px;
-    display: inline-flex;
+.confirm-popup-head__accent {
+    width: 3px;
+    min-height: 100%;
+    align-self: stretch;
+    flex: 0 0 3px;
+    margin: 1px 0 0;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #405d7a 0%, #86add2 100%);
+}
+
+.booking-summary-card .confirm-summary {
+    display: grid;
+    gap: 5px;
+    border-radius: 10px;
+    margin-top: 28px;
+}
+
+.booking-summary-card .confirm-summary .confirm-summary-row {
+    display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 15px;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    color: #ffffff;
-    background: linear-gradient(180deg, #96a8ff 0%, #7f90ff 58%, #6f82ff 100%);
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.2),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.12),
-        0 10px 22px rgba(111, 130, 255, 0.18);
+    justify-content: space-between;
+
+    padding: 3px 0;
 }
 
-.concept-v2__primary:disabled {
-    color: rgba(255, 255, 255, 0.4);
-    cursor: not-allowed;
-    background: rgba(255, 255, 255, 0.06);
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.03);
+.booking-summary-card .confirm-summary .confirm-summary-row span {
+    color: #7d8998;
+    font-size: 13px;
+    line-height: 1;
+    font-weight: 560;
+    letter-spacing: -0.015em;
+}
+
+.booking-summary-card .confirm-summary .confirm-summary-row strong {
+    color: #304257;
+    font-size: 14px;
+    line-height: 1.15;
+    font-weight: 680;
+    letter-spacing: -0.025em;
+    text-align: right;
+    white-space: nowrap;
 }

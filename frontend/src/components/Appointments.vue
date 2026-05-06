@@ -3,11 +3,30 @@
     <header class="section-head-app section-head--slots">
       <div class="slot-head-copy">
         <div class="slot-head-row">
-          <div class="section-text">
-            <h2>Termin</h2>
-          <p>Izaberi slobodan termin</p>
+          <div class="slot-head-main">
+            <div class="section-head-app__icon" aria-hidden="true">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+            </div>
+
+            <div class="section-text">
+              <h2>Termin</h2>
+              <p>Izaberi slobodan termin</p>
+            </div>
           </div>
-          
+
           <div class="slot-toggle-mini" :class="selectedPeriod">
             <div class="slot-toggle-mini__highlight"></div>
 
@@ -32,7 +51,6 @@
             </button>
           </div>
         </div>
-
       </div>
     </header>
 
