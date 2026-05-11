@@ -340,7 +340,10 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+
+const route = useRoute();
+const router = useRouter();
 
 type SlotStatus = "free" | "booked" | "break";
 
@@ -366,8 +369,6 @@ type BreakCalendarDay = {
   isAvailable: boolean;
 };
 
-const router = useRouter();
-
 const isBookingOpen = ref(false);
 const isBreaksOpen = ref(false);
 
@@ -375,6 +376,9 @@ const selectedMonthOffset = ref(0);
 const selectedDate = ref("");
 const selectedSlot = ref("");
 const selectedBarberId = ref<number | null>(null);
+
+const tenantSlug = computed(() => String(route.params.tenantSlug || ""));
+
 
 const selectedBreakMonthOffset = ref(0);
 const selectedBreakDate = ref("");
@@ -585,12 +589,50 @@ function toIsoDate(date: Date) {
   return date.toISOString().slice(0, 10);
 }
 
-const goLokal = () => router.push("/admin/settings/lokal");
-const goFrizeri = () => router.push("/admin/settings/frizeri");
+function goLokal() {
+  router.push({
+    name: "Lokal",
+    params: {
+      tenantSlug: tenantSlug.value,
+    },
+  });
+}
+function goFrizeri() {
+  router.push({
+    name: "Frizeri",
+    params: {
+      tenantSlug: tenantSlug.value,
+    },
+  });
+}
 const goKlijenti = () => router.push("/admin/settings/klijenti");
-const goUsluge = () => router.push("/admin/settings/usluge");
-const goRadnoVreme = () => router.push("/admin/settings/radno-vreme");
-const goRadnoVremeFrizera = () => router.push("/admin/settings/radno-vreme-frizera");
+
+function goUsluge() {
+  router.push({
+    name: "Usluge",
+    params: {
+      tenantSlug: tenantSlug.value,
+    },
+  });
+}
+function goRadnoVreme() {
+  router.push({
+    name: "RadnoVreme",
+    params: {
+      tenantSlug: tenantSlug.value,
+    },
+  });
+}
+
+function goRadnoVremeFrizera() {
+  router.push({
+    name: "RadnoVremeFrizera",
+    params: {
+      tenantSlug: tenantSlug.value,
+    },
+  });
+}
+
 </script>
 
 <style scoped lang="scss">

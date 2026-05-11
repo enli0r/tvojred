@@ -1,15 +1,64 @@
-import { Connection } from 'mysql2/promise';
+import { Connection } from "mysql2/promise";
+
+function normalizeSerbianPhone(phone: string) {
+    let p = phone.trim();
+
+    p = p.replace(/[\s\-()]/g, "");
+
+    if (p.startsWith("00381")) {
+        p = "+381" + p.slice(5);
+    }
+
+    if (p.startsWith("0")) {
+        p = "+381" + p.slice(1);
+    }
+
+    if (p.startsWith("381")) {
+        p = "+" + p;
+    }
+
+    return p;
+}
 
 export async function seedUsers(db: Connection) {
-    const [rows] = await db.query(`select count(*) as u from users`);
-    const count = (rows as any)[0].u;
+    const users = [
+        {
+            name: "Mirko",
+            phone: "0638452725",
+            role: "customer",
+        },
+        {
+            name: "Stefan",
+            phone: "0638457205",
+            role: "customer",
+        },
+    ];
 
-    // if (count === 0) {
-    await db.query(`insert into users(name, phone) values('Mirko', '0638452725'), ('Stefan', '0638457205' )`);
-    console.log('Uspesno seedovanje tabele users');
-    return;
-    // }
+    for (const user of users) {
+        const phoneNormalized = normalizeSerbianPhone(user.phone);
 
-    console.log('Neuspesno seedovanje tabele users');
+        await db.query(
+            `
+            INSERT INTO users (
+                name,
+                phone,
+                phone_normalized,
+                role
+            )
+            VALUES (?, ?, ?, ?)
+            ON DUPLICATE KEY UPDATE
+                name = VALUES(name),
+                phone = VALUES(phone),
+                role = VALUES(role)
+            `,
+            [
+                user.name,
+                user.phone,
+                phoneNormalized,
+                user.role,
+            ]
+        );
+    }
 
+    console.log("Uspesno seedovanje tabele users");
 }

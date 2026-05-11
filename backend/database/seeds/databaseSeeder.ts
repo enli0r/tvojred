@@ -11,7 +11,8 @@ import { seedBarberWorkingHours } from './barberWorkingHoursSeed.ts';
 import { seedBarberWorkingOverrides } from './barberWorkingOverridesSeed.ts';
 import { seedBarberBreaks } from './seedBarberBreaks.ts';
 import { seedBarberBreakRepeatDays } from './seedBarberBreakRepeatDays.ts';
-
+import { seedBarberShiftSettings } from './barberShiftSettingsSeed.ts';
+import { seedBarberShiftWorkingHours } from './barberShiftWorkingHoursSeed.ts';
 
 export async function dbSeed() {
     await db.query('use zakazitermin2');
@@ -31,7 +32,8 @@ export async function dbSeed() {
     const withBarberWorkingOverrides = args.includes('--barberWorkingOverrides');
     const withBarberBreaks = args.includes('--barberBreaks');
     const withBarberBreakRepeatDays = args.includes('--barberBreakRepeatDays');
-
+    const withBarberShiftSettings = args.includes('--barberShiftSettings');
+    const withBarberShiftWorkingHours = args.includes('--barberShiftWorkingHours');
 
     if (withTenants) {
         console.log('Seedujem tenants..');
@@ -64,7 +66,7 @@ export async function dbSeed() {
     }
 
     if (withAppointments) {
-        console.log('Seedujem barber_services..');
+        console.log('Seedujem appointments..');
         await seedAppointments(db);
     }
 
@@ -93,15 +95,24 @@ export async function dbSeed() {
         await seedBarberBreakRepeatDays(db);
     }
 
+    if (withBarberShiftSettings) {
+        console.log('Seedujem tabelu barber shift settings');
+        await seedBarberShiftSettings(db);
+    }
+
+    if (withBarberShiftWorkingHours) {
+        console.log('Seedujem tabelu barber shift working hours');
+        await seedBarberShiftWorkingHours(db);
+    }
+
     console.log('Seed zavrsen');
 }
 
-
-//da bi moglo da se pokrene iz terminala
+// da bi moglo da se pokrene iz terminala
 if (import.meta.url === `file://${process.argv[1]}`) {
     dbSeed()
         .then(async () => {
-            await db.end();      // lepo zatvori konekciju
+            await db.end();
             process.exit(0);
         })
         .catch(async (err) => {

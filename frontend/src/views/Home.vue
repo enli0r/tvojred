@@ -6,6 +6,15 @@
       <div class="bg-noise"></div>
     </div>
 
+    <NavbarMenu
+      :tenant-id="tenant?.id"
+      :is-logged-in="isLoggedIn"
+      :current-user="currentUser"
+      @auth-change="handleAuthChange"
+      @logout="handleLogout"
+      @appointment-cancelled="fetchAppointments"
+    />
+
     <div class="booking-page concept-v2-booking">
       <div key="booking-screen" class="booking-screen">
         <div class="page-content">
@@ -171,6 +180,7 @@
                     :date="bookingResultDate"
                     :time="bookingResultTime"
                     :barber-name="selectedBarber?.name || '-'"
+                    :variant="bookingResultVariant"
                     @close="finishBookingResult"
                     @retry="retryBooking"
                   />
@@ -186,7 +196,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 import Navbar from "@/components/Navbar.vue";
 import Calendar from "@/components/Calendar.vue";
@@ -195,6 +205,8 @@ import Appointments from "@/components/Appointments.vue";
 import BottomMenu from "@/components/BottomMenu.vue";
 import PasskeyTest from "../components/PasskeyTest.vue";
 import BookingResultSheet from "../components/BookingResultSheet.vue";
+import NavbarMenu from "../components/NavbarMenu.vue";
+
 
 const apiBase = "/api";
 const route = useRoute();
@@ -275,6 +287,8 @@ const loadingQuickBooking = ref(false);
 
 const quickBooking = ref<QuickBooking | null>(null);
 const isQuickBookingSelection = ref(false);
+
+const bookingResultVariant = ref<"default" | "slot-taken" | "daily-limit">("default");
 
 const showQuickBookHero = computed(() => {
   return !!quickBooking.value && !loadingQuickBooking.value;
@@ -623,6 +637,7 @@ async function confirmBooking() {
     });
 
     const data = await res.json().catch(() => null);
+    const code = data?.code;
 
     if (res.status === 401) {
       isLoggedIn.value = false;
@@ -635,11 +650,32 @@ async function confirmBooking() {
     }
 
     if (res.status === 409) {
-      openBookingResult(
-        "conflict",
-        data?.message || "Termin je upravo zauzet. Izaberi drugi termin.",
-        bookedAppointment
-      );
+      let message = data?.message || "Termin nije moguće zakazati.";
+      let variant: "default" | "slot-taken" | "daily-limit" = "default";
+
+      if (code === "PHONE_DAILY_LIMIT_REACHED") {
+        message =
+          "Sa ovim brojem telefona već postoji termin za ovaj dan. Za izmenu termina kontaktiraj lokal.";
+        variant = "daily-limit";
+      }
+
+      if (code === "USER_DAILY_LIMIT_REACHED") {
+        message =
+          "Već imaš jedan zakazan termin za ovaj dan. Za izmenu termina kontaktiraj lokal.";
+        variant = "daily-limit";
+      }
+
+      if (code === "APPOINTMENT_SLOT_TAKEN") {
+        message = "Termin je upravo zauzet. Izaberi drugi termin.";
+        variant = "slot-taken";
+      }
+
+      if (code === "DUPLICATE_APPOINTMENT") {
+        message = "Termin je već zauzet. Izaberi drugi termin.";
+        variant = "slot-taken";
+      }
+
+      openBookingResult("conflict", message, bookedAppointment, variant);
 
       await fetchAppointments();
       await findQuickBookingOption();
@@ -679,6 +715,7 @@ async function confirmBooking() {
     bookingLoading.value = false;
   }
 }
+
 
 function goToStep(targetStep: number) {
   if (targetStep === 1) return;
@@ -759,24 +796,35 @@ function toIso(date: Date) {
 function openBookingResult(
   status: BookingResultStatus,
   message: string | null = null,
-  appointment: Appointment | null = selectedAppointment.value ?? null
+  appointment: Appointment | null = selectedAppointment.value ?? null,
+  variant: "default" | "slot-taken" | "daily-limit" = "default"
 ) {
   bookingResultStatus.value = status;
   bookingResultMessage.value = message;
   bookingResultAppointment.value = appointment;
+  bookingResultVariant.value = variant;
   showReviewSheet.value = true;
 }
-
 function closeBookingResult() {
   bookingResultStatus.value = null;
   bookingResultMessage.value = null;
   bookingResultAppointment.value = null;
 }
 
+const router = useRouter();
+
+
 function finishBookingResult() {
   if (bookingLoading.value) return;
 
   closeReviewSheet();
+
+  router.push({
+    name: "Welcome",
+    params: {
+      tenantSlug: route.params.tenantSlug,
+    },
+  });
 }
 
 function retryBooking() {
@@ -819,4 +867,18 @@ const bookingResultTime = computed(() => {
     minute: "2-digit",
   });
 });
+
+async function handleLogout() {
+  try {
+    await fetch(`${apiBase}/auth/logout`, {
+      method: "POST",
+      credentials: "include",
+    });
+  } catch (err) {
+    console.error("Logout error:", err);
+  } finally {
+    isLoggedIn.value = false;
+    currentUser.value = null;
+  }
+}
 </script>

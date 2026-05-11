@@ -229,6 +229,7 @@ async function getBusyIntervals(
     date: string
 ): Promise<BusyInterval[]> {
     const startOfDay = `${date} 00:00:00`;
+
     const next = new Date(`${date}T00:00:00`);
     next.setDate(next.getDate() + 1);
 
@@ -236,13 +237,14 @@ async function getBusyIntervals(
 
     const [rows]: any = await db.query(
         `
-    SELECT start_time, end_time
-    FROM appointments
-    WHERE barber_id = ?
-      AND start_time >= ?
-      AND start_time < ?
-    ORDER BY start_time ASC
-    `,
+        SELECT start_time, end_time
+        FROM appointments
+        WHERE barber_id = ?
+          AND start_time >= ?
+          AND start_time < ?
+          AND status IN ('pending', 'confirmed')
+        ORDER BY start_time ASC
+        `,
         [barberId, startOfDay, nextDay]
     );
 

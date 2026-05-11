@@ -1,6 +1,6 @@
 <template>
   <div class="booking-result-inside">
-    <div class="booking-result-visual" :class="`is-${status}`">
+    <div class="booking-result-visual" :class="`is-${visualStatus}`">
       <div v-if="status === 'loading'" class="booking-result-spinner"></div>
 
       <svg
@@ -78,8 +78,22 @@
           Zatvori
         </button>
 
-        <button class="booking-result-primary" type="button" @click="emit('retry')">
+        <button
+          v-if="variant !== 'daily-limit'"
+          class="booking-result-primary"
+          type="button"
+          @click="emit('retry')"
+        >
           Pokušaj ponovo
+        </button>
+
+        <button
+          v-else
+          class="booking-result-primary"
+          type="button"
+          @click="emit('close')"
+        >
+          Razumem
         </button>
       </template>
     </div>
@@ -90,31 +104,53 @@
 import { computed } from "vue";
 
 type BookingResultStatus = "loading" | "success" | "error" | "conflict";
+type BookingResultVariant = "default" | "slot-taken" | "daily-limit";
 
-const props = defineProps<{
-  status: BookingResultStatus;
-  message: string | null;
-  date: string;
-  time: string;
-  barberName: string;
-}>();
+const props = withDefaults(
+  defineProps<{
+    status: BookingResultStatus;
+    variant?: BookingResultVariant;
+    message: string | null;
+    date: string;
+    time: string;
+    barberName: string;
+  }>(),
+  {
+    variant: "default",
+  }
+);
 
 const emit = defineEmits<{
   (e: "retry"): void;
   (e: "close"): void;
 }>();
 
+const visualStatus = computed(() => {
+  if (props.status === "conflict") return "conflict";
+  return props.status;
+});
+
 const eyebrow = computed(() => {
   if (props.status === "loading") return "Potvrda termina";
   if (props.status === "success") return "Rezervacija potvrđena";
-  if (props.status === "conflict") return "Termin zauzet";
+
+  if (props.status === "conflict") {
+    if (props.variant === "daily-limit") return "Rezervacija već postoji";
+    return "Termin zauzet";
+  }
+
   return "Greška";
 });
 
 const title = computed(() => {
   if (props.status === "loading") return "Sačekaj trenutak";
   if (props.status === "success") return "Termin je potvrđen";
-  if (props.status === "conflict") return "Ovaj termin više nije slobodan";
+
+  if (props.status === "conflict") {
+    if (props.variant === "daily-limit") return "Već imaš termin tog dana";
+    return "Ovaj termin više nije slobodan";
+  }
+
   return "Nismo uspeli da potvrdimo termin";
 });
 
@@ -130,6 +166,10 @@ const description = computed(() => {
   }
 
   if (props.status === "conflict") {
+    if (props.variant === "daily-limit") {
+      return "Za ovaj broj već postoji rezervacija tog dana. Za izmenu termina kontaktiraj lokal.";
+    }
+
     return "Neko je u međuvremenu zauzeo ovaj termin. Izaberi drugi slobodan termin.";
   }
 
@@ -143,7 +183,6 @@ const description = computed(() => {
   display: flex;
   flex-direction: column;
   padding: 20px;
-
 }
 
 .booking-result-visual {
@@ -229,14 +268,10 @@ const description = computed(() => {
 
 .booking-result-summary {
   margin: 0;
-  // border-top: 1px solid rgba(17, 27, 41, 0.055);
-  // border-bottom: 1px solid rgba(17, 27, 41, 0.055);
 }
 
 .booking-result-row {
   min-height: 52px;
-  // padding: 0 20px;
-  // border: 1px solid red;
 
   display: flex;
   align-items: center;
@@ -273,7 +308,6 @@ const description = computed(() => {
   display: flex;
   gap: 12px;
   width: 100%;
-  // border: 1px solid red;
 }
 
 .booking-result-primary,

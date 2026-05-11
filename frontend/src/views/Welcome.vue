@@ -7,7 +7,7 @@
     <section class="welcome__hero">
       <img
         class="welcome__hero-image"
-        src="../assets/img/stolica55.png"
+        src="../assets/img/stolica56.png"
         alt="Vintage barber chair"
       />
 
@@ -388,8 +388,8 @@
             </span>
 
             <div class="visit-contact__copy">
-              <strong>Naziv ulice 17, Jagodina</strong>
-              <small>Dača Barber Studio</small>
+              <strong>Naziv ulice 17</strong>
+              <small>Test Studio</small>
             </div>
 
             <a class="visit-contact__button" href="tel:+381600000000">
@@ -583,8 +583,8 @@ onBeforeUnmount(() => {
       90deg,
       rgba(251, 252, 254, 1) 0%,
       rgba(251, 252, 254, 1) 40%,
-      rgba(251, 252, 254, 0.82) 55%,
-      rgba(251, 252, 254, 0) 65%
+       rgba(251, 252, 254, 0) 60%,
+      
     ),
     linear-gradient(
       0deg,
@@ -599,12 +599,12 @@ onBeforeUnmount(() => {
 
 .welcome__navbar {
   position: relative;
-  z-index: 50;
+  z-index: 100;
 
   min-height: 60px;
   padding: 10px 20px;
   // border-radius: 22px;
-  position: fixed;
+  position: absolute;
   left: 0;
   top: 0;
   right: 0;

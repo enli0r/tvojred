@@ -5,7 +5,7 @@ export async function seedBarbers(db: Connection) {
     const count = (rows as any)[0].b;
 
     await db.query(`insert into barbers(name, user_id, tenant_id, phone) values (?, ?, ?, ?)`,
-        ['Mirko', 2, 1, '0638452725']
+        ['Mirko', 1, 1, '0638452725']
     );
 
     console.log('Uspesno seedovanje tabele barbers');

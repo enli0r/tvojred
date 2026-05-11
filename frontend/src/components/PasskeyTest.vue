@@ -287,15 +287,30 @@ async function tryLogin() {
     }),
   });
 
+  const optData = await optRes.json().catch(() => null);
+
   if (!optRes.ok) {
-    return false;
+    if (
+      optData?.code === "USER_NOT_FOUND" ||
+      optData?.code === "NO_CREDENTIALS"
+    ) {
+      return false;
+    }
+
+    throw new Error(optData?.message || "Login nije uspeo.");
   }
 
-  const options = await optRes.json();
+  let asseResp;
 
-  const asseResp = await startAuthentication({
-    optionsJSON: options,
-  });
+  try {
+    asseResp = await startAuthentication({
+      optionsJSON: optData,
+    });
+  } catch (err: any) {
+    throw new Error(
+      "Passkey potvrda nije završena. Pokušaj ponovo ili koristi isti uređaj/passkey."
+    );
+  }
 
   const verRes = await fetch(`${apiBase}/auth/login/verify`, {
     method: "POST",
@@ -306,8 +321,17 @@ async function tryLogin() {
     body: JSON.stringify(asseResp),
   });
 
+  const verData = await verRes.json().catch(() => null);
+
   if (!verRes.ok) {
-    throw new Error(await verRes.text());
+    if (
+      verData?.code === "CREDENTIAL_NOT_FOUND" ||
+      verData?.code === "NO_CREDENTIALS"
+    ) {
+      return false;
+    }
+
+    throw new Error(verData?.message || "Login nije uspeo.");
   }
 
   await checkAuth();
@@ -329,14 +353,30 @@ async function register() {
   });
 
   if (!optRes.ok) {
-    throw new Error(await optRes.text());
+    const data = await optRes.json().catch(() => null);
+    throw new Error(data?.message || "Registracija nije uspela.");
   }
 
   const options = await optRes.json();
 
-  const attResp = await startRegistration({
-    optionsJSON: options,
-  });
+  let attResp;
+
+  try {
+    attResp = await startRegistration({
+      optionsJSON: options,
+    });
+  } catch (err: any) {
+    if (
+      String(err?.message || "").includes("previously registered") ||
+      String(err?.message || "").includes("already registered")
+    ) {
+      throw new Error(
+        "Ovaj passkey je već registrovan. Pokušaj prijavu istim passkey-em."
+      );
+    }
+
+    throw err;
+  }
 
   const verRes = await fetch(`${apiBase}/auth/register/verify`, {
     method: "POST",
@@ -348,7 +388,8 @@ async function register() {
   });
 
   if (!verRes.ok) {
-    throw new Error(await verRes.text());
+    const data = await verRes.json().catch(() => null);
+    throw new Error(data?.message || "Registracija nije uspela.");
   }
 
   await checkAuth();

@@ -1,14 +1,21 @@
 import { Connection } from "mysql2/promise";
 
 export async function createUsersTable(db: Connection) {
-    await db.query(`create table if not exists users(
-            id int auto_increment primary key,
-            name varchar(255) not null,
-            phone varchar(50) not null unique,
-            
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    )`);
-}
+    await db.query(`
+    CREATE TABLE IF NOT EXISTS users (
+      id INT AUTO_INCREMENT PRIMARY KEY,
 
-// role enum('admin', 'barber', 'customer') not null default 'customer',
+      name VARCHAR(255) NOT NULL,
+      phone VARCHAR(50) NOT NULL,
+      phone_normalized VARCHAR(50) NOT NULL,
+
+      role ENUM('admin', 'barber', 'customer') NOT NULL DEFAULT 'customer',
+
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+      UNIQUE KEY uniq_users_phone_normalized (phone_normalized),
+      INDEX idx_users_phone (phone)
+    ) ENGINE=InnoDB
+  `);
+}

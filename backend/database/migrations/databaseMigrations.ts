@@ -15,6 +15,7 @@ import { createBarberBreaksTable } from './barberBreaksTable.ts';
 // import { createBarberBreakRepeatDaysTable } from './barberBreakRepeatDaysTable.ts';
 import { createBarberShiftSettingsTable } from './barberShiftSettingsTable.ts';
 import { createBarberShiftWorkingHoursTable } from './barberShiftWorkingHoursTable.ts';
+import { createTenantStaffTable } from './tenantStaffTable.ts';
 
 export async function dbMigrate() {
     await db.query('use zakazitermin2');
@@ -28,6 +29,7 @@ export async function dbMigrate() {
     const withBarberServices = args.includes('--barberServices');
     const withAppointments = args.includes('--appointments');
     const withAuth = args.includes('--auth');
+    const withTenantStaff = args.includes('--tenantStaff');
     const withTenantWorkingHours = args.includes('--radnoVremeLokala');
     const withTenantWorkingOverrides = args.includes('--overrideRadnoVremeLokala');
     const withBarberScheduleRulesTable = args.includes('--barberSchedulePravila');
@@ -38,8 +40,6 @@ export async function dbMigrate() {
     const withBarberBreakRepeatDays = args.includes('--barberBreakRepeatDays');
     const withBarberShiftSettings = args.includes('--barberShiftSettings');
     const withBarberShiftWorkingHours = args.includes('--barberShiftWorkingHours');
-
-
 
     if (withTenants) {
         console.log('Kreiram tenants tabelu..');
@@ -81,6 +81,11 @@ export async function dbMigrate() {
         await createAuth(db);
     }
 
+    if (withTenantStaff) {
+        console.log('Kreiram tenant_staff tabelu..');
+        await createTenantStaffTable(db);
+    }
+
     if (withTenantWorkingHours) {
         console.log('Kreiram tabelu za radno vreme lokala');
         await createTenantWorkingHoursTable(db);
@@ -90,7 +95,6 @@ export async function dbMigrate() {
         console.log('Kreiram tabelu za overrajdove radnog vremena lokala');
         await createTenantWorkingOverridesTable(db);
     }
-
 
     if (withBarberWorkingHours) {
         console.log('Kreiram tabelu barber working hours');
@@ -117,10 +121,8 @@ export async function dbMigrate() {
         await createBarberShiftWorkingHoursTable(db);
     }
 
-
     console.log('Kreiranje uspesno zavrseno');
 }
-
 
 if (import.meta.url === `file://${process.argv[1]}`) {
     dbMigrate()
