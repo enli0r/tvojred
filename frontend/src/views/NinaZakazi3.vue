@@ -508,7 +508,7 @@ type Specialist = {
   image: string;
 };
 
-const logoImage = '/src/assets/img/ninalogofinal.png';
+import logoImage from '@/assets/img/ninalogofinal.png';
 
 const selectedSalonId = ref<number | null>(null);
 const selectedCategoryId = ref<CategoryId | null>(null);

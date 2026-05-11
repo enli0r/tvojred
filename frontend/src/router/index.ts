@@ -22,9 +22,9 @@ const routes = [
   { path: '/404', name: 'NotFound', component: NotFound },
 
   { path: '/beautiful-life', name: 'Nina', component: Nina },
-  { path: '/beautiful-life/zakazivanje', name: 'NinaZakazi', component: NinaZakazi },
-  { path: '/beautiful-life/zakazivanje2', name: 'NinaZakazi2', component: NinaZakazi2 },
-  { path: '/beautiful-life/zakazivanje3', name: 'NinaZakazi3', component: NinaZakazi3 },
+  { path: '/beautiful-life/zakazivanje', name: 'NinaZakazi3', component: NinaZakazi3 },
+  { path: '/beautiful-life/zakazivanje2', name: 'NinaZakazi', component: NinaZakazi },
+  { path: '/beautiful-life/zakazivanje3', name: 'NinaZakazi2', component: NinaZakazi2 },
 
 
   { path: '/:tenantSlug', name: 'Welcome', component: Welcome },
