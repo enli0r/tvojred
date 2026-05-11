@@ -38,7 +38,7 @@
       <aside v-if="menuOpen" class="bkx-menu">
         <div class="bkx-menu__head">
           <div class="bkx-menu__brand">
-            <img src="/src/assets/img/intro-slika.png" alt="Beautiful Life" />
+            <img :src="introImage" alt="Beautiful Life" />
 
             <!-- <div>
               <strong>Beautiful Life</strong>
@@ -97,13 +97,13 @@
 
     <section class="bl-hero">
       <div class="bl-hero__single">
-        <img src="../assets/img/hero-nina4.png" alt="">
+        <img :src="heroSingle" alt="">
 
         <div class="bl-hero__fade"></div>
       </div>
 
       <div class="bl-hero__content">
-        <img class="bl-hero-intro" src="../assets/img/intro-slika.png" alt="Beautiful Life Hair Salon" />
+        <img class="bl-hero-intro" :src="heroIntro" alt="Beautiful Life Hair Salon" />
 
         <!-- <p>Frizerski salon za žene i muškarce</p> -->
       </div>
@@ -443,43 +443,62 @@ type ServiceCard = {
 }
 
 
-const logoImage = '/src/assets/img/ninalogofinal.png'
-const leafImage = '/src/assets/img/list.png'
-const introImage = '/src/assets/img/intro.png'
+import logoImage from '@/assets/img/ninalogofinal.png'
+import leafImage from '@/assets/img/list.png'
+import introImage from '@/assets/img/intro-slika.png'
+import img1 from '@/assets/img/img1.png'
+import img2 from '@/assets/img/img2.png'
+import img3 from '@/assets/img/img3.png'
+import img4 from '@/assets/img/img4.png'
+import img5 from '@/assets/img/img5.png'
+import img6 from '@/assets/img/img6.png'
+
+import hero1 from '@/assets/img/hero1.png'
+import hero2 from '@/assets/img/hero2.png'
+import hero3 from '@/assets/img/hero3.png'
+import hero4 from '@/assets/img/hero4.png'
+
+import heroSingle from '@/assets/img/hero-nina4.png'
+import heroIntro from '@/assets/img/intro-slika.png'
+
+
+
+
+
 
 const images = {
-  img1: '/src/assets/img/img1.png',
-  img2: '/src/assets/img/img2.png',
-  img3: '/src/assets/img/img3.png',
-  img4: '/src/assets/img/img4.png',
-  img5: '/src/assets/img/img5.png',
-  img6: '/src/assets/img/img6.png',
+  img1: '@/assets/img/img1.png',
+  img2: '@/assets/img/img2.png',
+  img3: '@/assets/img/img3.png',
+  img4: '@/assets/img/img4.png',
+  img5: '@/assets/img/img5.png',
+  img6: '@/assets/img/img6.png',
 
-  hero1: '/src/assets/img/hero1.png',
-  hero2: '/src/assets/img/hero2.png',
-  hero3: '/src/assets/img/hero3.png',
-  hero4: '/src/assets/img/hero4.png',
+  hero1: '@/assets/img/hero1.png',
+  hero2: '@/assets/img/hero2.png',
+  hero3: '@/assets/img/hero3.png',
+  hero4: '@/assets/img/hero4.png',
 }
 
 const heroImages: ImageItem[] = [
   {
     id: 'one',
-    src: images.hero1,
+    src: hero1,
     alt: 'Beautiful Life salon hero slika 1',
   },
   {
     id: 'two',
-    src: images.hero2,
+    src: hero2,
     alt: 'Beautiful Life salon hero slika 2',
   },
   {
     id: 'three',
-    src: images.hero3,
+    src: hero3,
     alt: 'Beautiful Life salon hero slika 3',
   },
   {
     id: 'four',
-    src: images.hero4,
+    src: hero4,
     alt: 'Beautiful Life salon hero slika 4',
   },
 ]
@@ -530,7 +549,7 @@ const services: ServiceCard[] = [
   {
     title: 'Žensko šišanje',
     description: 'Šišanje, fen i tretmani',
-    image: images.img5,
+    image: img5,
     icon: `
       <svg viewBox="0 0 24 24">
         <path d="M7.1 19.4c1.2-2.1 1.05-4.3.45-6.15-.65-2-.35-4.35 1.1-5.9 2.1-2.25 5.85-1.55 6.7 1.4.45 1.55.1 3.1 1.8 4.35 1 .75 1.7 1.95 1.7 3.25 0 2.25-1.85 4.05-4.1 4.05H7.1Z" fill="none" stroke="currentColor" stroke-width="1.45" stroke-linecap="round"/>
@@ -541,7 +560,7 @@ const services: ServiceCard[] = [
   {
     title: 'Muško šišanje',
     description: 'Fade, brada i stilske frizure',
-    image: images.img6,
+    image: img6,
     icon: `
       <svg viewBox="0 0 24 24">
         <path d="M7.2 20.2v-4.1c0-3.6 2.3-6.25 5.5-6.25 2.55 0 4.35 1.7 4.35 4.2 0 2.9-2.25 5.4-6.25 6.15" fill="none" stroke="currentColor" stroke-width="1.45" stroke-linecap="round"/>
@@ -553,7 +572,7 @@ const services: ServiceCard[] = [
   {
     title: 'Koloracija i Pramenovi',
     description: 'Pramenovi i balayage',
-    image: images.img4,
+    image: img4,
     icon: `
       <svg viewBox="0 0 24 24">
         <path d="M12 3.5v17M8.25 5.25 12 8.2l3.75-2.95M8.25 10.2 12 13.15l3.75-2.95M8.25 15.15 12 18.1l3.75-2.95" fill="none" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round"/>
@@ -563,7 +582,7 @@ const services: ServiceCard[] = [
   {
     title: 'Nokti i šminka',
     description: 'Manikir, pedikir i makeup',
-    image: images.img3,
+    image: img3,
     icon: `
       <svg viewBox="0 0 24 24">
         <path d="M12 3.6c2.25 2.05 3.45 4.05 3.45 5.95A3.45 3.45 0 0 1 12 13a3.45 3.45 0 0 1-3.45-3.45c0-1.9 1.2-3.9 3.45-5.95Z" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linejoin="round"/>
@@ -576,27 +595,27 @@ const services: ServiceCard[] = [
 const works: ImageItem[] = [
   {
     id: 'work-1',
-    src: images.img5,
+    src: img5,
     alt: 'Tamni talasi',
   },
   {
     id: 'work-2',
-    src: images.img1,
+    src: img1,
     alt: 'Plavi talasi',
   },
   {
     id: 'work-3',
-    src: images.img6,
+    src: img6,
     alt: 'Muško šišanje sa pletenicama',
   },
   {
     id: 'work-4',
-    src: images.img3,
+    src: img3,
     alt: 'Plava frizura',
   },
   {
     id: 'work-5',
-    src: images.img2,
+    src: img2,
     alt: 'Muško šišanje profil',
   },
 ]
