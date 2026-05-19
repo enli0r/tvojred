@@ -232,7 +232,7 @@
         </div>
       </div>
 
-      <h2>Vojvode Mišića 36a</h2>
+      <h2>Kneza Miloša 24</h2>
       <p>Salon se nalazi u prijatnom i lako dostupnom delu Beograda.</p>
 
       <button type="button">

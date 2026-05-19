@@ -524,7 +524,7 @@ const salons: Salon[] = [
   {
     id: 1,
     name: 'BL Centar',
-    address: 'Kneginje Milice 12',
+    address: 'Kolubarska 12',
     hours: '09:00 — 20:00',
     distance: '0.6 km',
     tag: 'Najbliži',
@@ -533,7 +533,7 @@ const salons: Salon[] = [
   {
     id: 2,
     name: 'BL Studio',
-    address: 'Vuka Karadžića 8',
+    address: 'Urosa Mladenovica 33',
     hours: '10:00 — 21:00',
     distance: '1.4 km',
     tag: 'Popularno',
@@ -542,7 +542,7 @@ const salons: Salon[] = [
   {
     id: 3,
     name: 'BL Premium',
-    address: 'Bulevar 21',
+    address: '5. Oktobra 28',
     hours: '08:00 — 19:00',
     distance: '2.1 km',
     tag: 'Premium',

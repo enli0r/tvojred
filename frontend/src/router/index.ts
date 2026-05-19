@@ -16,18 +16,20 @@ import Nina from '../views/Nina.vue';
 import NinaZakazi from '../views/NinaZakazi.vue';
 import NinaZakazi2 from '../views/NinaZakazi2.vue';
 import NinaZakazi3 from '../views/NinaZakazi3.vue';
+import TestStudio from '../views/TestStudio.vue';
+import NailSalonTest from '../views/NailSalonTest.vue';
+import NailSalonTestZakazivanje from '../views/NailSalonTestZakazivanje.vue';
 
 const routes = [
-  { path: '/', redirect: '/test-studio' },
-  { path: '/404', name: 'NotFound', component: NotFound },
+  { path: '/', name: 'Welcome', component: Welcome },
+  { path: '/modern-life', name: 'Nina', component: Nina },
+  { path: '/modern-life/zakazivanje', name: 'NinaZakazi3', component: NinaZakazi3 },
+  { path: '/modern-life/zakazivanje2', name: 'NinaZakazi', component: NinaZakazi },
+  { path: '/modern-life/zakazivanje3', name: 'NinaZakazi2', component: NinaZakazi2 },
+  { path: '/nail-studio', name: 'NailStudio', component: NailSalonTest },
+  { path: '/nail-studio/zakazivanje', name: 'NailSalonZakazivanje', component: NailSalonTestZakazivanje },
 
-  { path: '/beautiful-life', name: 'Nina', component: Nina },
-  { path: '/beautiful-life/zakazivanje', name: 'NinaZakazi3', component: NinaZakazi3 },
-  { path: '/beautiful-life/zakazivanje2', name: 'NinaZakazi', component: NinaZakazi },
-  { path: '/beautiful-life/zakazivanje3', name: 'NinaZakazi2', component: NinaZakazi2 },
-
-
-  { path: '/:tenantSlug', name: 'Welcome', component: Welcome },
+  { path: '/:tenantSlug', name: 'TestStudio', component: TestStudio },
   { path: '/:tenantSlug/zakazi', name: 'Home', component: Home },
 
   { path: '/:tenantSlug/admin', name: 'AdminLogin', component: Admin },
@@ -46,7 +48,7 @@ const routes = [
   { path: '/:tenantSlug/admin/settings/frizer/:barberId/pauze', name: 'Pauze', component: FrizerPauze, meta: { requiresAdmin: true } },
   { path: '/:tenantSlug/admin/settings/radno-vreme-frizera', name: 'RadnoVremeFrizera', component: RadnoVremeFrizera, meta: { requiresAdmin: true } },
 
-  { path: '/:pathMatch(.*)*', redirect: '/404' }
+  // { path: '/:pathMatch(.*)*', redirect: '/404' }
 ];
 
 const router = createRouter({
@@ -61,9 +63,6 @@ router.beforeEach(async (to) => {
 
   const tenantSlug = String(to.params.tenantSlug || "");
 
-  if (!tenantSlug) {
-    return "/404";
-  }
 
   try {
     const res = await fetch(`/api/auth/admin/me?tenantSlug=${tenantSlug}`, {
