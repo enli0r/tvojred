@@ -95,7 +95,7 @@ const designs = [
     title: 'Nail Welcome',
     text: 'Minimalan i čist stil za nail salon, elegantan i prefinjen.',
     image: nailWelcome,
-    url: '/modern-life/zakazivanje',
+    url: '/nail-studio',
   },
 
   {
@@ -104,7 +104,7 @@ const designs = [
     title: 'Nail Booking',
     text: 'Booking stranica za nail salon, elegantnog i prefinjenog dizajna. Jasna i vizuelno čista selekcija.',
     image: nailZakazi,
-    url: '/modern-life/zakazivanje',
+    url: '/nail-studio/zakazivanje',
   },
 ];
 
