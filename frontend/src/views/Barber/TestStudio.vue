@@ -7,7 +7,7 @@
     <section class="welcome__hero">
       <img
         class="welcome__hero-image"
-        src="../assets/img/stolica56.png"
+        :src="stolica"
         alt="Vintage barber chair"
       />
 
@@ -64,7 +64,7 @@
                 </span>
 
                 <div>
-                  <strong>Milan Studio</strong>
+                  <strong>Test Studio</strong>
                   <small>Premium Barber</small>
                 </div>
               </div>
@@ -272,7 +272,7 @@
               <article class="team-card">
                 <div class="team-card__image">
                   <img
-                    src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=700&q=85"
+                    :src="barber1"
                     alt="Milan Petrović"
                   />
                 </div>
@@ -291,7 +291,7 @@
               <article class="team-card">
                 <div class="team-card__image">
                   <img
-                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=700&q=85"
+                    :src="barber2"
                     alt="Nikola Jovanović"
                   />
                 </div>
@@ -310,7 +310,7 @@
               <article class="team-card">
                 <div class="team-card__image">
                   <img
-                    src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=700&q=85"
+                    :src="barber3"
                     alt="Stefan Ilić"
                   />
                 </div>
@@ -329,7 +329,7 @@
               <article class="team-card">
                 <div class="team-card__image">
                   <img
-                    src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=700&q=85"
+                    :src="barber4"
                     alt="Marko Savić"
                   />
                 </div>
@@ -409,7 +409,13 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import Carousel from "../components/Carousel.vue";
+import Carousel from '../../components/Carousel.vue'
+
+import barber1 from '@/assets/img/barber-prof1.jpg';
+import barber2 from '@/assets/img/barber-prof2.jpg';
+import barber3 from '@/assets/img/barber-prof3.jpg';
+import barber4 from '@/assets/img/barber-prof4.jpg';
+import stolica from '@/assets/img/stolica56.png';
 
 const apiBase = import.meta.env.VITE_API_BASE || "/api";
 
@@ -426,6 +432,15 @@ const studioSection = ref<HTMLElement | null>(null);
 const pricesSection = ref<HTMLElement | null>(null);
 const teamSection = ref<HTMLElement | null>(null);
 const hoursSection = ref<HTMLElement | null>(null);
+
+
+
+const images = {
+  barber1,
+  barber2,
+  barber3,
+  barber4
+}
 
 let scrollY = 0;
 
@@ -492,7 +507,7 @@ function goToBooking() {
   closeMenu();
 
   router.push({
-    name: "Home",
+    name: "TestStudioBooking",
     params: {
       tenantSlug: tenantSlug.value,
     },
@@ -1490,7 +1505,7 @@ onBeforeUnmount(() => {
 }
 
 .team-card__image {
-  height: 138px;
+  height: 158px;
   overflow: hidden;
   border-radius: 24px 24px 16px 16px;
   background: #edf2f6;

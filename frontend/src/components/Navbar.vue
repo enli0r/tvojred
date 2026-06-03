@@ -268,7 +268,7 @@ watch(servicesOpen, (isOpen) => {
 });
 
 function back() {
-  router.push({ name: "Welcome" });
+  router.back();
 }
 
 function openServices() {

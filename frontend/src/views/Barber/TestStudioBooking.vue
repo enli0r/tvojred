@@ -203,9 +203,9 @@ import Calendar from "@/components/Calendar.vue";
 import Barbers from "@/components/Barbers.vue";
 import Appointments from "@/components/Appointments.vue";
 import BottomMenu from "@/components/BottomMenu.vue";
-import PasskeyTest from "../components/PasskeyTest.vue";
-import BookingResultSheet from "../components/BookingResultSheet.vue";
-import NavbarMenu from "../components/NavbarMenu.vue";
+import PasskeyTest from "@/components/PasskeyTest.vue";
+import BookingResultSheet from "@/components/BookingResultSheet.vue";
+import NavbarMenu from "@/components/NavbarMenu.vue";
 
 
 const apiBase = "/api";

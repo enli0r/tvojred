@@ -7,7 +7,7 @@
         </div>
 
         <div class="bl-brand__text">
-          <h1>Beautiful Life</h1>
+          <h1>Modern Life</h1>
           <p>HAIR SALON</p>
         </div>
       </div>
@@ -417,7 +417,7 @@ onBeforeUnmount(() => {
 
 function goZakazivanje() {
   router.push({
-    name: "NinaZakazi3",
+    name: "ModernLifeBooking",
   });
 }
 
@@ -445,7 +445,7 @@ type ServiceCard = {
 
 import logoImage from '@/assets/img/ninalogofinal.png'
 import leafImage from '@/assets/img/list.png'
-import introImage from '@/assets/img/intro-slika.png'
+import introImage from '@/assets/img/modern-life.png'
 import img1 from '@/assets/img/img1.png'
 import img2 from '@/assets/img/img2.png'
 import img3 from '@/assets/img/img3.png'
@@ -459,7 +459,7 @@ import hero3 from '@/assets/img/hero3.png'
 import hero4 from '@/assets/img/hero4.png'
 
 import heroSingle from '@/assets/img/hero-nina4.png'
-import heroIntro from '@/assets/img/intro-slika.png'
+import heroIntro from '@/assets/img/modern-life.png'
 
 
 

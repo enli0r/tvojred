@@ -10,7 +10,7 @@
       <div class="bkx-brand">
         <img :src="logoImage" alt="Beautiful Life" />
         <div>
-          <h1>Beautiful Life</h1>
+          <h1>Modern Life</h1>
           <p>Hair Salon</p>
         </div>
       </div>
@@ -23,7 +23,7 @@
     </header>
 
     <section class="bkx-hero">
-        <button @click="goToWelcome" class="bkx-hero-back" type="button" aria-label="Nazad">
+        <button @click="back" class="bkx-hero-back" type="button" aria-label="Nazad">
         <svg viewBox="0 0 24 24" fill="none">
             <path
             d="M15 18L9 12L15 6"
@@ -36,7 +36,7 @@
         </button>
       <div class="bkx-hero__bg">
         <img
-          src="../assets/img/hero-zakaz.png"
+          src="@/assets/img/hero-zakaz.png"
           alt="Salon"
         />
       </div>
@@ -436,8 +436,8 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-function goToWelcome() {
-  router.push('/beautiful-life');
+function back() {
+  router.back();
 }
 
 type StarState = 'full' | 'half' | 'empty';
@@ -777,6 +777,10 @@ const nextAvailableDays = computed<CalendarDay[]>(() => {
   });
 });
 
+import maleBarber from '@/assets/img/barber-prof1.jpg'
+import maleBarber2 from '@/assets/img/barber-prof2.jpg'
+
+
 const specialists: Specialist[] = [
   {
   id: 1,
@@ -785,7 +789,7 @@ const specialists: Specialist[] = [
   rating: '4.5',
   experience: '6 god.',
   categoryIds: ['male_hair'],
-  image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=600&auto=format&fit=crop',
+  image: maleBarber,
 },
   {
     id: 2,
@@ -794,7 +798,7 @@ const specialists: Specialist[] = [
     rating: '4.8',
     experience: '5 god.',
     categoryIds: ['male_hair'],
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop',
+    image: maleBarber2,
   },
 
   {
@@ -2586,6 +2590,7 @@ p {
   grid-template-columns: 1fr 104px;
   gap: 10px;
   align-items: center;
+  // display: none;
 
   padding: 16px 10px 16px 14px;
   border-radius: 28px;

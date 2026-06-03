@@ -295,8 +295,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import heroImage from '../assets/img/nail-hero5.png'
-import priceBoardImage from '../assets/img/nail-cenovnik3.png'
+import heroImage from '@/assets/img/nail-hero5.png'
+import priceBoardImage from '@/assets/img/nail-cenovnik3.png'
 
 
 const activeFaq = ref<number | null>(0)
@@ -306,7 +306,7 @@ const activeNailType = ref(0)
 const router = useRouter()
 
 const goToBooking = () => {
-  router.push({name: 'NailSalonZakazivanje'});
+  router.push({name: 'NailSalonBooking'});
 }
 
 const toggleFaq = (index: number) => {

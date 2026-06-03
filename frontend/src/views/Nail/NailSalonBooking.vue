@@ -459,10 +459,10 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
 
-import nailZakaziHeroImage from '../assets/img/nail-zakazi-hero.png'
-import nailArtistOneImage from '../assets/img/nail-artist-1.jpg'
-import nailArtistTwoImage from '../assets/img/nail-artist-2.jpg'
-import nailArtistThreeImage from '../assets/img/nail-artist-3.jpg'
+import nailZakaziHeroImage from '@/assets/img/nail-zakazi-hero.png'
+import nailArtistOneImage from '@/assets/img/nail-artist-1.jpg'
+import nailArtistTwoImage from '@/assets/img/nail-artist-2.jpg'
+import nailArtistThreeImage from '@/assets/img/nail-artist-3.jpg'
 
 const menuOpen = ref(false)
 const confirmOpen = ref(false)
@@ -2277,7 +2277,7 @@ button {
   color: #4a3935;
   text-decoration: none;
   font-family: 'Cormorant Garamond', serif;
-  font-size: 27px;
+  font-size: 22px;
   font-weight: 500;
   line-height: 1;
   letter-spacing: -0.035em;

@@ -64,6 +64,7 @@ const designs = [
     image: testHomepage,
     url: '/test-studio',
   },
+  
   {
     id: 2,
     type: 'Barber',
@@ -75,15 +76,16 @@ const designs = [
   {
     id: 3,
     type: 'Hair Salon + Beauty',
-    title: 'Beautiful Life',
+    title: 'Modern Life',
     text: 'Pastelni vizuelni pravac za hair salon i nokte.',
     image: modernHomepage,
     url: '/modern-life',
   },
+
   {
     id: 4,
     type: 'Hair salon + Beauty',
-    title: 'Beautiful Life Booking',
+    title: 'Modern Life Booking',
     text: 'Booking strana, elegantan stil, pastalni vizuelni pravac, brza selekcija.',
     image: modernZakazi,
     url: '/modern-life/zakazivanje',

@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue';
-import PasskeyTest from '../views/PasskeyTest.vue';
+import TestStudioBooking from '../views/Barber/TestStudioBooking.vue';
 import Admin from '../views/Admin.vue';
 import Settings from '../views/Settings.vue';
 import Lokal from '../views/Lokal.vue';
@@ -11,26 +10,26 @@ import RadnoVreme from '../views/RadnoVreme.vue';
 import RadnoVremeFrizera from '../views/RadnoVremeFrizera.vue';
 import FrizerPauze from '../views/FrizerPauze.vue';
 import Welcome from '../views/Welcome.vue';
-import NotFound from '../views/NotFound.vue';
-import Nina from '../views/Nina.vue';
-import NinaZakazi from '../views/NinaZakazi.vue';
-import NinaZakazi2 from '../views/NinaZakazi2.vue';
-import NinaZakazi3 from '../views/NinaZakazi3.vue';
-import TestStudio from '../views/TestStudio.vue';
-import NailSalonTest from '../views/NailSalonTest.vue';
-import NailSalonTestZakazivanje from '../views/NailSalonTestZakazivanje.vue';
+import TestStudio from '../views/Barber/TestStudio.vue';
+import ModernLife from '../views/ModernLife/ModernLife.vue';
+import ModernLifeBooking from '../views/ModernLife/ModernLifeBooking.vue';
+import NailSalonBooking from '../views/Nail/NailSalonBooking.vue';
+import NailSalon from '../views/Nail/NailSalon.vue';
 
 const routes = [
   { path: '/', name: 'Welcome', component: Welcome },
-  { path: '/modern-life', name: 'Nina', component: Nina },
-  { path: '/modern-life/zakazivanje', name: 'NinaZakazi3', component: NinaZakazi3 },
-  { path: '/modern-life/zakazivanje2', name: 'NinaZakazi', component: NinaZakazi },
-  { path: '/modern-life/zakazivanje3', name: 'NinaZakazi2', component: NinaZakazi2 },
-  { path: '/nail-studio', name: 'NailStudio', component: NailSalonTest },
-  { path: '/nail-studio/zakazivanje', name: 'NailSalonZakazivanje', component: NailSalonTestZakazivanje },
 
+  //Modern Life
+  { path: '/modern-life', name: 'ModernLife', component: ModernLife },
+  { path: '/modern-life/zakazivanje', name: 'ModernLifeBooking', component: ModernLifeBooking },
+
+  //Nail studio
+  { path: '/nail-studio', name: 'NailSalon', component: NailSalon },
+  { path: '/nail-studio/zakazivanje', name: 'NailSalonBooking', component: NailSalonBooking },
+
+  //Test Studio
   { path: '/:tenantSlug', name: 'TestStudio', component: TestStudio },
-  { path: '/:tenantSlug/zakazi', name: 'Home', component: Home },
+  { path: '/:tenantSlug/zakazivanje', name: 'TestStudioBooking', component: TestStudioBooking },
 
   { path: '/:tenantSlug/admin', name: 'AdminLogin', component: Admin },
 
