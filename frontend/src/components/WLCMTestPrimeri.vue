@@ -71,7 +71,7 @@ const designs = [
     title: 'Barber Booking',
     text: 'Čist, elegantan, premium izgled sa jakim kontrastom i ozbiljnim booking tokom.',
     image: testZakazi,
-    url: '/test-studio/zakazi',
+    url: '/test-studio/zakazivanje',
   },
   {
     id: 3,
