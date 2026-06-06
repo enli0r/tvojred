@@ -15,9 +15,17 @@ import ModernLife from '../views/ModernLife/ModernLife.vue';
 import ModernLifeBooking from '../views/ModernLife/ModernLifeBooking.vue';
 import NailSalonBooking from '../views/Nail/NailSalonBooking.vue';
 import NailSalon from '../views/Nail/NailSalon.vue';
+import ClaudeAi from '../views/ClaudeAi.vue';
+import AdminPanel from '../views/AdminPanel.vue';
+import AdminPanelKlijenti from '../views/AdminPanelKlijenti.vue';
+import AdminPanelTermini from '../views/AdminPanelTermini.vue';
+import AdminPanelLokal from '../views/AdminPanelLokal.vue';
+import AdminPanelStatistika from '../views/AdminPanelStatistika.vue';
 
 const routes = [
   { path: '/', name: 'Welcome', component: Welcome },
+
+  { path: '/claude', name: 'ClaudeAi', component: ClaudeAi },
 
   //Modern Life
   { path: '/modern-life', name: 'ModernLife', component: ModernLife },
@@ -33,6 +41,37 @@ const routes = [
 
   { path: '/:tenantSlug/admin', name: 'AdminLogin', component: Admin },
 
+  {
+    path: '/admin-panel',
+    component: AdminPanel,
+    redirect: '/admin-panel/statistika',
+    children: [
+      {
+        path: 'statistika',
+        name: 'AdminPanelStatistika',
+        component: AdminPanelStatistika,
+        meta: { title: 'Home' },
+      },
+      {
+        path: 'termini',
+        name: 'AdminPanelTermini',
+        component: AdminPanelTermini,
+        meta: { title: 'Termini' },
+      },
+      {
+        path: 'klijenti',
+        name: 'AdminPanelKlijenti',
+        component: AdminPanelKlijenti,
+        meta: { title: 'Klijenti' },
+      },
+      {
+        path: 'lokal',
+        name: 'AdminPanelLokal',
+        component: AdminPanelLokal,
+        meta: { title: 'Salon' },
+      },
+    ],
+  },
   //Admin
   { path: '/:tenantSlug/admin/settings', name: 'Settings', component: Settings, meta: { requiresAdmin: true } },
   { path: '/:tenantSlug/admin/settings/lokal', name: 'Lokal', component: Lokal, meta: { requiresAdmin: true, roles: ['owner'] } },
