@@ -156,7 +156,7 @@
 
                     <div class="confirm-summary-row">
                       <span>Studio</span>
-                      <strong>Test Studio</strong>
+                      <strong>Fade Studio</strong>
                     </div>
                   </section>
                 </div>

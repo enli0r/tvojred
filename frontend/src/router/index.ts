@@ -21,9 +21,17 @@ import AdminPanelKlijenti from '../views/AdminPanelKlijenti.vue';
 import AdminPanelTermini from '../views/AdminPanelTermini.vue';
 import AdminPanelLokal from '../views/AdminPanelLokal.vue';
 import AdminPanelStatistika from '../views/AdminPanelStatistika.vue';
+import Demo from '../views/Demo.vue';
+import Test123 from '../views/Test123.vue';
+import PaketiCene from '../views/PaketiCene.vue';
+
+
 
 const routes = [
   { path: '/', name: 'Welcome', component: Welcome },
+  { path: '/demo', name: 'Demo', component: Demo },
+  { path: '/paketi-i-cene', name: 'PaketiCene', component: PaketiCene },
+  // { path: '/test123', name: 'Test123', component: Test123 },
 
   { path: '/claude', name: 'ClaudeAi', component: ClaudeAi },
 
@@ -91,7 +99,15 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    // back/forward dugme → vrati na zapamćenu poziciju
+    if (savedPosition) return savedPosition
+    // link ka #sekciji → skroluj do nje
+    if (to.hash) return { el: to.hash, behavior: 'smooth' }
+    // svaka nova stranica → vrh
+    return { top: 0 }
+  },
 })
 
 router.beforeEach(async (to) => {

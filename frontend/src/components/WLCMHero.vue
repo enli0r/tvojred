@@ -9,7 +9,7 @@
 
       <span class="trm-brand__text">
         <strong>tvojred.rs</strong>
-        <small>sajtovi za salone</small>
+        <small>online zakazivanje</small>
       </span>
     </button>
 
@@ -54,12 +54,12 @@
     </div>
 
     <div class="trm-hero__actions">
-      <button class="trm-hero__cta" type="button" @click="goTo('examples')">
-        <span>Testirajte besplatno</span>
+      <button class="trm-hero__cta" type="button" @click="goToDemo">
+        <span>Probajte besplatno</span>
 
-        <svg class="trm-arrow-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <!-- <svg class="trm-arrow-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
-        </svg>
+        </svg> -->
       </button>
     </div>
   </section>
@@ -181,6 +181,14 @@ function toggleMenu() {
 
 function closeMenu() {
   menuOpen.value = false;
+}
+
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+function goToDemo() {
+  router.push('/demo');
 }
 
 function goTo(section: SectionName) {
@@ -707,27 +715,33 @@ $trm-blue-bright: #4f8dff;
   padding: 0 18px;
 
   display: grid;
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  width: 100%;
   justify-items: center;
+  // justify-content: center;
 }
 
 .trm-hero__cta {
-  width: min(100%, 360px);
+  width: min(90%, 360px);
   min-height: 54px;
+  margin: 0 auto;
 
   border: 1px solid #3f6f9f;
-  border-radius: 999px;
-  padding: 0 18px 0 24px;
+  border-radius: 99px;
+  // padding: 0 18px 0 18px;
 
   display: inline-flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 14px;
 
   color: #ffffff;
   background: linear-gradient(180deg, #3477bd 0%, #2f68a6 100%);
 
   box-shadow:
-    inset 0 1px 0 #5b91ca,
+    // inset 0 1px 0 #5b91ca,
     // inset 0 -1px 0 #214b79,
     0 14px 34px #06131f;
 
@@ -739,11 +753,12 @@ $trm-blue-bright: #4f8dff;
   span {
     font-size: 16px;
     line-height: 1;
-    font-weight: 760;
-    letter-spacing: -0.02em;
+    font-weight: 700;
+    letter-spacing: -0.0em;
   }
 
   svg {
+    display: none;
     width: 24px;
     height: 24px;
     flex: 0 0 24px;
@@ -760,10 +775,10 @@ $trm-blue-bright: #4f8dff;
     transform: scale(0.985);
     background: linear-gradient(180deg, #2f6daa 0%, #285b8f 100%);
 
-    box-shadow:
-      inset 0 1px 0 #477fb8,
-      inset 0 2px 8px #1d4168,
-      0 8px 22px #050d15;
+    // box-shadow:
+    //   inset 0 1px 0 #477fb8,
+    //   inset 0 2px 8px #1d4168,
+    //   0 8px 22px #050d15;
   }
 }
 </style>

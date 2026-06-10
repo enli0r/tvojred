@@ -2007,7 +2007,7 @@ button {
 //   border-radius: 30px 30px 0 0;
   padding: 15px 16px calc(15px + env(safe-area-inset-bottom));
   display: grid;
-//   display: none;
+  // display: none;
   grid-template-columns: 1fr 108px;
   align-items: center;
   gap: 12px;

@@ -24,7 +24,7 @@
           </span>
 
           <span class="welcome-logo__text">
-            <strong>Test Studio</strong>
+            <strong>Fade Studio</strong>
             <small>Premium Barber</small>
           </span>
         </button>

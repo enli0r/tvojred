@@ -6,6 +6,7 @@
     <div class="mxp-brand__mark">
       <img :src="stefanLogo" alt="">
     </div>
+    <h4>Admin Panel</h4>
 
     <!-- <div>
       <strong>Stefan Studio</strong>
@@ -440,7 +441,7 @@
 
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
-import stefanLogo from '@/assets/img/stefan-logo2.png';
+import stefanLogo from '@/assets/img/stefan-logo3.png';
 import adminPanelHero from '@/assets/img/male-barber.jpg';
 
 type DateInputElement = HTMLInputElement & {
@@ -749,13 +750,23 @@ const saveAppointment = () => {
   min-width: 0;
   display: flex;
   align-items: center;
+  /* justify-content: center; */
   gap: 10px;
+
+  h4{
+    color: lightgray;
+    font-size: 16px;
+    font-weight: 500;
+  }
 }
 
 .mxp-brand__mark {
-  width: 130px;
+  /* width: 130px; */
   /* height: 38px; */
   border-radius: 14px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
   
   color: #16110b;
   display: grid;
@@ -763,8 +774,11 @@ const saveAppointment = () => {
   flex: 0 0 auto;
 
   img{
-    width: 100%;
+    width: 45px;
+    height: 40px;
   }
+
+  
 }
 
 .mxp-brand__mark span {
