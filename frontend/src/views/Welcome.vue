@@ -524,21 +524,26 @@ import nailZakazi from '@/assets/img/mockup-nail-zakazivanje.png'
 import adminPanel from '@/assets/img/mockup-admin-panel.png'
 import barberBookingSlajder from '@/assets/img/barber-booking2-mockup.png'
 import barberBookingMinimalistic from '@/assets/img/barber-booking1-mockup.png'
+import BarberBooking3 from './BarberBooking3.vue'
+import BarberBooking from '@/assets/img/barber-booking3-mockup.png'
+
 
 
 const designs = [
-  { id: 1, type: 'Online zakazivanje', title: 'Barber Salon', text: 'Klijent bira uslugu, frizera, datum i termin bez dopisivanja preko poruka.', image: testZakazi, url: '/test-studio/zakazivanje' },
-  { id: 2, type: 'Web sajt', title: 'Barber Salon', text: 'Početna strana sa uslugama, atmosferom i jasnim pozivom na zakazivanje.', image: testHomepage, url: '/test-studio' },
+  { id: 1, type: 'Online zakazivanje', title: 'Barber Salon', text: 'Minimalisticki i elegantan dizajn za zakazivanje termina.', image: BarberBooking, url: '/barber-booking3' },
 
-  { id: 3, type: 'Online zakazivanje', title: 'Barber Salon', text: 'Moderna minimalisticka stranica za zakazivanje, personalizovana u bojama brenda.', image: barberBookingMinimalistic, url: '/barber-booking' },
+  { id: 2, type: 'Online zakazivanje', title: 'Barber Salon', text: 'Klijent bira uslugu, frizera, datum i termin bez dopisivanja preko poruka.', image: testZakazi, url: '/test-studio/zakazivanje' },
+  { id: 3, type: 'Web sajt', title: 'Barber Salon', text: 'Početna strana sa uslugama, atmosferom i jasnim pozivom na zakazivanje.', image: testHomepage, url: '/test-studio' },
 
-  { id: 4, type: 'Online zakazivanje', title: 'Barber Salon', text: 'Stranica za zakazivanje sa premium narandzastom bojom i slajderom.', image: barberBookingSlajder, url: '/barber-booking2' },
+  { id: 4, type: 'Online zakazivanje', title: 'Barber Salon', text: 'Moderna minimalisticka stranica za zakazivanje, personalizovana u bojama brenda.', image: barberBookingMinimalistic, url: '/barber-booking' },
 
-  { id: 5, type: 'Online zakazivanje', title: 'Beauty Salon', text: 'Klijent bira uslugu, osobu, datum i termin bez dopisivanja preko poruka.', image: modernZakazi, url: '/modern-life/zakazivanje' },
-  { id: 6, type: 'Web sajt', title: 'Beauty Salon', text: 'Svetao sajt za hair i beauty salon sa uslugama, timom i zakazivanjem.', image: modernHomepage, url: '/modern-life' },
-  { id: 7, type: 'Online zakazivanje', title: 'Nail Salon', text: 'Zakazivanje za nail salon sa jasnim izborom usluge, termina i nail artist-a.', image: nailZakazi, url: '/nail-studio/zakazivanje' },
-  { id: 8, type: 'Web sajt', title: 'Nail Salon', text: 'Elegantan sajt za nail salon sa radovima, cenovnikom i direktnim zakazivanjem.', image: nailWelcome, url: '/nail-studio' },
-  { id: 9, type: 'Admin panel', title: 'Kontrola salona', text: 'Pregled termina, zaposlenih, usluga, klijenata, cena i statistike poslovanja.', image: adminPanel, url: '/admin-panel' },
+  { id: 5, type: 'Online zakazivanje', title: 'Barber Salon', text: 'Stranica za zakazivanje sa premium narandzastom bojom i slajderom.', image: barberBookingSlajder, url: '/barber-booking2' },
+
+  { id: 6, type: 'Online zakazivanje', title: 'Beauty Salon', text: 'Klijent bira uslugu, osobu, datum i termin bez dopisivanja preko poruka.', image: modernZakazi, url: '/modern-life/zakazivanje' },
+  { id: 7, type: 'Web sajt', title: 'Beauty Salon', text: 'Svetao sajt za hair i beauty salon sa uslugama, timom i zakazivanjem.', image: modernHomepage, url: '/modern-life' },
+  { id: 8, type: 'Online zakazivanje', title: 'Nail Salon', text: 'Zakazivanje za nail salon sa jasnim izborom usluge, termina i nail artist-a.', image: nailZakazi, url: '/nail-studio/zakazivanje' },
+  { id: 9, type: 'Web sajt', title: 'Nail Salon', text: 'Elegantan sajt za nail salon sa radovima, cenovnikom i direktnim zakazivanjem.', image: nailWelcome, url: '/nail-studio' },
+  { id: 10, type: 'Admin panel', title: 'Kontrola salona', text: 'Pregled termina, zaposlenih, usluga, klijenata, cena i statistike poslovanja.', image: adminPanel, url: '/admin-panel' },
 ]
 
 // Duplirana lista za beskonačni (infinite) loop carousela

@@ -125,6 +125,8 @@ import nailZakazi from '@/assets/img/mockup-nail-zakazivanje.png'
 import adminPanel from '@/assets/img/mockup-admin-panel.png'
 import barberBookingSlajder from '@/assets/img/barber-booking2-mockup.png'
 import barberBookingMinimalistic from '@/assets/img/barber-booking1-mockup.png'
+import BarberBooking from '@/assets/img/barber-booking3-mockup.png'
+
 
 type FilterValue = 'all' | 'booking' | 'website' | 'admin'
 
@@ -143,13 +145,24 @@ const designs = [
     category: 'booking',
     vertical: 'Barbershop',
     type: 'Online zakazivanje',
+    title: 'Barber Salon',
+    text: 'Minimalisticki i elegantan dizajn za zakazivanje termina.',
+    image: BarberBooking,
+    url: '/barber-booking3',
+  },
+
+  {
+    id: 2,
+    category: 'booking',
+    vertical: 'Barbershop',
+    type: 'Online zakazivanje',
     title: 'Fade Studio',
     text: 'Klijent bira uslugu, frizera, datum i termin — bez ijedne poruke.',
     image: testZakazi,
     url: '/test-studio/zakazivanje',
   },
   {
-    id: 2,
+    id: 3,
     category: 'website',
     vertical: 'Barbershop',
     type: 'Web sajt',
@@ -159,7 +172,7 @@ const designs = [
     url: '/test-studio',
   },
   {
-    id: 3,
+    id: 4,
     category: 'booking',
     vertical: 'Barbershop',
     type: 'Online zakazivanje',
@@ -169,7 +182,7 @@ const designs = [
     url: '/barber-booking',
   },
   {
-    id: 4,
+    id: 5,
     category: 'booking',
     vertical: 'Barbershop',
     type: 'Online zakazivanje',
@@ -179,7 +192,7 @@ const designs = [
     url: '/barber-booking2',
   },
   {
-    id: 5,
+    id: 6,
     category: 'booking',
     vertical: 'Hair & beauty',
     type: 'Online zakazivanje',
@@ -189,7 +202,7 @@ const designs = [
     url: '/modern-life/zakazivanje',
   },
   {
-    id: 6,
+    id: 7,
     category: 'website',
     vertical: 'Hair & beauty',
     type: 'Web sajt',
@@ -199,7 +212,7 @@ const designs = [
     url: '/modern-life',
   },
   {
-    id: 7,
+    id: 8,
     category: 'booking',
     vertical: 'Nail studio',
     type: 'Online zakazivanje',
@@ -209,7 +222,7 @@ const designs = [
     url: '/nail-studio/zakazivanje',
   },
   {
-    id: 8,
+    id: 9,
     category: 'website',
     vertical: 'Nail studio',
     type: 'Web sajt',
@@ -219,7 +232,7 @@ const designs = [
     url: '/nail-studio',
   },
   {
-    id: 9,
+    id: 10,
     category: 'admin',
     vertical: 'Upravljanje',
     type: 'Admin panel',

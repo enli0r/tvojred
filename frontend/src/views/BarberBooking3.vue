@@ -1,1079 +1,1411 @@
-<template>
-  <div class="app">
-    <div class="phone">
-
-      <!-- ╔══════════════ EKRAN 1 · izbor berberina ══════════════╗ -->
-      <section v-if="screen === 'list'" class="list">
-        <header class="list__top">
-          <p class="eyebrow">Mono · muški frizerski studio</p>
-          <h1>Zakaži<br />svoj termin.</h1>
-        </header>
-
-        <label class="search">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-          <input v-model.trim="query" type="search" placeholder="Pretraži majstore ili usluge" />
-        </label>
-
-        <div class="filters">
-          <button
-            v-for="f in filters"
-            :key="f"
-            class="filters__chip"
-            :class="{ 'is-active': filter === f }"
-            type="button"
-            @click="filter = f"
-          >
-            {{ f }}
-          </button>
-        </div>
-
-        <div class="cards">
-          <button
-            v-for="b in filteredBarbers"
-            :key="b.id"
-            class="bcard"
-            type="button"
-            @click="openBarber(b.id)"
-          >
-            <img class="bcard__photo" :src="img(b.slug, 220, 220)" :alt="b.name" />
-            <span class="bcard__body">
-              <strong>{{ b.name }}</strong>
-              <small>{{ b.specialty }}</small>
-              <span class="bcard__meta">
-                <em>★ {{ b.rating.toFixed(1) }}</em>
-                <i>·</i>
-                od {{ formatPrice(b.fromPrice) }} RSD
-              </span>
-            </span>
-            <span class="bcard__go" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
-            </span>
-          </button>
-
-          <p v-if="filteredBarbers.length === 0" class="cards__empty">
-            Nema rezultata za „{{ query }}".
-          </p>
-        </div>
-      </section>
-
-      <!-- ╔══════════════ EKRAN 2 · zakazivanje ══════════════╗ -->
-      <section v-else-if="barber" class="book">
-        <header class="book__top">
-          <button class="circle" type="button" aria-label="Nazad" @click="screen = 'list'">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg>
-          </button>
-          <div class="book__who">
-            <strong>{{ barber.name }}</strong>
-            <small>{{ barber.specialty }} · ★ {{ barber.rating.toFixed(1) }}</small>
-          </div>
-          <img class="book__photo" :src="img(barber.slug, 120, 120)" :alt="barber.name" />
-        </header>
-
-        <main class="screen">
-          <h2 class="label">01 — Usluga</h2>
-          <div class="svc" role="radiogroup" aria-label="Usluge">
-            <button
-              v-for="s in barber.services"
-              :key="s.id"
-              class="svc__row"
-              :class="{ 'is-active': serviceId === s.id }"
-              type="button"
-              role="radio"
-              :aria-checked="serviceId === s.id"
-              @click="serviceId = s.id"
-            >
-              <i class="svc__dot" aria-hidden="true" />
-              <span class="svc__name">
-                {{ s.name }}
-                <small>{{ s.minutes }} min</small>
-              </span>
-              <em class="svc__price">{{ formatPrice(s.price) }}</em>
-            </button>
-          </div>
-
-          <h2 class="label">02 — Dan</h2>
-          <div class="days">
-            <button
-              v-for="d in days"
-              :key="d.iso"
-              class="days__chip"
-              :class="{ 'is-active': dayIso === d.iso }"
-              :disabled="d.disabled"
-              type="button"
-              @click="pickDay(d.iso)"
-            >
-              <small>{{ d.weekday }}</small>
-              <span>{{ d.dayNum }}</span>
-            </button>
-          </div>
-
-          <h2 class="label">03 — Vreme</h2>
-          <div class="times">
-            <button
-              v-for="t in slots"
-              :key="t.time"
-              class="times__cell"
-              :class="{ 'is-active': chosenTime === t.time }"
-              :disabled="t.taken"
-              type="button"
-              @click="slotTime = t.time"
-            >
-              {{ t.time }}
-            </button>
-          </div>
-
-          <!-- pregled -->
-          <div class="recap" :class="{ 'is-ready': canBook }">
-            <div class="recap__row">
-              <span>Usluga</span>
-              <strong>{{ chosenService?.name ?? '—' }}</strong>
-            </div>
-            <div class="recap__row">
-              <span>Termin</span>
-              <strong>{{ chosenDay && chosenTime ? `${chosenDay.short} u ${chosenTime}` : '—' }}</strong>
-            </div>
-            <div class="recap__row recap__row--total">
-              <span>Ukupno</span>
-              <strong>{{ chosenService ? formatPrice(chosenService.price) : '0' }} RSD</strong>
-            </div>
-          </div>
-        </main>
-
-        <div class="cta">
-          <button class="cta__btn" type="button" :disabled="!canBook" @click="askDetails = true">
-            Zakaži — {{ chosenService ? formatPrice(chosenService.price) + ' RSD' : 'izaberi sve' }}
-          </button>
-        </div>
-      </section>
-
-      <!-- ───────── podaci o gostu ───────── -->
-      <div v-if="askDetails" class="modal" role="dialog" aria-modal="true" aria-label="Vaši podaci">
-        <form class="modal__card" @submit.prevent="confirmBooking">
-          <h3>Vaši podaci</h3>
-
-          <div class="field">
-            <label for="m-name">Ime i prezime</label>
-            <input id="m-name" v-model.trim="customer.name" type="text" placeholder="npr. Marko Petrović" autocomplete="name" required />
-          </div>
-          <div class="field">
-            <label for="m-phone">Telefon</label>
-            <input id="m-phone" v-model.trim="customer.phone" type="tel" placeholder="06x xxx xxxx" autocomplete="tel" required />
-          </div>
-
-          <div class="modal__actions">
-            <button class="ghost" type="button" @click="askDetails = false">Nazad</button>
-            <button class="solid" type="submit" :disabled="!customer.name || !customer.phone">Potvrdi</button>
-          </div>
-        </form>
-      </div>
-
-      <!-- ───────── potvrda ───────── -->
-      <div v-if="ticket" class="modal modal--center" role="dialog" aria-modal="true" aria-label="Termin potvrđen">
-        <div class="modal__card modal__card--center">
-          <span class="check" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
-          </span>
-          <h3>Potvrđeno.</h3>
-          <p class="muted">Rezervacija <b>№ {{ ticket.code }}</b></p>
-
-          <dl class="rows">
-            <div><dt>Majstor</dt><dd>{{ ticket.barber }}</dd></div>
-            <div><dt>Usluga</dt><dd>{{ ticket.service }}</dd></div>
-            <div><dt>Termin</dt><dd>{{ ticket.date }} · {{ ticket.time }}</dd></div>
-            <div><dt>Gost</dt><dd>{{ ticket.name }}</dd></div>
-            <div><dt>Cena</dt><dd>{{ ticket.price }} RSD</dd></div>
-          </dl>
-
-          <button class="solid solid--wide" type="button" @click="resetAll">U redu</button>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
+import { ref, computed } from 'vue'
 
-/* ---------------- tipovi ---------------- */
+import maleBarber1 from '@/assets/img/male-barber1.jpg'
+import maleBarber2 from '@/assets/img/male-barber2.jpg'
+import maleBarber3 from '@/assets/img/male-barber3.jpg'
+import maleBarber4 from '@/assets/img/male-barber4.jpg'
+import logo from '@/assets/img/logo33.png'
 
-type Screen = 'list' | 'book'
-type Filter = 'Sve' | 'Šišanje' | 'Brada' | 'Brijanje'
+/* ───────────────────────── Tipovi ───────────────────────── */
+type Period = 'am' | 'pm'
 
-interface Service { id: number; name: string; minutes: number; price: number; tag: Exclude<Filter, 'Sve'> }
-
-interface Barber {
-  id: number
-  slug: string
+interface ServiceOption {
+  id: string
   name: string
-  specialty: string
-  rating: number
-  fromPrice: number
-  services: Service[]
-}
-
-interface Day { iso: string; weekday: string; dayNum: number; short: string; full: string; disabled: boolean }
-interface Slot { time: string; taken: boolean }
-interface Customer { name: string; phone: string }
-
-interface Ticket {
-  code: string
-  barber: string
-  service: string
-  date: string
-  time: string
-  name: string
+  desc: string
+  duration: string
   price: string
 }
 
-/* ---------------- placeholder slike (crno-bele, zameni svojim) ---------------- */
-const img = (seed: string, w: number, h: number): string =>
-  `https://picsum.photos/seed/${encodeURIComponent(seed)}/${w}/${h}?grayscale`
+interface DayOption {
+  id: string
+  weekday: string
+  day: string
+  month: string
+  label: string
+}
 
-/* ---------------- dummy podaci ---------------- */
+interface Barber {
+  id: string
+  name: string
+  specialty: string
+  rating: number
+  avatar: string
+  times: { am: string[]; pm: string[] }
+  taken: string[]
+}
 
-const filters: Filter[] = ['Sve', 'Šišanje', 'Brada', 'Brijanje']
+/* ───────────────────────── Dummy podaci ───────────────────────── */
+const services: ServiceOption[] = [
+  { id: 'cut',   name: 'Klasično šišanje',       desc: 'Makaze i mašinica, finiš na suvo', duration: '30 min', price: '800 RSD' },
+  { id: 'fade',  name: 'Fade šišanje',           desc: 'Precizan prelaz — skin ili taper', duration: '40 min', price: '1.000 RSD' },
+  { id: 'beard', name: 'Sređivanje brade',       desc: 'Linija, mašinica i topli peškir',  duration: '20 min', price: '500 RSD' },
+  { id: 'combo', name: 'Šišanje + brada',        desc: 'Kompletan tretman i stajling',     duration: '50 min', price: '1.200 RSD' },
+  { id: 'kids',  name: 'Dečije šišanje',         desc: 'Za klince do 12 godina',           duration: '25 min', price: '600 RSD' },
+  { id: 'shave', name: 'Klasično brijanje',      desc: 'Britva i topli peškir',            duration: '30 min', price: '700 RSD' },
+]
+
+const days: DayOption[] = [
+  { id: '06', weekday: 'WED', day: '06', month: 'MAY', label: '6. maj' },
+  { id: '07', weekday: 'THU', day: '07', month: 'MAY', label: '7. maj' },
+  { id: '08', weekday: 'FRI', day: '08', month: 'MAY', label: '8. maj' },
+  { id: '11', weekday: 'MON', day: '11', month: 'MAY', label: '11. maj' },
+  { id: '12', weekday: 'TUE', day: '12', month: 'MAY', label: '12. maj' },
+  { id: '13', weekday: 'WED', day: '13', month: 'MAY', label: '13. maj' },
+  { id: '14', weekday: 'THU', day: '14', month: 'MAY', label: '14. maj' },
+  { id: '15', weekday: 'FRI', day: '15', month: 'MAY', label: '15. maj' },
+  { id: '18', weekday: 'MON', day: '18', month: 'MAY', label: '18. maj' },
+  { id: '19', weekday: 'TUE', day: '19', month: 'MAY', label: '19. maj' },
+]
 
 const barbers: Barber[] = [
   {
-    id: 1, slug: 'nikola-mono', name: 'Nikola Janković', specialty: 'Klasično šišanje makazama',
-    rating: 4.9, fromPrice: 1400,
-    services: [
-      { id: 1, name: 'Šišanje makazama', minutes: 40, price: 1400, tag: 'Šišanje' },
-      { id: 2, name: 'Šišanje + pranje',  minutes: 50, price: 1700, tag: 'Šišanje' },
-      { id: 3, name: 'Oblikovanje brade', minutes: 30, price: 1000, tag: 'Brada' },
-    ],
+    id: 'marko',
+    name: 'Marko',
+    specialty: 'Specijalista za klasične i moderne frizure',
+    rating: 4.9,
+    avatar: maleBarber1,
+    times: {
+      am: ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30'],
+      pm: ['12:00', '12:30', '13:00', '13:30', '14:30', '15:00', '16:00', '17:30', '18:00', '19:00'],
+    },
+    taken: ['10:00', '12:30', '16:00'],
   },
   {
-    id: 2, slug: 'luka-mono', name: 'Luka Stanić', specialty: 'Fade i moderne forme',
-    rating: 4.8, fromPrice: 900,
-    services: [
-      { id: 1, name: 'Skin fade',         minutes: 45, price: 1500, tag: 'Šišanje' },
-      { id: 2, name: 'Šišanje mašinicom', minutes: 25, price: 900,  tag: 'Šišanje' },
-      { id: 3, name: 'Fade + brada',      minutes: 65, price: 2200, tag: 'Brada' },
-    ],
+    id: 'stefan',
+    name: 'Stefan',
+    specialty: 'Fade i moderni muški stilovi',
+    rating: 4.8,
+    avatar: maleBarber2,
+    times: {
+      am: ['10:00', '10:30', '11:00', '11:30'],
+      pm: ['12:00', '13:00', '14:00', '15:30', '16:00', '17:00', '18:30'],
+    },
+    taken: ['11:00', '15:30'],
   },
   {
-    id: 3, slug: 'vuk-mono', name: 'Vuk Đorđević', specialty: 'Brijanje britvom, stara škola',
-    rating: 5.0, fromPrice: 1200,
-    services: [
-      { id: 1, name: 'Brijanje britvom',   minutes: 35, price: 1200, tag: 'Brijanje' },
-      { id: 2, name: 'Topli peškir ritual', minutes: 50, price: 1600, tag: 'Brijanje' },
-      { id: 3, name: 'Kontura brade',       minutes: 25, price: 900,  tag: 'Brada' },
-    ],
+    id: 'nikola',
+    name: 'Nikola',
+    specialty: 'Brada i klasično brijanje',
+    rating: 4.7,
+    avatar: maleBarber3,
+    times: {
+      am: ['09:00', '09:30', '10:00', '11:00'],
+      pm: ['12:30', '13:30', '14:00', '15:00', '16:30', '17:00', '18:00'],
+    },
+    taken: ['09:30', '14:00'],
   },
   {
-    id: 4, slug: 'milos-mono', name: 'Miloš Radovanović', specialty: 'Brada i nega',
-    rating: 4.7, fromPrice: 1000,
-    services: [
-      { id: 1, name: 'Oblikovanje brade', minutes: 30, price: 1000, tag: 'Brada' },
-      { id: 2, name: 'Brada + ulje',      minutes: 40, price: 1300, tag: 'Brada' },
-      { id: 3, name: 'Kompletan tretman', minutes: 80, price: 2600, tag: 'Šišanje' },
-    ],
+    id: 'luka',
+    name: 'Luka',
+    specialty: 'Dečije i muško šišanje',
+    rating: 4.9,
+    avatar: maleBarber4,
+    times: {
+      am: ['09:30', '10:30', '11:00', '11:30'],
+      pm: ['12:00', '12:30', '13:00', '14:00', '15:00', '16:00', '17:30'],
+    },
+    taken: ['12:00', '17:30'],
   },
 ]
 
-const WEEKDAYS = ['Ned', 'Pon', 'Uto', 'Sre', 'Čet', 'Pet', 'Sub'] as const
-const MONTHS = ['januar', 'februar', 'mart', 'april', 'maj', 'jun', 'jul', 'avgust', 'septembar', 'oktobar', 'novembar', 'decembar'] as const
+/* Globalno najraniji slobodan termin (kartica na vrhu) */
+const earliest = {
+  time: '09:30',
+  barberName: 'Marko',
+  dayLabel: '6. maj',
+  dayId: '06',
+  barberId: 'marko',
+  period: 'am' as Period,
+}
 
-const SLOT_TIMES: readonly string[] = [
-  '09:00', '10:00', '11:00', '12:00', '13:00', '15:00', '16:00', '17:00', '18:00',
+/* ───────────────────────── Stanje ───────────────────────── */
+const selectedServiceId = ref<string>('cut')
+const selectedDayId = ref<string>('08')
+const selectedBarberId = ref<string>('marko')
+const selectedTime = ref<string>('13:30')
+const period = ref<Period>('pm')
+
+const showNotifs = ref<boolean>(false)
+const notifications = [
+  { id: 1, title: 'Termin potvrđen', body: 'Tvoj termin kod Marka je potvrđen.', time: 'pre 2h' },
+  { id: 2, title: 'Podsetnik', body: 'Sutra u 13:30 imaš zakazano šišanje.', time: 'juče' },
 ]
 
-const toIso = (d: Date): string =>
-  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+/* ───────────────────────── Computed ───────────────────────── */
+const selectedDay = computed(() => days.find((d) => d.id === selectedDayId.value) ?? null)
 
-/* narednih 10 dana, nedelja neradna */
-const days: Day[] = (() => {
-  const out: Day[] = []
-  const now = new Date()
-  for (let i = 0; i < 10; i++) {
-    const d = new Date(now)
-    d.setDate(now.getDate() + i)
-    out.push({
-      iso: toIso(d),
-      weekday: WEEKDAYS[d.getDay()],
-      dayNum: d.getDate(),
-      short: `${WEEKDAYS[d.getDay()]} ${d.getDate()}.`,
-      full: `${d.getDate()}. ${MONTHS[d.getMonth()]}`,
-      disabled: d.getDay() === 0,
-    })
-  }
-  return out
-})()
-
-const firstOpen = days.find((d) => !d.disabled)
-
-/* deterministička "zauzetost" */
-function isTaken(barberId: number, iso: string, time: string): boolean {
-  const str = `${barberId}|${iso}|${time}`
-  let h = 0
-  for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) >>> 0
-  return h % 10 < 3
-}
-
-/* ---------------- stanje ---------------- */
-
-const screen      = ref<Screen>('list')
-const query       = ref('')
-const filter      = ref<Filter>('Sve')
-const barberRefId = ref<number | null>(null)
-
-const serviceId = ref<number | null>(null)
-const dayIso    = ref<string | null>(firstOpen?.iso ?? null)
-const slotTime  = ref<string | null>(null)
-
-const askDetails = ref(false)
-const customer   = reactive<Customer>({ name: '', phone: '' })
-const ticket     = ref<Ticket | null>(null)
-
-/* ---------------- izvedeno ---------------- */
-
-const barber = computed<Barber | null>(() => barbers.find((b) => b.id === barberRefId.value) ?? null)
-
-const filteredBarbers = computed<Barber[]>(() =>
-  barbers.filter((b) => {
-    const q = query.value.toLowerCase()
-    const matchQ =
-      !q ||
-      b.name.toLowerCase().includes(q) ||
-      b.specialty.toLowerCase().includes(q) ||
-      b.services.some((s) => s.name.toLowerCase().includes(q))
-    const matchF = filter.value === 'Sve' || b.services.some((s) => s.tag === filter.value)
-    return matchQ && matchF
-  }),
+const selectedBarber = computed(
+  () => barbers.find((b) => b.id === selectedBarberId.value) ?? null,
 )
 
-const chosenService = computed<Service | null>(
-  () => barber.value?.services.find((s) => s.id === serviceId.value) ?? null,
-)
-
-const chosenDay = computed<Day | null>(() => days.find((d) => d.iso === dayIso.value) ?? null)
-
-const slots = computed<Slot[]>(() => {
-  if (!barber.value || !dayIso.value) return []
-  return SLOT_TIMES.map((time) => ({
-    time,
-    taken: isTaken(barber.value!.id, dayIso.value!, time),
-  }))
-})
-
-const chosenTime = computed<string | null>(() => {
-  const s = slots.value.find((t) => t.time === slotTime.value)
-  return s && !s.taken ? s.time : null
-})
-
-const canBook = computed<boolean>(() => Boolean(chosenService.value && chosenDay.value && chosenTime.value))
-
-/* ---------------- akcije ---------------- */
-
-function openBarber(id: number): void {
-  barberRefId.value = id
-  serviceId.value = null
-  slotTime.value = null
-  screen.value = 'book'
+function earliestFor(barber: Barber): string {
+  const all = [...barber.times.am, ...barber.times.pm]
+  return all.find((t) => !barber.taken.includes(t)) ?? all[0]
 }
 
-function pickDay(iso: string): void {
-  dayIso.value = iso
-  slotTime.value = null
+const periodTimes = computed<string[]>(() => {
+  if (!selectedBarber.value) return []
+  return period.value === 'am' ? selectedBarber.value.times.am : selectedBarber.value.times.pm
+})
+
+const summaryDate = computed(() => selectedDay.value?.label ?? '')
+const canBook = computed(() => !!selectedDay.value && !!selectedBarber.value && !!selectedTime.value)
+
+/* ───────────────────────── Akcije ───────────────────────── */
+function selectDay(id: string) {
+  selectedDayId.value = id
 }
 
-function confirmBooking(): void {
-  if (!canBook.value || !customer.name || !customer.phone) return
-  askDetails.value = false
-  ticket.value = {
-    code: 'MO-' + String(Math.floor(1000 + Math.random() * 9000)),
-    barber: barber.value!.name,
-    service: chosenService.value!.name,
-    date: chosenDay.value!.full,
-    time: chosenTime.value!,
-    name: customer.name,
-    price: formatPrice(chosenService.value!.price),
+function selectService(id: string) {
+  selectedServiceId.value = id
+}
+
+function selectBarber(id: string) {
+  selectedBarberId.value = id
+  resetTime()
+}
+
+function resetTime() {
+  const b = selectedBarber.value
+  if (!b) {
+    selectedTime.value = ''
+    return
   }
+  const first = earliestFor(b)
+  selectedTime.value = first
+  period.value = b.times.am.includes(first) ? 'am' : 'pm'
 }
 
-function resetAll(): void {
-  ticket.value = null
-  customer.name = ''
-  customer.phone = ''
-  serviceId.value = null
-  slotTime.value = null
-  screen.value = 'list'
+function selectTime(t: string) {
+  if (selectedBarber.value?.taken.includes(t)) return
+  selectedTime.value = t
 }
 
-function formatPrice(n: number): string {
-  return n.toLocaleString('sr-Latn-RS')
+function bookEarliest() {
+  selectedDayId.value = earliest.dayId
+  selectedBarberId.value = earliest.barberId
+  period.value = earliest.period
+  selectedTime.value = earliest.time
+}
+
+function confirmBooking() {
+  if (!canBook.value) return
+  // hook za stvarno zakazivanje
+  console.log('Zakazano:', {
+    usluga: services.find((s) => s.id === selectedServiceId.value)?.name,
+    datum: summaryDate.value,
+    barber: selectedBarber.value?.name,
+    vreme: selectedTime.value,
+  })
 }
 </script>
 
-<style lang="scss">
-/* =============================================================
-   MONO · muški frizerski studio — belo + crno, profesionalno
-   ============================================================= */
+<template>
+  <div class="bb-screen">
+    <div class="bb-scroll">
+      <!-- Gornja tamnija zona pozadine -->
+      <div class="bb-bg-top" />
 
-@use 'sass:color';
+      <div class="bb-content">
+        <!-- Header -->
+        <header class="bb-header">
+          <div class="bb-brand">
+            <img class="bb-brand__logo" :src="logo" alt="tvojred.rs" />
+            <span class="bb-brand__name">tvojred<span class="bb-brand__tld">.rs</span></span>
+          </div>
 
-/* -- SCSS varijable ------------------------------------------- */
-$bg:      #fafaf7;   // beličasta pozadina
-$paper:   #ffffff;
-$ink:     #111110;   // crni akcenat
-$muted:   #8c8c87;
-$line:    rgba(17, 17, 16, .09);
-$line-2:  rgba(17, 17, 16, .16);
+          <div class="bb-notif">
+            <button
+              class="bb-notif__btn"
+              type="button"
+              aria-label="Notifikacije"
+              @click="showNotifs = !showNotifs"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2a6 6 0 0 0-6 6c0 4.5-1.2 6.2-2.2 7.2A1 1 0 0 0 4.5 17h15a1 1 0 0 0 .7-1.7C19.2 14.2 18 12.5 18 8a6 6 0 0 0-6-6zm0 20a2.8 2.8 0 0 0 2.7-2h-5.4A2.8 2.8 0 0 0 12 22z" />
+              </svg>
+              <span v-if="notifications.length" class="bb-notif__badge">{{ notifications.length }}</span>
+            </button>
 
-$f: 'Schibsted Grotesk', system-ui, sans-serif;
+            <transition name="bb-pop">
+              <div v-if="showNotifs" class="bb-notif__panel">
+                <div v-for="n in notifications" :key="n.id" class="bb-notif__item">
+                  <span class="bb-notif__dot" />
+                  <div class="bb-notif__content">
+                    <span class="bb-notif__title">{{ n.title }}</span>
+                    <span class="bb-notif__body">{{ n.body }}</span>
+                    <span class="bb-notif__time">{{ n.time }}</span>
+                  </div>
+                </div>
+              </div>
+            </transition>
+          </div>
+        </header>
 
-$r-lg: 18px;
-$r-md: 13px;
+        <!-- Naslov -->
+        <div class="bb-title-block">
+          <span class="bb-eyebrow">Online zakazivanje</span>
+          <h1 class="bb-title">Zakaži svoj termin.</h1>
+          <p class="bb-subtitle">Izaberi uslugu, datum i vreme.</p>
+        </div>
 
-$phone-w: 430px;
+        <!-- Najraniji slobodan termin (frosted wrapper + tamna kartica) -->
+        <div class="bb-featured-wrap">
+          <section class="bb-featured">
+            <span class="bb-featured__label">Najraniji slobodan termin</span>
+            <span class="bb-featured__time">{{ earliest.time }}</span>
+            <div class="bb-featured__bottom">
+              <div class="bb-featured__meta">
+                <span class="bb-featured__meta-row">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path
+                      d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                  {{ earliest.barberName }}
+                </span>
+                <span class="bb-featured__meta-row">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <path d="M16 2v4M8 2v4M3 10h18" stroke-linecap="round" />
+                  </svg>
+                  {{ earliest.dayLabel }}
+                </span>
+              </div>
+              <button class="bb-cta bb-cta--sm" type="button" @click="bookEarliest">
+                Zakaži
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+            </div>
+          </section>
+        </div>
 
-/* -- mixini ----------------------------------------------------- */
-@mixin solid-ink {
-  background: $ink;
-  color: $bg;
-}
+        <!-- Datum -->
+        <div class="bb-section-head">
+          <span class="bb-section-head__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="3" y="4" width="18" height="18" rx="2" />
+              <path d="M16 2v4M8 2v4M3 10h18" stroke-linecap="round" />
+            </svg>
+          </span>
+          <div class="bb-section-head__text">
+            <span class="bb-section-head__title">Datum</span>
+            <span class="bb-section-head__sub">Dostupni termini: 14 dana</span>
+          </div>
+        </div>
 
-@mixin card($r: $r-lg) {
-  background: $paper;
-  border: 1px solid $line;
-  border-radius: $r;
-}
+        <div class="bb-days">
+          <button
+            v-for="d in days"
+            :key="d.id"
+            type="button"
+            class="bb-day"
+            :class="{ 'bb-day--active': d.id === selectedDayId }"
+            @click="selectDay(d.id)"
+          >
+            <span class="bb-day__weekday">{{ d.weekday }}</span>
+            <span class="bb-day__num">{{ d.day }}</span>
+            <span class="bb-day__month">{{ d.month }}</span>
+          </button>
+        </div>
 
-@mixin icon($s: 20px) {
-  svg { width: $s; height: $s; display: block; }
-}
+        <!-- Usluga (editorial, selektabilno, ispred frizera) -->
+        <div class="bb-section-head">
+          <span class="bb-section-head__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M3 7l4-4h6l8 8-10 10-8-8V7z" stroke-linecap="round" stroke-linejoin="round" />
+              <circle cx="8.5" cy="8.5" r="1.4" fill="currentColor" stroke="none" />
+            </svg>
+          </span>
+          <div class="bb-section-head__text">
+            <span class="bb-section-head__title">Usluga</span>
+            <span class="bb-section-head__sub">Izaberi šta želiš</span>
+          </div>
+        </div>
 
-@mixin micro-label {
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-}
+        <div class="bb-services">
+          <button
+            v-for="s in services"
+            :key="s.id"
+            type="button"
+            class="bb-service-item"
+            :class="{ 'bb-service-item--active': s.id === selectedServiceId }"
+            @click="selectService(s.id)"
+          >
+            <span class="bb-service-item__main">
+              <span class="bb-service-item__name">{{ s.name }}</span>
+              <span class="bb-service-item__desc">{{ s.desc }}</span>
+            </span>
+            <span class="bb-service-item__side">
+              <span class="bb-service-item__dur">{{ s.duration }}</span>
+              <span class="bb-service-item__price">{{ s.price }}</span>
+            </span>
+            <span class="bb-service-item__check">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6">
+                <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+          </button>
+        </div>
 
-@mixin hide-scrollbar {
-  scrollbar-width: none;
-  &::-webkit-scrollbar { display: none; }
-}
+        <!-- Frizer (editorial lista, bez kartica) -->
+        <div class="bb-section-head">
+          <span class="bb-section-head__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="6" cy="6" r="3" />
+              <circle cx="6" cy="18" r="3" />
+              <path d="M20 4L8.12 15.88M14.47 14.48L20 20M8.12 8.12L12 12" stroke-linecap="round" />
+            </svg>
+          </span>
+          <div class="bb-section-head__text">
+            <span class="bb-section-head__title">Frizer</span>
+            <span class="bb-section-head__sub">Slobodni frizeri za ovaj dan</span>
+          </div>
+          <span class="bb-pill">{{ barbers.length }} dostupna</span>
+        </div>
 
-/* -- font --------------------------------------------------------- */
-@import url('https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap');
+        <div class="bb-barbers">
+          <button
+            v-for="b in barbers"
+            :key="b.id"
+            type="button"
+            class="bb-barber"
+            :class="{ 'bb-barber--active': b.id === selectedBarberId }"
+            @click="selectBarber(b.id)"
+          >
+            <img class="bb-barber__avatar" :src="b.avatar" :alt="b.name" />
+            <div class="bb-barber__info">
+              <span class="bb-barber__name">{{ b.name }}</span>
+              <span class="bb-barber__specialty">{{ b.specialty }}</span>
+              <span class="bb-barber__rating">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M12 2l2.9 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 7.1-1.01L12 2z"
+                  />
+                </svg>
+                {{ b.rating.toFixed(1) }}
+              </span>
+            </div>
+            <div class="bb-barber__slot">
+              <span class="bb-barber__slot-time">{{ earliestFor(b) }}</span>
+              <span class="bb-barber__slot-label">slobodno</span>
+            </div>
+            <span class="bb-barber__check">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6">
+                <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+          </button>
+        </div>
 
-/* -- globalno ------------------------------------------------------ */
-*,
-*::before,
-*::after { margin: 0; padding: 0; box-sizing: border-box; }
+        <!-- Vreme (Prepodne / Popodne) -->
+        <template v-if="selectedBarber">
+          <div class="bb-section-head">
+            <span class="bb-section-head__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 7v5l3 2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <div class="bb-section-head__text">
+              <span class="bb-section-head__title">Vreme</span>
+              <span class="bb-section-head__sub">Izaberi slobodan termin</span>
+            </div>
+          </div>
 
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; transition: none !important; }
-}
+          <div class="bb-toggle">
+            <button
+              type="button"
+              class="bb-toggle__btn"
+              :class="{ 'bb-toggle__btn--active': period === 'am' }"
+              @click="period = 'am'"
+            >
+              Prepodne
+            </button>
+            <button
+              type="button"
+              class="bb-toggle__btn"
+              :class="{ 'bb-toggle__btn--active': period === 'pm' }"
+              @click="period = 'pm'"
+            >
+              Popodne
+            </button>
+            <span class="bb-toggle__thumb" :class="`bb-toggle__thumb--${period}`" />
+          </div>
 
-body {
-  background: color.adjust($bg, $lightness: -2%);
-  color: $ink;
-  font-family: $f;
-  font-size: 15px;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-}
+          <div class="bb-times">
+            <button
+              v-for="t in periodTimes"
+              :key="t"
+              type="button"
+              class="bb-time"
+              :class="{
+                'bb-time--active': t === selectedTime,
+                'bb-time--taken': selectedBarber.taken.includes(t),
+              }"
+              :disabled="selectedBarber.taken.includes(t)"
+              @click="selectTime(t)"
+            >
+              {{ t }}
+            </button>
+          </div>
+        </template>
+      </div>
+    </div>
 
-img { display: block; max-width: 100%; }
+    <!-- Donji bar (fixed za dno ekrana) -->
+    <footer class="bb-footer">
+      <div class="bb-footer__summary">
+        <span class="bb-footer__line">{{ summaryDate }} · {{ selectedBarber?.name ?? '—' }}</span>
+        <span class="bb-footer__time">{{ selectedTime || '—' }}</span>
+      </div>
+      <button class="bb-cta" type="button" :disabled="!canBook" @click="confirmBooking">
+        Zakaži
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+    </footer>
+  </div>
+</template>
 
-::selection { background: $ink; color: $bg; }
+<style lang="scss" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700&display=swap');
 
-:focus-visible { outline: 2px solid $ink; outline-offset: 2px; }
+/* ───────────────────────── Tokeni ───────────────────────── */
+$bb-bg-bottom:     #0f1219; // donja, malo svetlija zona
+$bb-bg-top:        #22262e; // gornja zona — graphite gray
+$bb-card:          #090b0f; // featured kartica = skoro crno (pop na graphite)
+$bb-surface:       #11151f;
+$bb-surface-2:     #161b27;
+$bb-border:        rgba(255, 255, 255, 0.07);
+$bb-border-strong: rgba(255, 255, 255, 0.12);
+$bb-ring-gap:      #0f1219; // boja "rupe" u ringu oko avatara (= donja pozadina)
+$bb-blue:          #406999;
+$bb-blue-hover:    #3a82ff;
+$bb-blue-press:    #1a5fe0;
+$bb-text:          #f4f6f9;
+$bb-text-dim:      #8b93a3;
+$bb-text-mute:     #5c6577;
+$bb-gold:          #f5b740;
+$bb-radius-lg:     26px;
+$bb-radius-md:     18px;
+$bb-radius-sm:     14px;
+$bb-ease:          cubic-bezier(0.22, 1, 0.36, 1);
 
-button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+$bb-sans:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+$bb-display: 'Poppins', $bb-sans;
 
-/* =============================================================
-   okvir telefona
-   ============================================================= */
-.app {
-  min-height: 100dvh;
-  display: grid;
-  place-items: start center;
-
-  @media (min-width: 560px) {
-    place-items: center;
-    padding: 32px 16px;
-  }
-}
-
-.phone {
-  width: 100%;
-  max-width: $phone-w;
-  min-height: 100dvh;
+/* ───────────────────────── Layout ───────────────────────── */
+.bb-screen {
   position: relative;
   display: flex;
   flex-direction: column;
-  background: $bg;
+  width: 100%;
+  max-width: 440px;
+  height: 100%;
+  min-height: 100dvh;
+  margin: 0 auto;
+  background: $bb-bg-bottom;
+  color: $bb-text;
+  font-family: $bb-sans;
+  -webkit-font-smoothing: antialiased;
   overflow: hidden;
 
-  @media (min-width: 560px) {
-    min-height: 0;
-    height: min(880px, calc(100dvh - 64px));
-    border: 1px solid $line;
-    border-radius: 36px;
-    box-shadow: 0 30px 80px rgba(17, 17, 16, .12);
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
   }
 }
 
-.circle {
-  width: 42px;
-  height: 42px;
-  flex: 0 0 auto;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  transition: background .2s ease, color .2s ease;
-  @include card(50%);
-  @include icon(18px);
-
-  &:hover { @include solid-ink; }
-}
-
-.eyebrow {
-  color: $muted;
-  margin-bottom: 12px;
-  @include micro-label;
-}
-
-.label {
-  margin: 26px 0 12px;
-  color: $muted;
-  @include micro-label;
-}
-
-/* =============================================================
-   EKRAN 1 · lista
-   ============================================================= */
-.list {
+.bb-scroll {
+  position: relative;
   flex: 1;
   overflow-y: auto;
-  padding: 30px 22px 40px;
-  @include hide-scrollbar;
-
-  &__top {
-    margin-bottom: 22px;
-
-    h1 {
-      font-size: clamp(32px, 8.6vw, 40px);
-      font-weight: 800;
-      line-height: 1.05;
-      letter-spacing: -.025em;
-    }
-  }
+  -webkit-overflow-scrolling: touch;
 }
 
-.search {
+/* Gornja zona — fotografija sa čvrstim tamnim overlayem */
+.bb-bg-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 290px;
+  z-index: 0;
+  overflow: hidden;
+  // background-color: #090d14;
+  border-radius: 0 0 24px 24px;
+  background: rgba(0,0,0,0.4);
+  
+  // border-bottom-left-radius: 50px;
+  // border-bottom-right-radius: 50px;
+
+  // &::after {
+  //   content: '';
+  //   position: absolute;
+  //   inset: 0;
+  //   background: rgba(0, 0, 0, 0.3);
+  // }
+}
+
+.bb-content {
+  position: relative;
+  z-index: 1;
+  padding: 18px 20px 130px;
+}
+
+/* ───────────────────────── Header ───────────────────────── */
+.bb-header {
+  position: relative;
+  z-index: 5;
   display: flex;
   align-items: center;
-  gap: 10px;
-  height: 52px;
-  padding: 0 18px;
-  @include card(99px);
-  @include icon(17px);
-
-  svg { color: $muted; flex: 0 0 auto; }
-
-  input {
-    flex: 1;
-    border: none;
-    background: none;
-    font: inherit;
-    color: $ink;
-
-    &::placeholder { color: $muted; }
-    &:focus { outline: none; }
-  }
-
-  &:focus-within { border-color: $ink; }
+  justify-content: space-between;
+  margin-bottom: 22px;
 }
 
-.filters {
+/* Brend (logo + wordmark) */
+.bb-brand {
   display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  margin: 14px -22px 20px;
-  padding: 2px 22px;
-  @include hide-scrollbar;
-
-  &__chip {
-    flex: 0 0 auto;
-    padding: 9px 17px;
-    border-radius: 99px;
-    font-size: 13px;
-    font-weight: 600;
-    color: $muted;
-    transition: background .2s ease, color .2s ease, border-color .2s ease;
-    @include card(99px);
-
-    &:hover:not(.is-active) { border-color: $line-2; color: $ink; }
-
-    &.is-active {
-      border-color: $ink;
-      @include solid-ink;
-    }
-  }
-}
-
-.cards {
-  display: grid;
-  gap: 10px;
-
-  &__empty {
-    padding: 26px;
-    text-align: center;
-    color: $muted;
-    font-size: 13.5px;
-    border: 1px dashed $line-2;
-    border-radius: $r-lg;
-  }
-}
-
-.bcard {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 14px;
-  padding: 12px;
-  text-align: left;
-  transition: border-color .2s ease, transform .15s ease;
-  @include card;
+  gap: 9px;
 
-  &:hover { border-color: $ink; }
-  &:active { transform: scale(.985); }
-
-  &__photo {
-    width: 64px;
-    height: 64px;
-    border-radius: $r-md;
-    object-fit: cover;
+  &__logo {
+    height: 30px;
+    width: auto;
+    display: block;
   }
 
-  &__body {
-    min-width: 0;
-
-    strong { display: block; font-size: 15.5px; font-weight: 700; letter-spacing: -.01em; }
-    small { display: block; color: $muted; font-size: 12.5px; margin-top: 1px; }
+  &__name {
+    font-family: $bb-display;
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: $bb-text;
+    line-height: 1;
   }
 
-  &__meta {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    margin-top: 7px;
-    font-size: 12px;
-    font-weight: 600;
-
-    em {
-      font-style: normal;
-      padding: 2px 8px;
-      border-radius: 99px;
-      border: 1px solid $line-2;
-    }
-
-    i { color: $muted; font-style: normal; }
+  &__tld {
+    color: $bb-blue; // boja logoa — promeni ako logo nije plav
   }
+}
 
-  &__go {
-    width: 36px;
-    height: 36px;
+/* Notifikacije */
+.bb-notif {
+  position: relative;
+
+  &__btn {
+    position: relative;
     display: grid;
     place-items: center;
-    border-radius: 50%;
-    border: 1px solid $line-2;
-    transition: background .2s ease, color .2s ease;
-    @include icon(15px);
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: none;          // bez border-a
+    background: none;      // bez background-a
+    color: $bb-text;
+    cursor: pointer;
+    transition: color 0.18s ease, transform 0.1s ease;
+
+    svg {
+      width: 28px;
+      height: 28px;
+      fill: currentColor;  // solid
+    }
+
+    &:hover {
+      color: #fff;
+    }
+
+    &:active {
+      transform: scale(0.94);
+    }
   }
 
-  &:hover .bcard__go { @include solid-ink; }
-}
-
-/* =============================================================
-   EKRAN 2 · zakazivanje
-   ============================================================= */
-.book {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  animation: rise .3s ease both;
-}
-
-@keyframes rise {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.book__top {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 18px 22px 14px;
-  border-bottom: 1px solid $line;
-
-  .book__who {
-    min-width: 0;
-
-    strong { display: block; font-size: 16px; font-weight: 700; letter-spacing: -.01em; }
-    small { color: $muted; font-size: 12px; }
+  &__badge {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 999px;
+    border: 2px solid $bb-bg-top; // boja pozadine iza zvonca, da "iseče" rupu
+    background: $bb-blue;         // accent color
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 14px;
+    text-align: center;
   }
 
-  .book__photo {
-    width: 44px;
-    height: 44px;
-    margin-left: auto;
-    border-radius: 50%;
-    object-fit: cover;
+  &__panel {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    z-index: 40;
+    width: 280px;
+    padding: 6px;
+    border-radius: 16px;
+    border: 1px solid $bb-border-strong;
+    background: $bb-surface-2;
+    box-shadow: 0 24px 50px -22px rgba(0, 0, 0, 0.9);
   }
-}
 
-.screen {
-  flex: 1;
-  overflow-y: auto;
-  padding: 4px 22px 130px;
-  @include hide-scrollbar;
-}
+  &__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px 12px;
+    border-radius: 11px;
+    transition: background 0.16s ease;
 
-/* usluge */
-.svc {
-  display: grid;
-  gap: 8px;
+    &:hover {
+      background: rgba(255, 255, 255, 0.04);
+    }
 
-  &__row {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
-    gap: 13px;
-    padding: 15px 16px;
-    text-align: left;
-    transition: border-color .2s ease;
-    @include card($r-md);
-
-    &:hover { border-color: $line-2; }
-
-    &.is-active {
-      border-color: $ink;
-
-      .svc__dot {
-        border-color: $ink;
-
-        &::after { transform: scale(1); }
-      }
+    & + & {
+      margin-top: 2px;
     }
   }
 
   &__dot {
-    width: 18px;
-    height: 18px;
+    flex-shrink: 0;
+    width: 8px;
+    height: 8px;
+    margin-top: 5px;
     border-radius: 50%;
-    border: 1.5px solid $line-2;
+    background: $bb-blue;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  &__title {
+    font-size: 14px;
+    font-weight: 600;
+    color: $bb-text;
+  }
+
+  &__body {
+    font-size: 12.5px;
+    line-height: 1.35;
+    color: $bb-text-dim;
+  }
+
+  &__time {
+    margin-top: 2px;
+    font-size: 11px;
+    color: $bb-text-mute;
+  }
+}
+
+/* Pop tranzicija za panel */
+.bb-pop-enter-active,
+.bb-pop-leave-active {
+  transition: opacity 0.18s ease, transform 0.18s $bb-ease;
+  transform-origin: top right;
+}
+
+.bb-pop-enter-from,
+.bb-pop-leave-to {
+  opacity: 0;
+  transform: scale(0.92) translateY(-6px);
+}
+
+/* ───────────────────────── Naslov ───────────────────────── */
+.bb-title-block {
+  margin-bottom: 24px;
+  margin-top: 30px;
+  // width: 100%;
+}
+
+.bb-eyebrow {
+  display: block;
+  margin-bottom: 10px;
+  color: $bb-blue;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.bb-title {
+  margin: 0 0 12px;
+  max-width: 390px;
+  font-family: $bb-display;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  color: $bb-text;
+  text-align: left;
+}
+
+.bb-subtitle {
+  margin: 0;
+  // max-width: 300px;
+  font-size: 14px;
+  line-height: 1.2;
+  color: rgba(244, 246, 249, 0.64);
+  text-align: left;
+  // width: 100%;
+}
+
+/* ───────────────────────── Featured kartica ───────────────────────── */
+.bb-featured-wrap {
+  padding: 10px;
+  margin-bottom: 30px;
+  border-radius: $bb-radius-lg;
+  // border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.08);
+  // backdrop-filter: blur(14px);
+  // -webkit-backdrop-filter: blur(14px);
+  // width: 320px;
+  margin: 0 auto 30px auto;
+}
+
+.bb-featured {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 18px;
+  border-radius: $bb-radius-md;
+  background: $bb-card;
+
+  &__label {
+    align-self: left;
+    margin-bottom: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+  }
+
+  &__time {
+    font-family: $bb-display;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: $bb-text;
+    margin-top: 5px;
+  }
+
+  &__bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-top: 5px;
+    gap: 12px;
+  }
+
+  &__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  &__meta-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+
+    svg {
+      width: 16px;
+      height: 16px;
+      color: rgba(255,255,255,0.6);
+    }
+  }
+}
+
+/* ───────────────────────── CTA dugme (Apple stil) ───────────────────────── */
+.bb-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 11px 22px;
+  border: none;
+  border-radius: 999px;
+  background: $bb-blue;
+  color: #fff;
+  font-family: $bb-sans;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.1s ease;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover {
+    background: $bb-blue-hover;
+  }
+
+  &:active {
+    transform: scale(0.97);
+    background: $bb-blue-press;
+  }
+
+  &:disabled {
+    background: rgba(31, 111, 255, 0.35);
+    color: rgba(255, 255, 255, 0.6);
+    cursor: not-allowed;
+  }
+
+  &--sm {
+    padding: 8px 16px;
+    font-size: 13px;
+    gap: 6px;
+
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+  }
+}
+
+/* ───────────────────────── Section head ───────────────────────── */
+.bb-section-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 14px;
+
+  &__icon {
     display: grid;
     place-items: center;
-    transition: border-color .2s ease;
+    width: 26px;
+    height: 26px;
+    color: $bb-blue;
+    flex-shrink: 0;
 
-    &::after {
-      content: '';
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: $ink;
-      transform: scale(0);
-      transition: transform .18s ease;
+    svg {
+      width: 22px;
+      height: 22px;
     }
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__title {
+    font-size: 18px;
+    font-weight: 600;
+    color: $bb-text;
+  }
+
+  &__sub {
+    font-size: 13px;
+    color: $bb-text-dim;
+  }
+}
+
+.bb-pill {
+  flex-shrink: 0;
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1px solid $bb-border;
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 12px;
+  font-weight: 500;
+  color: $bb-text-dim;
+}
+
+/* ───────────────────────── Datumi ───────────────────────── */
+.bb-days {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.bb-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  width: 70px;
+  padding: 14px 0;
+  border-radius: 20px;
+  border: 1px solid $bb-border;
+  background: $bb-surface;
+  color: $bb-text;
+  cursor: pointer;
+  transition: border-color 0.18s ease, transform 0.1s ease;
+
+  &__weekday {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: $bb-text-dim;
+  }
+
+  &__num {
+    font-family: $bb-display;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  &__month {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: $bb-text-dim;
+  }
+
+  &:hover {
+    border-color: $bb-border-strong;
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+
+  &--active {
+    background: $bb-blue;
+    border-color: $bb-blue;
+
+    .bb-day__weekday,
+    .bb-day__month {
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .bb-day__num {
+      color: #fff;
+    }
+
+    &:hover {
+      border-color: $bb-blue;
+    }
+  }
+}
+
+/* ───────────────────────── Usluga (editorial lista) ───────────────────────── */
+.bb-services {
+  margin-bottom: 30px;
+  border-top: 1px solid $bb-border;
+}
+
+.bb-service-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 16px 8px 16px 16px;
+  border: none;
+  border-bottom: 1px solid $bb-border;
+  background: none;
+  text-align: left;
+  font-family: $bb-sans;
+  color: $bb-text;
+  cursor: pointer;
+  transition: background 0.25s ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: $bb-blue;
+    transform: scaleY(0);
+    transition: transform 0.3s $bb-ease;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.025);
+  }
+
+  &__main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
   }
 
   &__name {
-    font-size: 14.5px;
+    font-size: 15px;
     font-weight: 600;
+  }
 
-    small {
-      color: $muted;
-      font-weight: 500;
-      margin-left: 8px;
-      font-size: 12px;
-    }
+  &__desc {
+    font-size: 12.5px;
+    color: $bb-text-mute;
+  }
+
+  &__side {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 3px;
+  }
+
+  &__dur {
+    font-size: 12px;
+    color: $bb-text-mute;
   }
 
   &__price {
-    font-style: normal;
-    font-size: 14.5px;
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-  }
-}
-
-/* dani */
-.days {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  margin: 0 -22px;
-  padding: 2px 22px 4px;
-  @include hide-scrollbar;
-
-  &__chip {
-    flex: 0 0 56px;
-    display: grid;
-    justify-items: center;
-    gap: 4px;
-    padding: 11px 4px;
-    border-radius: $r-md;
-    transition: background .2s ease, color .2s ease, border-color .2s ease;
-    @include card($r-md);
-
-    small {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: $muted;
-      transition: color .2s ease;
-    }
-
-    span {
-      font-size: 17px;
-      font-weight: 800;
-      font-variant-numeric: tabular-nums;
-    }
-
-    &:hover:not(:disabled):not(.is-active) { border-color: $line-2; }
-
-    &.is-active {
-      border-color: $ink;
-      @include solid-ink;
-
-      small { color: rgba(250, 250, 247, .65); }
-    }
-
-    &:disabled {
-      opacity: .35;
-      cursor: not-allowed;
-    }
-  }
-}
-
-/* vremena */
-.times {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-
-  &__cell {
-    padding: 13px 8px;
-    text-align: center;
-    border-radius: $r-md;
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 600;
     font-variant-numeric: tabular-nums;
-    transition: background .2s ease, color .2s ease, border-color .2s ease;
-    @include card($r-md);
+    transition: color 0.2s ease;
+  }
 
-    &:hover:not(:disabled):not(.is-active) { border-color: $line-2; }
+  &__check {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1.5px solid $bb-border-strong;
+    color: transparent;
+    transition: all 0.25s $bb-ease;
 
-    &.is-active {
-      border-color: $ink;
-      @include solid-ink;
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  &--active {
+    &::before {
+      transform: scaleY(1);
     }
 
-    &:disabled {
-      color: rgba($muted, .55);
-      cursor: not-allowed;
-      text-decoration: line-through;
-      background: color.adjust($bg, $lightness: -1%);
+    .bb-service-item__price {
+      color: $bb-blue;
+    }
+
+    .bb-service-item__check {
+      background: $bb-blue;
+      border-color: $bb-blue;
+      color: #fff;
     }
   }
 }
 
-/* pregled */
-.recap {
-  margin-top: 26px;
-  padding: 4px 18px;
-  transition: border-color .25s ease;
-  @include card;
+/* ───────────────────────── Frizer (editorial lista, bez kartica) ───────────────────────── */
+.bb-barbers {
+  margin-bottom: 30px;
+  border-top: 1px solid $bb-border;
+}
 
-  &.is-ready { border-color: $ink; }
+.bb-barber {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 14px 8px 14px 16px;
+  border: none;
+  border-bottom: 1px solid $bb-border;
+  background: none;
+  text-align: left;
+  font-family: $bb-sans;
+  color: $bb-text;
+  cursor: pointer;
+  transition: background 0.25s ease;
 
-  &__row {
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: $bb-blue;
+    transform: scaleY(0);
+    transition: transform 0.3s $bb-ease;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.025);
+  }
+
+  &__avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid $bb-border-strong;
+    transition: box-shadow 0.18s ease;
+  }
+
+  &__info {
     display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 12px;
-    padding: 13px 0;
-    border-bottom: 1px solid $line;
-    font-size: 13.5px;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+    min-width: 0;
+  }
 
-    &:last-child { border-bottom: none; }
+  &__name {
+    font-size: 16px;
+    font-weight: 600;
+    color: $bb-text;
+  }
 
-    span { color: $muted; }
-    strong { font-weight: 700; text-align: right; }
+  &__specialty {
+    font-size: 12px;
+    line-height: 1.35;
+    color: $bb-text-dim;
+  }
 
-    &--total strong {
-      font-size: 17px;
-      font-weight: 800;
-      font-variant-numeric: tabular-nums;
+  &__rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 2px;
+    font-size: 12px;
+    font-weight: 600;
+    color: $bb-text;
+
+    svg {
+      width: 13px;
+      height: 13px;
+      color: $bb-gold;
+    }
+  }
+
+  &__slot {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+
+  &__slot-time {
+    font-size: 15px;
+    font-weight: 600;
+    color: $bb-text;
+  }
+
+  &__slot-label {
+    font-size: 12px;
+    color: $bb-text-dim;
+  }
+
+  &__check {
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: $bb-blue;
+    color: #fff;
+    opacity: 0;
+    transform: scale(0.6);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+
+    svg {
+      width: 13px;
+      height: 13px;
+    }
+  }
+
+  &--active {
+    &::before {
+      transform: scaleY(1);
+    }
+
+    .bb-barber__avatar {
+      box-shadow: 0 0 0 2px $bb-ring-gap, 0 0 0 4px $bb-blue;
+    }
+
+    .bb-barber__check {
+      opacity: 1;
+      transform: scale(1);
     }
   }
 }
 
-/* =============================================================
-   CTA
-   ============================================================= */
-.cta {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 14px 22px calc(18px + env(safe-area-inset-bottom));
-  background: linear-gradient(to top, $bg 62%, transparent);
+/* ───────────────────────── Toggle Prepodne/Popodne ───────────────────────── */
+.bb-toggle {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 16px;
+  padding: 4px;
+  border-radius: 999px;
+  border: 1px solid $bb-border;
+  background: rgba(255, 255, 255, 0.03);
 
   &__btn {
-    width: 100%;
-    padding: 17px;
-    border-radius: 99px;
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: .01em;
-    box-shadow: 0 14px 30px rgba(17, 17, 16, .22);
-    transition: transform .15s ease, opacity .2s ease;
-    @include solid-ink;
+    position: relative;
+    z-index: 1;
+    padding: 11px 0;
+    border: none;
+    background: transparent;
+    color: $bb-text-dim;
+    font-family: $bb-sans;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s ease;
 
-    &:active:not(:disabled) { transform: scale(.98); }
+    &--active {
+      color: #fff;
+    }
+  }
 
-    &:disabled {
-      opacity: .25;
-      cursor: not-allowed;
-      box-shadow: none;
+  &__thumb {
+    position: absolute;
+    z-index: 0;
+    top: 4px;
+    bottom: 4px;
+    width: calc(50% - 4px);
+    border-radius: 999px;
+    background: $bb-blue;
+    transition: transform 0.26s $bb-ease;
+
+    &--am {
+      transform: translateX(4px);
+    }
+
+    &--pm {
+      transform: translateX(calc(100% + 4px));
     }
   }
 }
 
-/* =============================================================
-   modali
-   ============================================================= */
-.modal {
-  position: absolute;
-  inset: 0;
-  z-index: 60;
+/* ───────────────────────── Termini ───────────────────────── */
+.bb-times {
   display: grid;
-  place-items: end center;
-  padding: 14px;
-  background: rgba(17, 17, 16, .42);
-  backdrop-filter: blur(4px);
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
 
-  &--center { place-items: center; }
+.bb-time {
+  padding: 12px 0;
+  border-radius: $bb-radius-sm;
+  border: 1px solid $bb-border;
+  background: $bb-surface;
+  color: $bb-text;
+  font-family: $bb-sans;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.16s ease, background 0.16s ease, transform 0.1s ease;
 
-  &__card {
-    width: 100%;
-    padding: 26px 22px;
-    border-radius: 26px;
-    background: $paper;
-    animation: sheet-in .32s cubic-bezier(.2, .9, .3, 1.1) both;
+  &:hover {
+    border-color: $bb-border-strong;
+  }
 
-    h3 {
-      font-size: 19px;
-      font-weight: 800;
-      letter-spacing: -.015em;
-      margin-bottom: 16px;
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &--active {
+    background: $bb-blue;
+    border-color: $bb-blue;
+    color: #fff;
+  }
+
+  &--taken {
+    color: $bb-text-mute;
+    text-decoration: line-through;
+    background: rgba(255, 255, 255, 0.02);
+    cursor: not-allowed;
+    opacity: 0.55;
+
+    &:hover {
+      border-color: $bb-border;
     }
-
-    &--center {
-      text-align: center;
-
-      h3 { margin-bottom: 2px; }
-    }
-  }
-
-  &__actions {
-    display: grid;
-    grid-template-columns: 1fr 1.4fr;
-    gap: 10px;
-    margin-top: 18px;
   }
 }
 
-@keyframes sheet-in {
-  from { opacity: 0; transform: translateY(28px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+/* ───────────────────────── Donji bar (fixed) ───────────────────────── */
+.bb-footer {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
+  max-width: 440px;
+  padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+  border-top: 1px solid $bb-border;
+  background: rgba(15, 18, 25, 0.82);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 
-.field {
-  display: grid;
-  gap: 7px;
-  margin-bottom: 12px;
-
-  label {
-    color: $muted;
-    @include micro-label;
-  }
-
-  input {
-    font: inherit;
-    color: $ink;
-    padding: 14px 15px;
-    border-radius: $r-md;
-    border: 1px solid $line-2;
-    background: $bg;
-
-    &::placeholder { color: rgba($muted, .75); }
-    &:focus { outline: none; border-color: $ink; }
-  }
-}
-
-.ghost {
-  padding: 14px;
-  border-radius: 99px;
-  font-weight: 700;
-  border: 1px solid $line-2;
-
-  &:hover { border-color: $ink; }
-}
-
-.solid {
-  padding: 14px;
-  border-radius: 99px;
-  font-weight: 700;
-  @include solid-ink;
-
-  &:disabled { opacity: .3; cursor: not-allowed; }
-
-  &--wide { width: 100%; margin-top: 20px; }
-}
-
-.muted {
-  color: $muted;
-  font-size: 13px;
-
-  b { color: $ink; font-weight: 700; }
-}
-
-.check {
-  width: 60px;
-  height: 60px;
-  margin: 0 auto 14px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  @include solid-ink;
-  @include icon(26px);
-}
-
-.rows {
-  margin: 18px 0 0;
-  border-top: 1px solid $line;
-  text-align: left;
-
-  div {
+  &__summary {
     display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 11px 2px;
-    border-bottom: 1px solid $line;
-    font-size: 13.5px;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
 
-    dt { color: $muted; }
-    dd { font-weight: 700; text-align: right; }
+  &__line {
+    font-size: 13px;
+    color: $bb-text-dim;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__time {
+    font-size: 20px;
+    font-weight: 700;
+    color: $bb-text;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bb-toggle__thumb,
+  .bb-cta,
+  .bb-day,
+  .bb-time,
+  .bb-barber__check,
+  .bb-service-item::before,
+  .bb-barber::before {
+    transition: none !important;
   }
 }
 </style>
