@@ -175,7 +175,17 @@
           <p class="section-sub">Funkcionalni DEMO primeri za barber, hair, beauty i nail salone — napravljeni da inspirišu.</p>
         </div>
 
-        <div class="examples__viewport" @mouseenter="pauseAuto" @mouseleave="resumeAuto">
+        <div
+          class="examples__viewport"
+          :class="{ 'examples__viewport--dragging': isDragging }"
+          @mouseenter="pauseAuto"
+          @mouseleave="resumeAuto"
+          @pointerdown="startCarouselDrag"
+          @pointermove="moveCarouselDrag"
+          @pointerup="endCarouselDrag"
+          @pointercancel="cancelCarouselDrag"
+          @dragstart.prevent
+        >
           <div class="examples__track" :style="trackStyle">
             <a
               class="examples__card"
@@ -184,11 +194,12 @@
               :href="item.url"
               target="_blank"
               rel="noopener noreferrer"
+              @click="handleCarouselCardClick"
             >
               <div class="examples__card-stage">
                 <span class="examples__card-chip">{{ item.type }}</span>
                 <span class="examples__card-live"><i></i> uživo</span>
-                <img :src="item.image" :alt="item.title" loading="lazy" />
+                <img :src="item.image" :alt="item.title" loading="lazy" draggable="false" />
               </div>
               <div class="examples__card-body">
                 <h3 class="examples__card-title">{{ item.title }}</h3>
@@ -427,19 +438,19 @@
     </section>
 
     <!-- CTA -->
-    <section class="cta" id="demo">
-      <div class="cta__container">
-        <div class="cta__blob cta__blob--1"></div>
-        <div class="cta__blob cta__blob--2"></div>
-        <div class="cta__content">
-          <h2 class="cta__title">Spremni da vaš salon<br/>pređe na sledeći nivo?</h2>
-          <p class="cta__sub">Isprobajte besplatno. Bez kreditne kartice. Bez obaveza.</p>
-          <form class="cta__form" @submit.prevent="submitForm">
+    <section class="final-cta" id="demo">
+      <div class="final-cta__container">
+        <div class="final-cta__blob final-cta__blob--1"></div>
+        <div class="final-cta__blob final-cta__blob--2"></div>
+        <div class="final-cta__content">
+          <h2 class="final-cta__title">Spremni da vaš salon<br/>pređe na sledeći nivo?</h2>
+          <p class="final-cta__sub">Isprobajte besplatno. Bez kreditne kartice. Bez obaveza.</p>
+          <form class="final-cta__form" @submit.prevent="submitForm">
             <input
               v-model="email"
               type="email"
               placeholder="Unesite vaš email..."
-              class="cta__input"
+              class="final-cta__input"
               required
             />
             <button type="submit" class="btn btn--primary btn--lg">
@@ -447,10 +458,10 @@
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>
           </form>
-          <div class="cta__success" v-if="formSubmitted">
+          <div class="final-cta__success" v-if="formSubmitted">
             ✅ Hvala! Kontaktiraćemo vas uskoro.
           </div>
-          <p class="cta__note">Bez skrivenih troškova. Uz svaki paket — 2 meseca besplatnog održavanja.</p>
+          <p class="final-cta__note">Bez skrivenih troškova. Uz svaki paket — 2 meseca besplatnog održavanja.</p>
         </div>
       </div>
     </section>
@@ -511,19 +522,27 @@ import modernZakazi from '@/assets/img/mockup-modern-life-zakazivanje.png'
 import nailWelcome from '@/assets/img/mockup-nail.png'
 import nailZakazi from '@/assets/img/mockup-nail-zakazivanje.png'
 import adminPanel from '@/assets/img/mockup-admin-panel.png'
+import barberBookingSlajder from '@/assets/img/barber-booking2-mockup.png'
+import barberBookingMinimalistic from '@/assets/img/barber-booking1-mockup.png'
+
 
 const designs = [
   { id: 1, type: 'Online zakazivanje', title: 'Barber Salon', text: 'Klijent bira uslugu, frizera, datum i termin bez dopisivanja preko poruka.', image: testZakazi, url: '/test-studio/zakazivanje' },
   { id: 2, type: 'Web sajt', title: 'Barber Salon', text: 'Početna strana sa uslugama, atmosferom i jasnim pozivom na zakazivanje.', image: testHomepage, url: '/test-studio' },
-  { id: 3, type: 'Online zakazivanje', title: 'Beauty Salon', text: 'Klijent bira uslugu, osobu, datum i termin bez dopisivanja preko poruka.', image: modernZakazi, url: '/modern-life/zakazivanje' },
-  { id: 4, type: 'Web sajt', title: 'Beauty Salon', text: 'Svetao sajt za hair i beauty salon sa uslugama, timom i zakazivanjem.', image: modernHomepage, url: '/modern-life' },
-  { id: 5, type: 'Online zakazivanje', title: 'Nail Salon', text: 'Zakazivanje za nail salon sa jasnim izborom usluge, termina i nail artist-a.', image: nailZakazi, url: '/nail-studio/zakazivanje' },
-  { id: 6, type: 'Web sajt', title: 'Nail Salon', text: 'Elegantan sajt za nail salon sa radovima, cenovnikom i direktnim zakazivanjem.', image: nailWelcome, url: '/nail-studio' },
-  { id: 7, type: 'Admin panel', title: 'Kontrola salona', text: 'Pregled termina, zaposlenih, usluga, klijenata, cena i statistike poslovanja.', image: adminPanel, url: '/admin-panel' },
+
+  { id: 3, type: 'Online zakazivanje', title: 'Barber Salon', text: 'Moderna minimalisticka stranica za zakazivanje, personalizovana u bojama brenda.', image: barberBookingMinimalistic, url: '/barber-booking' },
+
+  { id: 4, type: 'Online zakazivanje', title: 'Barber Salon', text: 'Stranica za zakazivanje sa premium narandzastom bojom i slajderom.', image: barberBookingSlajder, url: '/barber-booking2' },
+
+  { id: 5, type: 'Online zakazivanje', title: 'Beauty Salon', text: 'Klijent bira uslugu, osobu, datum i termin bez dopisivanja preko poruka.', image: modernZakazi, url: '/modern-life/zakazivanje' },
+  { id: 6, type: 'Web sajt', title: 'Beauty Salon', text: 'Svetao sajt za hair i beauty salon sa uslugama, timom i zakazivanjem.', image: modernHomepage, url: '/modern-life' },
+  { id: 7, type: 'Online zakazivanje', title: 'Nail Salon', text: 'Zakazivanje za nail salon sa jasnim izborom usluge, termina i nail artist-a.', image: nailZakazi, url: '/nail-studio/zakazivanje' },
+  { id: 8, type: 'Web sajt', title: 'Nail Salon', text: 'Elegantan sajt za nail salon sa radovima, cenovnikom i direktnim zakazivanjem.', image: nailWelcome, url: '/nail-studio' },
+  { id: 9, type: 'Admin panel', title: 'Kontrola salona', text: 'Pregled termina, zaposlenih, usluga, klijenata, cena i statistike poslovanja.', image: adminPanel, url: '/admin-panel' },
 ]
 
 // Duplirana lista za beskonačni (infinite) loop carousela
-const loopDesigns = [...designs, ...designs]
+const loopDesigns = [...designs, ...designs, ...designs]
 
 const instagramPosts = [
   { id: 1, image: instaPlaceholder1, url: 'https://www.instagram.com/p/DYN4HRlMvdP/' },
@@ -549,47 +568,182 @@ export default defineComponent({
       scrolled.value = window.scrollY > 60
     }
 
-    // ── Infinite auto carousel ──
+    // ── Infinite auto + manual drag/swipe carousel ──
     const SLIDE_MS = 3500
     const TRANSITION_MS = 600
-    const slide = ref(0)
+    const DRAG_THRESHOLD = 54
+    const LOOP_SIZE = designs.length
+
+    // Počinje od srednje kopije liste kako bi korisnik odmah
+    // mogao da prevlači i ulevo i udesno.
+    const slide = ref(LOOP_SIZE)
     const noTransition = ref(false)
+    const isDragging = ref(false)
+    const dragOffset = ref(0)
+    const manualControl = ref(false)
+
     let timer: number | undefined
+    let loopResetTimer: number | undefined
     let reduceMotion = false
+    let dragStartX = 0
+    let dragStartY = 0
+    let activePointerId: number | null = null
+    let draggedEnoughToBlockClick = false
+    let clickBlockTimer: number | undefined
 
     const trackStyle = computed(() => ({
-      transform: `translateX(calc(${slide.value} * (var(--card-w) + var(--card-gap)) * -1))`,
-      transition: noTransition.value ? 'none' : `transform ${TRANSITION_MS}ms cubic-bezier(.4,0,.2,1)`,
+      transform: `translate3d(calc(${slide.value} * (var(--card-w) + var(--card-gap)) * -1 + ${dragOffset.value}px), 0, 0)`,
+      transition:
+        noTransition.value || isDragging.value
+          ? 'none'
+          : `transform ${TRANSITION_MS}ms cubic-bezier(.4,0,.2,1)`,
     }))
 
-    const activeDot = computed(() => ((slide.value % designs.length) + designs.length) % designs.length)
+    const activeDot = computed(
+      () => ((slide.value % LOOP_SIZE) + LOOP_SIZE) % LOOP_SIZE,
+    )
 
-    const goNext = () => {
-      slide.value += 1
-      if (slide.value >= designs.length) {
-        window.setTimeout(() => {
+    const resetLoopPositionIfNeeded = () => {
+      if (loopResetTimer) window.clearTimeout(loopResetTimer)
+
+      if (slide.value >= LOOP_SIZE * 2 || slide.value <= 0) {
+        loopResetTimer = window.setTimeout(() => {
           noTransition.value = true
-          slide.value = 0
-          requestAnimationFrame(() => requestAnimationFrame(() => { noTransition.value = false }))
+          slide.value = LOOP_SIZE
+
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              noTransition.value = false
+            })
+          })
         }, TRANSITION_MS + 40)
       }
     }
 
+    const goNext = () => {
+      noTransition.value = false
+      slide.value += 1
+      resetLoopPositionIfNeeded()
+    }
+
+    const goPrev = () => {
+      noTransition.value = false
+      slide.value -= 1
+      resetLoopPositionIfNeeded()
+    }
+
     const startAuto = () => {
+      if (manualControl.value || reduceMotion) return
       stopAuto()
       timer = window.setInterval(goNext, SLIDE_MS)
     }
+
     const stopAuto = () => {
-      if (timer) { window.clearInterval(timer); timer = undefined }
+      if (timer) {
+        window.clearInterval(timer)
+        timer = undefined
+      }
     }
+
     const pauseAuto = () => stopAuto()
-    const resumeAuto = () => { if (!reduceMotion) startAuto() }
+
+    // Nakon običnog hovera auto carousel može da nastavi.
+    // Nakon prve ručne interakcije više se ne uključuje.
+    const resumeAuto = () => {
+      if (!manualControl.value && !reduceMotion) startAuto()
+    }
+
+    const disableAutoPermanently = () => {
+      manualControl.value = true
+      stopAuto()
+    }
 
     const goToSlide = (index: number) => {
-      stopAuto()
+      disableAutoPermanently()
       noTransition.value = false
-      slide.value = index
-      resumeAuto()
+
+      // Ostajemo u srednjoj kopiji kako bi oba smera ostala dostupna.
+      slide.value = LOOP_SIZE + index
+    }
+
+    const startCarouselDrag = (event: PointerEvent) => {
+      if (!event.isPrimary || event.button !== 0) return
+
+      disableAutoPermanently()
+
+      activePointerId = event.pointerId
+      dragStartX = event.clientX
+      dragStartY = event.clientY
+      dragOffset.value = 0
+      draggedEnoughToBlockClick = false
+      isDragging.value = true
+      noTransition.value = true
+
+      const viewport = event.currentTarget as HTMLElement
+      viewport.setPointerCapture?.(event.pointerId)
+    }
+
+    const moveCarouselDrag = (event: PointerEvent) => {
+      if (!isDragging.value || event.pointerId !== activePointerId) return
+
+      const deltaX = event.clientX - dragStartX
+      const deltaY = event.clientY - dragStartY
+
+      // Tek kada je pokret očigledno horizontalan pomeramo carousel.
+      // Vertikalni pokret ostaje slobodan za normalno skrolovanje stranice.
+      if (Math.abs(deltaX) > Math.abs(deltaY) || Math.abs(deltaX) > 12) {
+        dragOffset.value = deltaX
+
+        if (Math.abs(deltaX) > 8) {
+          draggedEnoughToBlockClick = true
+        }
+      }
+    }
+
+    const finishCarouselDrag = (event: PointerEvent, cancelled = false) => {
+      if (!isDragging.value || event.pointerId !== activePointerId) return
+
+      const viewport = event.currentTarget as HTMLElement
+      if (viewport.hasPointerCapture?.(event.pointerId)) {
+        viewport.releasePointerCapture(event.pointerId)
+      }
+
+      const finalOffset = dragOffset.value
+
+      isDragging.value = false
+      activePointerId = null
+      noTransition.value = false
+      dragOffset.value = 0
+
+      if (!cancelled) {
+        if (finalOffset <= -DRAG_THRESHOLD) {
+          goNext()
+        } else if (finalOffset >= DRAG_THRESHOLD) {
+          goPrev()
+        }
+      }
+
+      if (draggedEnoughToBlockClick) {
+        if (clickBlockTimer) window.clearTimeout(clickBlockTimer)
+        clickBlockTimer = window.setTimeout(() => {
+          draggedEnoughToBlockClick = false
+        }, 120)
+      }
+    }
+
+    const endCarouselDrag = (event: PointerEvent) => {
+      finishCarouselDrag(event)
+    }
+
+    const cancelCarouselDrag = (event: PointerEvent) => {
+      finishCarouselDrag(event, true)
+    }
+
+    const handleCarouselCardClick = (event: MouseEvent) => {
+      if (draggedEnoughToBlockClick) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
     }
 
     onMounted(() => {
@@ -603,6 +757,10 @@ export default defineComponent({
     onUnmounted(() => {
       window.removeEventListener('scroll', handleScroll)
       stopAuto()
+
+      if (loopResetTimer) window.clearTimeout(loopResetTimer)
+      if (clickBlockTimer) window.clearTimeout(clickBlockTimer)
+
       document.body.style.overflow = ''
     })
 
@@ -907,9 +1065,15 @@ export default defineComponent({
       loopDesigns,
       trackStyle,
       activeDot,
+      isDragging,
       goToSlide,
       pauseAuto,
       resumeAuto,
+      startCarouselDrag,
+      moveCarouselDrag,
+      endCarouselDrag,
+      cancelCarouselDrag,
+      handleCarouselCardClick,
       instagramPosts,
     }
   },
@@ -968,6 +1132,27 @@ body {
   background: $white;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  display: block;
+  overflow-x: hidden;
+}
+
+// Omogućava full-width sekcije čak i kada projekat još ima
+// podrazumevani Vite #app max-width stil.
+html,
+body {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#app,
+.landing {
+  width: 100%;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  text-align: initial;
 }
 
 a { text-decoration: none; color: inherit; }
@@ -1370,28 +1555,58 @@ img { max-width: 100%; display: block; }
 .hero {
   position: relative;
   min-height: 100vh;
-  background:
-    radial-gradient(120% 115% at 50% -10%, $tr-bg-soft 0%, $tr-bg 58%, $tr-bg-deep 100%);
-  overflow: hidden;
   display: flex;
   align-items: center;
+  isolation: isolate;
 
-  &__bg {
+  // Ne sme biti hidden, jer bi full-viewport background bio isečen
+  // na širinu spoljnog containera.
+  overflow: visible;
+  background: transparent;
+
+  // Sivi hero background ide punom širinom browsera.
+  &::before {
+    content: '';
     position: absolute;
-    inset: 0;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 100vw;
+    width: 100dvw;
+    transform: translateX(-50%);
+    z-index: -2;
     pointer-events: none;
+    background:
+      radial-gradient(120% 115% at 50% -10%, $tr-bg-soft 0%, $tr-bg 58%, $tr-bg-deep 100%);
+  }
+
+  // Tačkasti overlay takođe ide punom širinom browsera.
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 100vw;
+    width: 100dvw;
+    transform: translateX(-50%);
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      radial-gradient(rgba($tr-blue,.28) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  // Stari unutrašnji background više nije potreban,
+  // jer je bio vezan za širinu hero elementa/containera.
+  &__bg {
+    display: none;
   }
 
   &__blob { display: none; }
 
   &__grid {
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(rgba($tr-blue,.28) 1px, transparent 1px);
-    background-size: 28px 28px;
-    background-size: 64px 64px;
-    // mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 40%, transparent 100%);
-    // -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 40%, transparent 100%);
+    display: none;
   }
 
   &__container {
@@ -1731,12 +1946,25 @@ img { max-width: 100%; display: block; }
     --card-gap: 24px;
     overflow: hidden;
     padding: 8px 0 6px;
+    cursor: grab;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+
+    &--dragging {
+      cursor: grabbing;
+
+      .examples__card {
+        pointer-events: none;
+      }
+    }
   }
 
   &__track {
     display: flex;
     gap: var(--card-gap);
     will-change: transform;
+    backface-visibility: hidden;
   }
 
   &__card {
@@ -2581,20 +2809,28 @@ img { max-width: 100%; display: block; }
 }
 
 // ─── CTA ─────────────────────────────────────────────────
-.cta {
-  padding: 100px 0;
-  background: #15191F;
+.final-cta {
   position: relative;
+  z-index: 0;
+  isolation: isolate;
+  display: block;
+  width: 100%;
+  clear: both;
+  margin: 0;
+  padding: 100px 0;
   overflow: hidden;
   text-align: center;
+  background:
+    radial-gradient(120% 115% at 50% -10%, $tr-bg-soft 0%, $tr-bg 58%, $tr-bg-deep 100%);
 
+  // Isti tačkasti overlay kao u hero sekciji.
   &::before {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(rgba(61, 102, 149, .18) 1px, transparent 1px);
+    z-index: 0;
+    background-image: radial-gradient(rgba($tr-blue,.28) 1px, transparent 1px);
     background-size: 64px 64px;
-    opacity: .75;
     pointer-events: none;
   }
 
@@ -2712,6 +2948,12 @@ img { max-width: 100%; display: block; }
 
 // ─── FOOTER ──────────────────────────────────────────────
 .footer {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  clear: both;
+  margin: 0;
   background: $dark-2;
   color: $white;
   padding: 64px 0 0;
@@ -2834,7 +3076,7 @@ img { max-width: 100%; display: block; }
 // ─── RESPONSIVE ──────────────────────────────────────────
 @media (max-width: 640px) {
   .section-title { font-size: 1.75rem; }
-  .how, .features, .benefits, .pricing, .faq, .cta, .instagram { padding: 64px 0; }
+  .how, .features, .benefits, .pricing, .faq, .final-cta, .instagram { padding: 64px 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {

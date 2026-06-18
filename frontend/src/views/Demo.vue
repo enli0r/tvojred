@@ -103,7 +103,7 @@
           <h2>Dopada vam se neki od primera?</h2>
           <p>Krenimo od njega — dizajn i funkcije podešavamo vašem salonu.</p>
         </div>
-        <RouterLink class="btn btn--primary btn--lg" to="/paketi">
+        <RouterLink class="btn btn--primary btn--lg" to="/paketi-i-cene">
           Pogledaj pakete i cene
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </RouterLink>
@@ -123,6 +123,8 @@ import modernZakazi from '@/assets/img/mockup-modern-life-zakazivanje.png'
 import nailWelcome from '@/assets/img/mockup-nail.png'
 import nailZakazi from '@/assets/img/mockup-nail-zakazivanje.png'
 import adminPanel from '@/assets/img/mockup-admin-panel.png'
+import barberBookingSlajder from '@/assets/img/barber-booking2-mockup.png'
+import barberBookingMinimalistic from '@/assets/img/barber-booking1-mockup.png'
 
 type FilterValue = 'all' | 'booking' | 'website' | 'admin'
 
@@ -159,6 +161,26 @@ const designs = [
   {
     id: 3,
     category: 'booking',
+    vertical: 'Barbershop',
+    type: 'Online zakazivanje',
+    title: 'Taper',
+    text: 'Moderna minimalisticka stranica za zakazivanje, personalizovana u bojama brenda.',
+    image: barberBookingMinimalistic,
+    url: '/barber-booking',
+  },
+  {
+    id: 4,
+    category: 'booking',
+    vertical: 'Barbershop',
+    type: 'Online zakazivanje',
+    title: 'Cut IT',
+    text: 'Stranica za zakazivanje sa premium narandzastom bojom i slajderom.',
+    image: barberBookingSlajder,
+    url: '/barber-booking2',
+  },
+  {
+    id: 5,
+    category: 'booking',
     vertical: 'Hair & beauty',
     type: 'Online zakazivanje',
     title: 'Modern Life',
@@ -167,7 +189,7 @@ const designs = [
     url: '/modern-life/zakazivanje',
   },
   {
-    id: 4,
+    id: 6,
     category: 'website',
     vertical: 'Hair & beauty',
     type: 'Web sajt',
@@ -177,7 +199,7 @@ const designs = [
     url: '/modern-life',
   },
   {
-    id: 5,
+    id: 7,
     category: 'booking',
     vertical: 'Nail studio',
     type: 'Online zakazivanje',
@@ -187,7 +209,7 @@ const designs = [
     url: '/nail-studio/zakazivanje',
   },
   {
-    id: 6,
+    id: 8,
     category: 'website',
     vertical: 'Nail studio',
     type: 'Web sajt',
@@ -197,7 +219,7 @@ const designs = [
     url: '/nail-studio',
   },
   {
-    id: 7,
+    id: 9,
     category: 'admin',
     vertical: 'Upravljanje',
     type: 'Admin panel',

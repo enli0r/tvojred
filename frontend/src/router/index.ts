@@ -24,6 +24,11 @@ import AdminPanelStatistika from '../views/AdminPanelStatistika.vue';
 import Demo from '../views/Demo.vue';
 import Test123 from '../views/Test123.vue';
 import PaketiCene from '../views/PaketiCene.vue';
+import BarberBooking from '../views/BarberBooking.vue';
+import BarberBooking2 from '../views/BarberBooking2.vue';
+import BarberBooking3 from '../views/BarberBooking3.vue';
+import BarberBooking4 from '../views/BarberBooking4.vue';
+import NikisHouse from '../views/NikisHouse.vue';
 
 
 
@@ -32,6 +37,15 @@ const routes = [
   { path: '/demo', name: 'Demo', component: Demo },
   { path: '/paketi-i-cene', name: 'PaketiCene', component: PaketiCene },
   // { path: '/test123', name: 'Test123', component: Test123 },
+
+  { path: '/barber-booking', name: 'BarberBooking', component: BarberBooking },
+  { path: '/barber-booking2', name: 'BarberBooking2', component: BarberBooking2 },
+  { path: '/barber-booking3', name: 'BarberBooking3', component: BarberBooking3 },
+  { path: '/barber-booking4', name: 'BarberBooking4', component: BarberBooking4 },
+  { path: '/nikishouse', name: 'NikisHouse', component: NikisHouse },
+
+
+
 
   { path: '/claude', name: 'ClaudeAi', component: ClaudeAi },
 
