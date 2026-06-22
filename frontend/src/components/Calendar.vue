@@ -17,6 +17,8 @@
         </svg>
       </div>
 
+      <!-- <div></div> -->
+
       <div>
         <h2>Datum</h2>
         <p>Dostupni narednih 14 dana</p>

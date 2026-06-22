@@ -9,13 +9,12 @@
         </div>
         <ul class="navbar__links">
           <li><a href="#kako-radi">Kako radi</a></li>
+          <li><RouterLink to="/demo">Primeri</RouterLink></li>
           <li><a href="#funkcije">Funkcije</a></li>
-          <li><a href="#cene">Cene</a></li>
-          <li><a href="#kontakt">Kontakt</a></li>
+          <li><a href="#kontakt-cta">Kontakt</a></li>
         </ul>
         <div class="navbar__cta">
-          <RouterLink to="/paketi-i-cene" class="btn btn--outline">Paketi i cene</RouterLink>
-          <RouterLink to="/demo" class="btn btn--primary">Probajte besplatno</RouterLink>
+          <a href="#kontakt-cta" class="btn btn--primary">Hoću svoj salon online</a>
         </div>
         <button
           class="navbar__hamburger"
@@ -47,30 +46,30 @@
         <a href="#kako-radi" @click="menuOpen = false"><span class="navbar__drawer-dot"></span> Kako radi</a>
         <RouterLink to="/demo" @click="menuOpen = false"><span class="navbar__drawer-dot"></span> Primeri</RouterLink>
         <a href="#funkcije" @click="menuOpen = false"><span class="navbar__drawer-dot"></span> Funkcije</a>
-        <a href="#instagram" @click="menuOpen = false"><span class="navbar__drawer-dot"></span> Kontakt</a>
+        <a href="#kontakt-cta" @click="menuOpen = false"><span class="navbar__drawer-dot"></span> Kontakt</a>
       </nav>
 
       <div class="navbar__drawer-extra">
-        <RouterLink
-          to="/demo"
+        <a
+          href="#kontakt-cta"
           class="btn btn--primary btn--lg"
           @click="menuOpen = false"
         >
-          <span>Probajte besplatno</span>
+          <span>Hoću svoj salon online</span>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
-        </RouterLink>
+        </a>
 
         <RouterLink
-          to="/paketi-i-cene"
+          to="/demo"
           class="btn btn--ghost btn--lg"
           @click="menuOpen = false"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
             <path d="M8 5v14l11-7z"/>
           </svg>
-          Paketi i cene
+          Pogledaj primere
         </RouterLink>
       </div>
 
@@ -101,21 +100,21 @@
             Online zakazivanje za salone
           </div>
           <h1 class="hero__title">
-            Vaš salon ide<br />
+            Tvoj salon ide<br />
             <span class="hero__title-gradient">online.</span>
           </h1>
           <p class="hero__subtitle">
             Profesionalni sajt i pametni sistem za online zakazivanje — sve na jednom mestu. Bez poziva, bez papira, bez glavobolje.
           </p>
           <div class="hero__actions">
-            <RouterLink to="/demo" class="btn btn--primary btn--lg">
-              <span>Probajte besplatno</span>
+            <a href="#kontakt-cta" class="btn btn--primary btn--lg">
+              <span>Hoću svoj salon online</span>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </RouterLink>
+            </a>
 
-            <RouterLink to="/paketi-i-cene" class="btn btn--ghost btn--lg">
+            <RouterLink to="/demo" class="btn btn--ghost btn--lg">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              Paketi i cene
+              Pogledaj primere
             </RouterLink>
           </div>
           <div class="hero__stats">
@@ -134,13 +133,13 @@
             />
           </div>
           <div class="hero__floating hero__floating--1">
-            <span>✅</span> Termin zakazan!
+            <span>🔔</span> Novo zakazivanje
           </div>
           <div class="hero__floating hero__floating--2">
-            <span>📅</span> +127 termina danas
+            <span>✅</span> Termin potvrđen
           </div>
           <div class="hero__floating hero__floating--3">
-            <span>⭐</span> 4.9 prosečna ocena
+            <span>⏰</span> Podsetnik poslat
           </div>
         </div>
       </div>
@@ -152,15 +151,18 @@
         <div class="how__header">
           <div class="section-tag">Kako radi</div>
           <h2 class="section-title">Od ideje do gotovog sajta<br/>u tri jednostavna koraka</h2>
-          <p class="section-sub">Saradnja od prve ideje do lansiranja. Dizajn pravimo po vašoj meri, vodimo vas kroz svaki korak — bez tehničkih komplikacija.</p>
+          <p class="section-sub">Saradnja od prve ideje do lansiranja. Dizajn pravimo po tvojoj meri, vodimo te kroz svaki korak — bez tehničkih komplikacija.</p>
         </div>
         <div class="how__steps">
           <div class="how__step" v-for="(step, index) in steps" :key="step.title">
-            <div class="how__step-number">{{ String(index + 1).padStart(2, '0') }}</div>
-            <div class="how__step-icon">{{ step.icon }}</div>
-            <h3 class="how__step-title">{{ step.title }}</h3>
-            <p class="how__step-desc">{{ step.desc }}</p>
-            <div class="how__step-connector" v-if="index < steps.length - 1"></div>
+            <div class="how__step-marker">
+              <span class="how__step-icon" v-html="step.icon"></span>
+            </div>
+            <div class="how__step-content">
+              <span class="how__step-num">Korak {{ String(index + 1).padStart(2, '0') }}</span>
+              <h3 class="how__step-title">{{ step.title }}</h3>
+              <p class="how__step-desc">{{ step.desc }}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -171,30 +173,19 @@
       <div class="examples__container">
         <div class="examples__header">
           <div class="section-tag">Primeri dizajna</div>
-          <h2 class="section-title">Ovako bi mogao da izgleda vaš salon online</h2>
-          <p class="section-sub">Funkcionalni DEMO primeri za barber, hair, beauty i nail salone — napravljeni da inspirišu.</p>
+          <h2 class="section-title">Ovako bi mogao da izgleda tvoj salon online</h2>
+          <p class="section-sub">Funkcionalni primeri za barber, hair, beauty i nail salone — napravljeni da inspirišu.</p>
         </div>
 
-        <div
-          class="examples__viewport"
-          :class="{ 'examples__viewport--dragging': isDragging }"
-          @mouseenter="pauseAuto"
-          @mouseleave="resumeAuto"
-          @pointerdown="startCarouselDrag"
-          @pointermove="moveCarouselDrag"
-          @pointerup="endCarouselDrag"
-          @pointercancel="cancelCarouselDrag"
-          @dragstart.prevent
-        >
-          <div class="examples__track" :style="trackStyle">
+        <div class="examples__viewport" ref="viewportRef">
+          <div class="examples__track">
             <a
               class="examples__card"
-              v-for="(item, i) in loopDesigns"
-              :key="i"
+              v-for="item in designs"
+              :key="item.id"
               :href="item.url"
               target="_blank"
               rel="noopener noreferrer"
-              @click="handleCarouselCardClick"
             >
               <div class="examples__card-stage">
                 <span class="examples__card-chip">{{ item.type }}</span>
@@ -205,7 +196,7 @@
                 <h3 class="examples__card-title">{{ item.title }}</h3>
                 <p class="examples__card-desc">{{ item.text }}</p>
                 <span class="examples__card-cta">
-                  Otvori demo
+                  Probaj primer
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </span>
               </div>
@@ -214,13 +205,14 @@
         </div>
 
         <div class="examples__controls">
-          <div class="examples__dots" aria-hidden="true">
+          <div class="examples__dots" role="tablist" aria-label="Navigacija primera">
             <button
               v-for="(_, index) in designs"
               :key="index"
               class="examples__dot"
-              :class="{ 'examples__dot--active': activeDot === index }"
+              :class="{ 'examples__dot--active': activeIndex === index }"
               type="button"
+              :aria-label="`Primer ${index + 1}`"
               @click="goToSlide(index)"
             ></button>
           </div>
@@ -232,12 +224,26 @@
       </div>
     </section>
 
+    <!-- MID CTA BAND -->
+    <section class="cta-band">
+      <div class="cta-band__inner">
+        <div class="cta-band__text">
+          <h2>Sviđa ti se neki od primera?</h2>
+          <p>Napravimo ti besplatan primer tvog salona — kreni od onog koji ti se najviše dopada.</p>
+        </div>
+        <a href="#kontakt-cta" class="btn btn--primary btn--lg cta-band__cta">
+          Hoću svoj salon online
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </section>
+
     <!-- FUNKCIJE -->
     <section class="features" id="funkcije">
       <div class="features__container">
         <div class="features__header">
           <div class="section-tag">Funkcije</div>
-          <h2 class="section-title">Sve što vam treba,<br/>ništa što vam ne treba</h2>
+          <h2 class="section-title">Sve što ti treba,<br/>ništa što ti ne treba</h2>
         </div>
         <div class="features__grid">
           <div
@@ -264,44 +270,18 @@
     <!-- PREDNOSTI -->
     <section class="benefits">
       <div class="benefits__container">
-        <div class="benefits__content">
+        <div class="benefits__header">
           <div class="section-tag">Zašto mi?</div>
           <h2 class="section-title">Manje poziva.<br/>Više zadovoljnih klijenata.</h2>
           <p class="section-sub">Salonima koji pređu na online zakazivanje sistem oslobađa vreme i smanjuje propuštene termine — manje telefoniranja, više popunjenih termina.</p>
-          <div class="benefits__list">
-            <div class="benefits__item" v-for="benefit in benefits" :key="benefit.title">
-              <div class="benefits__item-icon">{{ benefit.icon }}</div>
-              <div>
-                <h4>{{ benefit.title }}</h4>
-                <p>{{ benefit.desc }}</p>
-              </div>
-            </div>
-          </div>
         </div>
-        <div class="benefits__visual">
-          <div class="benefits__chart">
-            <div class="benefits__chart-title">Procena efekta nakon prelaska online</div>
-            <div class="benefits__chart-bars">
-              <div class="benefits__chart-bar-group" v-for="bar in chartBars" :key="bar.label">
-                <div class="benefits__chart-bar-wrap">
-                  <div class="benefits__chart-bar" :style="{ height: bar.before + '%' }">
-                    <span>{{ bar.before }}%</span>
-                  </div>
-                  <div class="benefits__chart-bar benefits__chart-bar--after" :style="{ height: bar.after + '%' }">
-                    <span>{{ bar.after }}%</span>
-                  </div>
-                </div>
-                <div class="benefits__chart-label">{{ bar.label }}</div>
-              </div>
+        <div class="benefits__grid">
+          <div class="benefits__item" v-for="benefit in benefits" :key="benefit.title">
+            <div class="benefits__item-icon" v-html="benefit.icon"></div>
+            <div class="benefits__item-body">
+              <h4>{{ benefit.title }}</h4>
+              <p>{{ benefit.desc }}</p>
             </div>
-            <div class="benefits__chart-legend">
-              <span><i class="legend-dot legend-dot--before"></i> Pre</span>
-              <span><i class="legend-dot legend-dot--after"></i> Posle</span>
-            </div>
-          </div>
-          <div class="benefits__note">
-            <div class="benefits__note-icon">💡</div>
-            <p>Procene su okvirne i zavise od tipa salona, broja termina i navika klijenata.</p>
           </div>
         </div>
       </div>
@@ -311,60 +291,34 @@
     <section class="pricing" id="cene">
       <div class="pricing__container">
         <div class="pricing__header">
-          <div class="section-tag">Cene</div>
-          <h2 class="section-title">Transparentne cene.<br/>Bez skrivenih troškova.</h2>
-          <div class="pricing__toggle">
-            <span :class="{ active: !installments }">Odjednom</span>
-            <button class="pricing__toggle-btn" @click="installments = !installments" :class="{ active: installments }">
-              <span class="pricing__toggle-circle"></span>
-            </button>
-            <span :class="{ active: installments }">Na 6 rata</span>
-          </div>
+          <div class="section-tag">Cena</div>
+          <h2 class="section-title">Jasna cena.<br/>Bez skrivenih troškova.</h2>
+          <p class="section-sub" style="margin: 0 auto;">Kompletan sajt sa sistemom za online zakazivanje i admin panelom — jednokratno, bez mesečnih troškova.</p>
         </div>
-        <div class="pricing__cards">
-          <div
-            class="pricing__card"
-            v-for="plan in plans"
-            :key="plan.name"
-            :class="{ 'pricing__card--popular': plan.popular }"
-          >
-            <div class="pricing__card-badge" v-if="plan.popular">Najpopularniji</div>
-            <div class="pricing__card-icon">{{ plan.icon }}</div>
-            <h3 class="pricing__card-name">{{ plan.name }}</h3>
-            <p class="pricing__card-desc">{{ plan.desc }}</p>
 
-            <div class="pricing__card-price" v-if="!plan.custom">
-              <span class="pricing__card-currency">€</span>
-              <span class="pricing__card-amount">{{ displayPlanPrice(plan.price) }}</span>
-              <span class="pricing__card-period">{{ installments ? '/ mes × 6' : 'jednokratno' }}</span>
+        <div class="offer">
+          <div class="offer__panel">
+            <span class="offer__founder">Osnivačka ponuda · prvih 5 salona</span>
+            <div class="offer__price">
+              <span class="offer__price-old">399€</span>
+              <span class="offer__price-now">250€</span>
+              <span class="offer__price-note">jednokratno</span>
             </div>
-            <div class="pricing__card-price pricing__card-price--custom" v-else>
-              <span class="pricing__card-amount-custom">Custom</span>
-              <span class="pricing__card-period-custom">po dogovoru</span>
-            </div>
-
-            <button
-              type="button"
-              class="btn"
-              :class="plan.popular ? 'btn--primary' : 'btn--outline'"
-              @click="choosePlan(plan.name)"
-            >
-              {{ plan.cta }}
-            </button>
-            <ul class="pricing__card-features">
-              <li v-for="feature in plan.features" :key="feature" class="pricing__card-feature">
+            <p class="offer__desc">
+              Prvih 5 salona dobija punu izradu po osnivačkoj ceni — u zamenu za kratku recenziju i mogućnost da tvoj salon prikažemo kao primer.
+            </p>
+            <ul class="offer__list">
+              <li v-for="item in offerIncludes" :key="item">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
-                {{ feature }}
+                {{ item }}
               </li>
             </ul>
+            <a href="#kontakt-cta" class="btn btn--primary btn--lg offer__cta">
+              Hoću svoj salon online
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <p class="offer__small">Plaćanje odjednom ili na rate · 2 meseca besplatne podrške</p>
           </div>
-        </div>
-
-        <div class="pricing__more">
-          <RouterLink to="/paketi-i-cene" class="pricing__more-link">
-            Pogledajte sve detalje na stranici Paketi i cene
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </RouterLink>
         </div>
       </div>
     </section>
@@ -399,7 +353,7 @@
       <div class="instagram__container">
         <div class="instagram__header">
           <div class="section-tag">Instagram</div>
-          <h2 class="section-title">Zavirite u naš svet<br/>na Instagramu</h2>
+          <h2 class="section-title">Zaviri u naš svet<br/>na Instagramu</h2>
           <p class="section-sub">
             Primere radova, savete i novosti objavljujemo na
             <a href="https://instagram.com/tvojred.rs" target="_blank" rel="noopener noreferrer">@tvojred.rs</a>.
@@ -437,44 +391,78 @@
       </div>
     </section>
 
-    <!-- CTA -->
-    <section class="final-cta" id="demo">
+    <!-- CTA / KONTAKT -->
+    <section class="final-cta" id="kontakt-cta">
       <div class="final-cta__container">
-        <div class="final-cta__blob final-cta__blob--1"></div>
-        <div class="final-cta__blob final-cta__blob--2"></div>
-        <div class="final-cta__content">
-          <h2 class="final-cta__title">Spremni da vaš salon<br/>pređe na sledeći nivo?</h2>
-          <p class="final-cta__sub">Isprobajte besplatno. Bez kreditne kartice. Bez obaveza.</p>
-          <form class="final-cta__form" @submit.prevent="submitForm">
-            <input
-              v-model="email"
-              type="email"
-              placeholder="Unesite vaš email..."
-              class="final-cta__input"
-              required
-            />
-            <button type="submit" class="btn btn--primary btn--lg">
-              Počnite besplatno
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </button>
-          </form>
-          <div class="final-cta__success" v-if="formSubmitted">
-            ✅ Hvala! Kontaktiraćemo vas uskoro.
+        <div class="final-cta__pitch">
+          <span class="final-cta__offerbadge">
+            <span class="final-cta__offerbadge-dot"></span>
+            Osnivačka ponuda · prvih 5 salona 250€
+          </span>
+
+          <h2 class="final-cta__title">Tvoj salon zaslužuje<br/>da bude <span class="final-cta__accent">online.</span></h2>
+
+          <p class="final-cta__sub">
+            Pošalji nam ime salona i napravimo ti besplatan funkcionalni primer baš za njega. Vidiš tačno kako izgleda online — pre nego što platiš dinar.
+          </p>
+
+          <ol class="final-cta__steps">
+            <li class="final-cta__step">
+              <span class="final-cta__step-num">01</span>
+              <span class="final-cta__step-label">Pošalji instagram ili slike salona</span>
+            </li>
+            <li class="final-cta__step">
+              <span class="final-cta__step-num">02</span>
+              <span class="final-cta__step-label">Pravimo ti primer, besplatno</span>
+            </li>
+            <li class="final-cta__step">
+              <span class="final-cta__step-num">03</span>
+              <span class="final-cta__step-label">Vidiš svoj salon online</span>
+            </li>
+          </ol>
+
+          <a
+            href="https://ig.me/m/tvojred.rs"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn--primary btn--lg final-cta__primary"
+            @click="trackLead"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            Piši nam na Instagramu
+          </a>
+
+          <p class="final-cta__or">ili</p>
+
+          <div class="final-cta__contacts">
+            <a href="https://wa.me/381653089240?text=Zdravo!%20Zanima%20me%20besplatan%20prikaz%20za%20moj%20salon." target="_blank" rel="noopener noreferrer" class="btn btn--ghost" @click="trackLead">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>
+              WhatsApp
+            </a>
+            <a href="viber://chat?number=%2B381653089240" class="btn btn--ghost" @click="trackLead">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Viber
+            </a>
+            <a href="tel:+381653089240" class="btn btn--ghost" @click="trackLead">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Pozovi
+            </a>
           </div>
-          <p class="final-cta__note">Bez skrivenih troškova. Uz svaki paket — 2 meseca besplatnog održavanja.</p>
+
+          <p class="final-cta__note">Napiši ime salona kad se javiš — odgovaramo obično u toku dana.</p>
         </div>
       </div>
     </section>
 
     <!-- FOOTER -->
-    <footer class="footer" id="kontakt">
+    <footer class="footer">
       <div class="footer__container">
         <div class="footer__top">
           <div class="footer__brand">
             <div class="footer__logo">
               <span class="navbar__logo-text">tvojred<span>.rs</span></span>
             </div>
-            <p class="footer__brand-desc">Pametno rešenje za online zakazivanje i digitalni nastup frizerskih i kozmetičkih salona u Srbiji.</p>
+            <p class="footer__brand-desc">Sajtovi i online zakazivanje po meri za frizerske, beauty i nail salone u Srbiji.</p>
             <div class="footer__socials">
               <a href="https://instagram.com/tvojred.rs" target="_blank" rel="noopener noreferrer" class="footer__social" aria-label="Instagram">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -483,37 +471,57 @@
               </a>
             </div>
           </div>
-          <div class="footer__links-group" v-for="group in footerLinks" :key="group.title">
-            <h4>{{ group.title }}</h4>
+
+          <div class="footer__links-group">
+            <h4>Sajt</h4>
             <ul>
-              <li v-for="link in group.links" :key="link.label">
-                <component :is="link.to ? 'RouterLink' : 'a'" v-bind="link.to ? { to: link.to } : { href: link.href }">{{ link.label }}</component>
-              </li>
+              <li><a href="#kako-radi">Kako radi</a></li>
+              <li><a href="#funkcije">Funkcije</a></li>
+              <li><a href="#cene">Cena</a></li>
+              <li><RouterLink to="/demo">Primeri</RouterLink></li>
+            </ul>
+          </div>
+
+          <div class="footer__links-group">
+            <h4>Kontakt</h4>
+            <ul>
+              <li><a href="https://ig.me/m/tvojred.rs" target="_blank" rel="noopener noreferrer" @click="trackLead">Instagram DM</a></li>
+              <li><a href="https://wa.me/381653089240?text=Zdravo!%20Zanima%20me%20besplatan%20prikaz%20za%20moj%20salon." target="_blank" rel="noopener noreferrer" @click="trackLead">WhatsApp</a></li>
+              <li><a href="viber://chat?number=%2B381653089240" @click="trackLead">Viber</a></li>
+              <li><a href="tel:+381653089240" @click="trackLead">065 308 9240</a></li>
             </ul>
           </div>
         </div>
         <div class="footer__bottom">
           <p>© {{ new Date().getFullYear() }} tvojred.rs. Sva prava zadržana.</p>
-          <div class="footer__bottom-links">
-            <a href="#">Politika privatnosti</a>
-            <a href="#">Uslovi korišćenja</a>
-          </div>
+          <a href="#kontakt-cta" class="footer__cta-link">Hoću svoj salon online →</a>
         </div>
       </div>
     </footer>
+
+    <!-- STICKY MOBILE CTA -->
+    <a
+      href="#kontakt-cta"
+      class="sticky-cta"
+      :class="{ 'sticky-cta--hidden': !showStickyCta }"
+      aria-label="Hoću svoj salon online"
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span>Hoću svoj salon online</span>
+    </a>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { defineComponent, ref, onMounted, onUnmounted, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 
-import instaPlaceholder1 from '@/assets/img/ig-post1.png'
-import instaPlaceholder2 from '@/assets/img/ig-post2.png'
-import instaPlaceholder3 from '@/assets/img/ig-post3.png'
-import instaPlaceholder4 from '@/assets/img/ig-post4.png'
-import instaPlaceholder5 from '@/assets/img/ig-post5.png'
-import instaPlaceholder6 from '@/assets/img/ig-post6.png'
+import instaPlaceholder1 from '@/assets/img/za-sajt1.png'
+import instaPlaceholder2 from '@/assets/img/za-sajt2.png'
+import instaPlaceholder3 from '@/assets/img/za-sajt3.png'
+import instaPlaceholder4 from '@/assets/img/za-sajt4.png'
+import instaPlaceholder5 from '@/assets/img/za-sajt5.png'
+import instaPlaceholder6 from '@/assets/img/za-sajt6.png'
 
 import testHomepage from '@/assets/img/mockup-test-studio.png'
 import testZakazi from '@/assets/img/mockup-test-studio-zakazivanje.png'
@@ -546,16 +554,13 @@ const designs = [
   { id: 10, type: 'Admin panel', title: 'Kontrola salona', text: 'Pregled termina, zaposlenih, usluga, klijenata, cena i statistike poslovanja.', image: adminPanel, url: '/admin-panel' },
 ]
 
-// Duplirana lista za beskonačni (infinite) loop carousela
-const loopDesigns = [...designs, ...designs, ...designs]
-
 const instagramPosts = [
-  { id: 1, image: instaPlaceholder1, url: 'https://www.instagram.com/p/DYN4HRlMvdP/' },
-  { id: 2, image: instaPlaceholder2, url: 'https://www.instagram.com/p/DZS4T5pNL4Z/' },
-  { id: 3, image: instaPlaceholder3, url: 'https://www.instagram.com/p/DYN4106s3jg/' },
-  { id: 4, image: instaPlaceholder4, url: 'https://www.instagram.com/p/DZN3UHNtAz5/' },
-  { id: 5, image: instaPlaceholder5, url: 'https://www.instagram.com/p/DX-RibcjUPy/' },
-  { id: 6, image: instaPlaceholder6, url: 'https://www.instagram.com/p/DY2EuNMNxNt/' },
+  { id: 1, image: instaPlaceholder1, url: 'https://www.instagram.com/p/DZaLqkaN7KZ/' },
+  { id: 2, image: instaPlaceholder2, url: 'https://www.instagram.com/reel/DZxDCNGtfZ1/' },
+  { id: 3, image: instaPlaceholder3, url: 'https://www.instagram.com/p/DZvOA-CNaQs/' },
+  { id: 4, image: instaPlaceholder4, url: 'https://www.instagram.com/p/DZaLYAwNKN5/' },
+  { id: 5, image: instaPlaceholder5, url: 'https://www.instagram.com/p/DZaL5wWNROJ/' },
+  { id: 6, image: instaPlaceholder6, url: 'https://www.instagram.com/p/DZr1QapN4hH/' },
 ]
 
 export default defineComponent({
@@ -564,207 +569,132 @@ export default defineComponent({
   setup() {
     const scrolled = ref(false)
     const menuOpen = ref(false)
-    const installments = ref(false)
     const openFaq = ref<number | null>(null)
-    const email = ref('')
-    const formSubmitted = ref(false)
+    const showStickyCta = ref(false)
 
     const handleScroll = () => {
       scrolled.value = window.scrollY > 60
+
+      const y = window.scrollY
+
+      // Sticky nestaje čim kontakt sekcija počne da ulazi u ekran,
+      // a ne tek kad se stigne do njenog dna.
+      let reachedContact = false
+      const contact = document.getElementById('kontakt-cta')
+      if (contact) {
+        const top = contact.getBoundingClientRect().top
+        reachedContact = top < window.innerHeight - 80
+      }
+
+      showStickyCta.value = y > 600 && !reachedContact
     }
 
-    // ── Infinite auto + manual drag/swipe carousel ──
-    const SLIDE_MS = 3500
-    const TRANSITION_MS = 600
-    const DRAG_THRESHOLD = 54
-    const LOOP_SIZE = designs.length
+    // ── Carousel: native smooth scroll-snap, auto-advance, pauza na interakciju, idle resume ──
+    const viewportRef = ref<HTMLElement | null>(null)
+    const activeIndex = ref(0)
 
-    // Počinje od srednje kopije liste kako bi korisnik odmah
-    // mogao da prevlači i ulevo i udesno.
-    const slide = ref(LOOP_SIZE)
-    const noTransition = ref(false)
-    const isDragging = ref(false)
-    const dragOffset = ref(0)
-    const manualControl = ref(false)
+    const AUTO_MS = 3800
+    const IDLE_MS = 5000
 
-    let timer: number | undefined
-    let loopResetTimer: number | undefined
+    let autoTimer: number | undefined
+    let idleTimer: number | undefined
+    let scrollRaf = 0
     let reduceMotion = false
-    let dragStartX = 0
-    let dragStartY = 0
-    let activePointerId: number | null = null
-    let draggedEnoughToBlockClick = false
-    let clickBlockTimer: number | undefined
 
-    const trackStyle = computed(() => ({
-      transform: `translate3d(calc(${slide.value} * (var(--card-w) + var(--card-gap)) * -1 + ${dragOffset.value}px), 0, 0)`,
-      transition:
-        noTransition.value || isDragging.value
-          ? 'none'
-          : `transform ${TRANSITION_MS}ms cubic-bezier(.4,0,.2,1)`,
-    }))
+    const stepSize = () => {
+      const vp = viewportRef.value
+      if (!vp) return 0
+      const track = vp.firstElementChild as HTMLElement | null
+      if (!track || track.children.length < 2) return vp.clientWidth
+      const a = track.children[0] as HTMLElement
+      const b = track.children[1] as HTMLElement
+      return b.offsetLeft - a.offsetLeft
+    }
 
-    const activeDot = computed(
-      () => ((slide.value % LOOP_SIZE) + LOOP_SIZE) % LOOP_SIZE,
-    )
-
-    const resetLoopPositionIfNeeded = () => {
-      if (loopResetTimer) window.clearTimeout(loopResetTimer)
-
-      if (slide.value >= LOOP_SIZE * 2 || slide.value <= 0) {
-        loopResetTimer = window.setTimeout(() => {
-          noTransition.value = true
-          slide.value = LOOP_SIZE
-
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              noTransition.value = false
-            })
-          })
-        }, TRANSITION_MS + 40)
+    const updateActiveIndex = () => {
+      const vp = viewportRef.value
+      if (!vp) return
+      const step = stepSize()
+      if (step > 0) {
+        const i = Math.round(vp.scrollLeft / step)
+        activeIndex.value = Math.max(0, Math.min(i, designs.length - 1))
       }
     }
 
-    const goNext = () => {
-      noTransition.value = false
-      slide.value += 1
-      resetLoopPositionIfNeeded()
-    }
-
-    const goPrev = () => {
-      noTransition.value = false
-      slide.value -= 1
-      resetLoopPositionIfNeeded()
-    }
-
-    const startAuto = () => {
-      if (manualControl.value || reduceMotion) return
-      stopAuto()
-      timer = window.setInterval(goNext, SLIDE_MS)
+    const scrollToIndex = (index: number, smooth = true) => {
+      const vp = viewportRef.value
+      if (!vp) return
+      const step = stepSize()
+      const i = Math.max(0, Math.min(index, designs.length - 1))
+      vp.scrollTo({ left: i * step, behavior: smooth && !reduceMotion ? 'smooth' : 'auto' })
     }
 
     const stopAuto = () => {
-      if (timer) {
-        window.clearInterval(timer)
-        timer = undefined
+      if (autoTimer) {
+        window.clearInterval(autoTimer)
+        autoTimer = undefined
       }
     }
 
-    const pauseAuto = () => stopAuto()
-
-    // Nakon običnog hovera auto carousel može da nastavi.
-    // Nakon prve ručne interakcije više se ne uključuje.
-    const resumeAuto = () => {
-      if (!manualControl.value && !reduceMotion) startAuto()
+    const startAuto = () => {
+      if (reduceMotion) return
+      stopAuto()
+      autoTimer = window.setInterval(() => {
+        const next = activeIndex.value >= designs.length - 1 ? 0 : activeIndex.value + 1
+        scrollToIndex(next)
+      }, AUTO_MS)
     }
 
-    const disableAutoPermanently = () => {
-      manualControl.value = true
+    // Na svaku ručnu interakciju pauziramo auto i ponovo ga palimo nakon mirovanja.
+    const pauseAndScheduleResume = () => {
       stopAuto()
+      if (idleTimer) window.clearTimeout(idleTimer)
+      idleTimer = window.setTimeout(() => { startAuto() }, IDLE_MS)
     }
 
     const goToSlide = (index: number) => {
-      disableAutoPermanently()
-      noTransition.value = false
-
-      // Ostajemo u srednjoj kopiji kako bi oba smera ostala dostupna.
-      slide.value = LOOP_SIZE + index
+      scrollToIndex(index)
+      pauseAndScheduleResume()
     }
 
-    const startCarouselDrag = (event: PointerEvent) => {
-      if (!event.isPrimary || event.button !== 0) return
-
-      disableAutoPermanently()
-
-      activePointerId = event.pointerId
-      dragStartX = event.clientX
-      dragStartY = event.clientY
-      dragOffset.value = 0
-      draggedEnoughToBlockClick = false
-      isDragging.value = true
-      noTransition.value = true
-
-      const viewport = event.currentTarget as HTMLElement
-      viewport.setPointerCapture?.(event.pointerId)
+    const onViewportScroll = () => {
+      if (scrollRaf) return
+      scrollRaf = requestAnimationFrame(() => {
+        scrollRaf = 0
+        updateActiveIndex()
+      })
     }
 
-    const moveCarouselDrag = (event: PointerEvent) => {
-      if (!isDragging.value || event.pointerId !== activePointerId) return
-
-      const deltaX = event.clientX - dragStartX
-      const deltaY = event.clientY - dragStartY
-
-      // Tek kada je pokret očigledno horizontalan pomeramo carousel.
-      // Vertikalni pokret ostaje slobodan za normalno skrolovanje stranice.
-      if (Math.abs(deltaX) > Math.abs(deltaY) || Math.abs(deltaX) > 12) {
-        dragOffset.value = deltaX
-
-        if (Math.abs(deltaX) > 8) {
-          draggedEnoughToBlockClick = true
-        }
-      }
-    }
-
-    const finishCarouselDrag = (event: PointerEvent, cancelled = false) => {
-      if (!isDragging.value || event.pointerId !== activePointerId) return
-
-      const viewport = event.currentTarget as HTMLElement
-      if (viewport.hasPointerCapture?.(event.pointerId)) {
-        viewport.releasePointerCapture(event.pointerId)
-      }
-
-      const finalOffset = dragOffset.value
-
-      isDragging.value = false
-      activePointerId = null
-      noTransition.value = false
-      dragOffset.value = 0
-
-      if (!cancelled) {
-        if (finalOffset <= -DRAG_THRESHOLD) {
-          goNext()
-        } else if (finalOffset >= DRAG_THRESHOLD) {
-          goPrev()
-        }
-      }
-
-      if (draggedEnoughToBlockClick) {
-        if (clickBlockTimer) window.clearTimeout(clickBlockTimer)
-        clickBlockTimer = window.setTimeout(() => {
-          draggedEnoughToBlockClick = false
-        }, 120)
-      }
-    }
-
-    const endCarouselDrag = (event: PointerEvent) => {
-      finishCarouselDrag(event)
-    }
-
-    const cancelCarouselDrag = (event: PointerEvent) => {
-      finishCarouselDrag(event, true)
-    }
-
-    const handleCarouselCardClick = (event: MouseEvent) => {
-      if (draggedEnoughToBlockClick) {
-        event.preventDefault()
-        event.stopPropagation()
-      }
-    }
+    const interactionEvents: Array<keyof HTMLElementEventMap> = ['pointerdown', 'wheel', 'touchstart']
 
     onMounted(() => {
-      window.addEventListener('scroll', handleScroll)
+      window.addEventListener('scroll', handleScroll, { passive: true })
+      handleScroll()
+
       reduceMotion = typeof window.matchMedia === 'function'
         ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
         : false
+
+      const vp = viewportRef.value
+      if (vp) {
+        vp.addEventListener('scroll', onViewportScroll, { passive: true })
+        interactionEvents.forEach((e) => vp.addEventListener(e, pauseAndScheduleResume, { passive: true }))
+      }
+
       if (!reduceMotion) startAuto()
     })
 
     onUnmounted(() => {
       window.removeEventListener('scroll', handleScroll)
       stopAuto()
+      if (idleTimer) window.clearTimeout(idleTimer)
+      if (scrollRaf) cancelAnimationFrame(scrollRaf)
 
-      if (loopResetTimer) window.clearTimeout(loopResetTimer)
-      if (clickBlockTimer) window.clearTimeout(clickBlockTimer)
+      const vp = viewportRef.value
+      if (vp) {
+        vp.removeEventListener('scroll', onViewportScroll)
+        interactionEvents.forEach((e) => vp.removeEventListener(e, pauseAndScheduleResume))
+      }
 
       document.body.style.overflow = ''
     })
@@ -776,59 +706,35 @@ export default defineComponent({
       }
     })
 
-    // Formatiranje cene (srpski separator, bez nepotrebnih nula)
-    const fmt = (n: number) => {
-      const v = Math.round(n * 100) / 100
-      return v.toLocaleString('sr-RS', { maximumFractionDigits: 2 })
-    }
-
-    const displayPlanPrice = (price: number | null) => {
-      if (price === null) return ''
-      return installments.value ? fmt(price / 6) : fmt(price)
-    }
-
-    // Klik na paket → kopira poruku u clipboard i otvara Instagram DM
-    const choosePlan = async (planName: string) => {
-      const message = `Zainteresovan/na sam za ${planName} paket.`
-      try {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          await navigator.clipboard.writeText(message)
-        }
-      } catch {
-        /* clipboard nedostupan — samo otvaramo DM */
-      }
-      window.open('https://ig.me/m/tvojred.rs', '_blank', 'noopener')
-    }
-
-    const submitForm = () => {
-      if (email.value) {
-        formSubmitted.value = true
-        email.value = ''
-        setTimeout(() => { formSubmitted.value = false }, 5000)
+    // Kontakt akcija → otvara Instagram DM / WhatsApp / Viber / poziv
+    // Meta Pixel: javi konverziju (kontakt) ako je piksel učitan
+    const trackLead = () => {
+      if (typeof window !== 'undefined' && (window as any).fbq) {
+        ;(window as any).fbq('track', 'Lead')
       }
     }
 
     const stats = [
-      { value: '30+', label: 'Aktivnih salona' },
-      { value: '10k+', label: 'Zakazanih termina' },
-      { value: '4.9★', label: 'Prosečna ocena' },
+      { value: '24/7', label: 'Online zakazivanje' },
+      { value: 'Po meri', label: 'Dizajn tvog brenda' },
+      { value: '2 mes.', label: 'Besplatne podrške' },
     ]
 
     const steps = [
       {
-        icon: '💬',
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>',
         title: 'Konsultacija i analiza',
-        desc: 'Upoznajemo vaš salon, usluge i želje. Zajedno definišemo kako vaš sajt i sistem za zakazivanje treba da izgledaju i funkcionišu.',
+        desc: 'Upoznajemo tvoj salon, usluge i želje. Zajedno definišemo kako tvoj sajt i sistem za zakazivanje treba da izgledaju i funkcionišu.',
       },
       {
-        icon: '🎨',
-        title: 'Dizajn po vašoj želji',
-        desc: 'Kreiramo jedinstven dizajn prilagođen vašem brendu. Svaki detalj usklađujemo sa vašom vizijom — dok ne budete potpuno zadovoljni.',
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>',
+        title: 'Dizajn po tvojoj želji',
+        desc: 'Kreiramo jedinstven dizajn prilagođen tvom brendu. Svaki detalj usklađujemo sa tvojom vizijom — dok ne budeš potpuno zadovoljan.',
       },
       {
-        icon: '🚀',
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>',
         title: 'Lansiranje i podrška',
-        desc: 'Postavljamo vaš sajt i sistem online. Tu smo i nakon lansiranja, sa besplatnom podrškom od 2 meseca.',
+        desc: 'Postavljamo tvoj sajt i sistem online. Tu smo i nakon lansiranja, sa besplatnom podrškom od 2 meseca.',
       },
     ]
 
@@ -848,7 +754,7 @@ export default defineComponent({
       {
         icon: '🌐',
         title: 'Moderan websajt',
-        desc: 'Profesionalan, responzivan sajt koji predstavlja vaš salon u najboljem svetlu.',
+        desc: 'Profesionalan, responzivan sajt koji predstavlja tvoj salon u najboljem svetlu.',
         featured: false,
         items: [
           'Prilagodljiv dizajn',
@@ -860,7 +766,7 @@ export default defineComponent({
       {
         icon: '🔎',
         title: 'Bolja vidljivost na Google-u',
-        desc: 'Da vas novi klijenti lako pronađu kada pretražuju salone u vašem gradu.',
+        desc: 'Da te novi klijenti lako pronađu kada pretražuju salone u tvom gradu.',
         featured: false,
         items: [
           'SEO optimizacija',
@@ -872,7 +778,7 @@ export default defineComponent({
       {
         icon: '🧩',
         title: 'Admin panel',
-        desc: 'Sve o vašem salonu na jednom mestu — pregledno, brzo i jednostavno.',
+        desc: 'Sve o tvom salonu na jednom mestu — pregledno, brzo i jednostavno.',
         featured: false,
         items: [
           'Konfiguracija admin panela',
@@ -884,7 +790,7 @@ export default defineComponent({
       {
         icon: '📋',
         title: 'Usluge, cene i klijenti',
-        desc: 'Definišite ponudu i vodite urednu evidenciju svojih klijenata.',
+        desc: 'Definiši ponudu i vodi urednu evidenciju svojih klijenata.',
         featured: false,
         items: [
           'Usluge i cene',
@@ -896,9 +802,9 @@ export default defineComponent({
       {
         icon: '💳',
         title: 'Online plaćanje',
-        desc: 'Prihvatajte depozite i pune isplate online i smanjite broj no-show termina.',
+        desc: 'Prihvataj depozite i pune isplate online i smanji broj no-show termina.',
         featured: false,
-        badge: 'Dostupno uz Enterprise paket',
+        badge: 'Napredna opcija',
         items: [
           'Sigurna online naplata',
           'Depoziti pri zakazivanju',
@@ -911,174 +817,79 @@ export default defineComponent({
     const benefits = [
       {
         icon: '⏰',
-        title: 'Uštedite sate svake nedelje',
-        desc: 'Bez beskonačnih poziva i poruka za zakazivanje — sistem radi umesto vas.',
+        title: 'Uštedi sate svake nedelje',
+        desc: 'Bez beskonačnih poziva i poruka za zakazivanje — sistem radi umesto tebe.',
       },
       {
         icon: '📉',
-        title: 'Manje propuštenih termina',
         desc: 'Automatski podsetnici smanjuju broj klijenata koji ne dođu.',
       },
       {
         icon: '💰',
-        title: 'Povećajte prihode',
-        desc: 'Online prisutnost i lakše zakazivanje donose nove klijente koji vas pronađu na internetu.',
+        title: 'Povećaj prihode',
+        desc: 'Online prisutnost i lakše zakazivanje donose nove klijente koji te pronađu na internetu.',
       },
       {
         icon: '😊',
-        title: 'Zadovoljniji klijenti',
         desc: 'Klijenti cene modernost i jednostavnost — veće ocene, više preporuka.',
       },
     ]
 
-    const chartBars = [
-      { label: 'Popunjenost termina', before: 61, after: 82 },
-      { label: 'Otkazani termini', before: 23, after: 9 },
-      { label: 'Online rezervacije', before: 14, after: 68 },
-    ]
-
-    const plans = [
-      {
-        icon: '🌱',
-        name: 'Starter',
-        desc: 'Osnovno digitalno prisustvo i online zakazivanje za vaš salon.',
-        price: 399,
-        custom: false,
-        cta: 'Izaberite Starter',
-        popular: false,
-        features: [
-          'Online zakazivanje',
-          'Admin panel',
-          'Usluge i cene',
-          'Pregled termina',
-          'Pregled klijenata i usluga',
-        ],
-      },
-      {
-        icon: '🚀',
-        name: 'Pro',
-        desc: 'Kompletno rešenje sa modernim sajtom i naprednim admin panelom.',
-        price: 599,
-        custom: false,
-        cta: 'Izaberite Pro',
-        popular: true,
-        features: [
-          'Online zakazivanje',
-          'Moderan websajt',
-          'Admin panel',
-          'Usluge i cene',
-          'Pregled termina',
-          'Pregled klijenata i usluga',
-          'Konfiguracija admin panela',
-        ],
-      },
-      {
-        icon: '👑',
-        name: 'Enterprise',
-        desc: 'Sve iz Pro paketa, plus online plaćanje i maksimalna vidljivost.',
-        price: null as number | null,
-        custom: true,
-        cta: 'Kontaktirajte nas',
-        popular: false,
-        features: [
-          'Online zakazivanje',
-          'Moderan websajt',
-          'Admin panel',
-          'Usluge i cene',
-          'Pregled termina',
-          'Pregled klijenata i usluga',
-          'Konfiguracija admin panela',
-          'Bolja vidljivost na Google-u',
-          'Online plaćanje',
-          'SMS potvrda termina',
-        ],
-      },
+    const offerIncludes = [
+      'Moderan websajt po meri',
+      'Online zakazivanje 24/7',
+      'Admin panel za salon',
+      'Usluge, cene i klijenti',
+      'Podešavanje i lansiranje',
     ]
 
     const faqs = [
       {
-        q: 'Koliko dugo traje izrada sajta?',
-        a: 'U zavisnosti od obima, izrada obično traje 30 dana a krajnji rok isporuke je 60 dana.',
+        q: 'Šta tačno dobijam?',
+        a: 'Kompletan sajt po meri tvog salona, sistem za online zakazivanje i admin panel iz kog vodiš termine, usluge i klijente. Sve je jednokratno — bez mesečne pretplate.',
       },
       {
-        q: 'Da li mi je potrebno tehničko znanje?',
-        a: 'Apsolutno ne! Mi se brinemo o tehničkom delu, a vi dobijate gotovo rešenje. Admin panel je dizajniran tako da ga može koristiti svako.',
+        q: 'Koliko košta i kako se plaća?',
+        a: 'Redovna cena je 399€ jednokratno, a za prvih 5 salona važi osnivačka cena od 250€. Plaćaš odjednom ili na rate: pola na početku izrade, pola po završetku. Nema skrivenih ni mesečnih troškova.',
       },
       {
-        q: 'Mogu li probati pre plaćanja?',
-        a: 'Da! Nudimo besplatne test verzije koje možete pronaći na našem web sajtu.',
+        q: 'Da li mi treba tehničko znanje?',
+        a: 'Ne. Ceo tehnički deo radimo mi, a ti dobiješ gotovo rešenje. Admin panel je napravljen tako da ga koristiš bez muke — kao bilo koju aplikaciju na telefonu.',
       },
       {
-        q: 'Šta se dešava ako klijent otkaže termin?',
-        a: 'Sistem automatski oslobađa termin i može poslati obaveštenja klijentima koji čekaju slobodan termin. Vi dobijate obaveštenje u realnom vremenu.',
+        q: 'Koliko traje izrada?',
+        a: 'Zavisi od obima, ali okvirno do 30 dana. Pre toga zajedno prođemo dizajn i sadržaj, dok ne budeš zadovoljan.',
       },
       {
-        q: 'Da li podržavate online plaćanje?',
-        a: 'Online plaćanje (depoziti i pune isplate) dostupno je uz Enterprise paket, zajedno sa boljom vidljivošću na Google-u i SMS potvrdom termina.',
+        q: 'Mogu li da vidim kako izgleda pre nego što platim?',
+        a: 'Možeš. Na sajtu imaš funkcionalne primere koje odmah isprobaš, a možemo i besplatno da napravimo prikaz baš za tvoj salon — bez ikakve obaveze.',
       },
       {
-        q: 'Koje načine plaćanja paketa nudite?',
-        a: 'Paket možete platiti odjednom ili na 6 rata. Kod plaćanja odjednom, na početku izrade plaća se 50% dogovorene cene, a preostalih 50% po završetku.',
-      },
-    ]
-
-    const footerLinks = [
-      {
-        title: 'Proizvod',
-        links: [
-          { label: 'Funkcije', href: '#funkcije' },
-          { label: 'Primeri', to: '/demo' },
-          { label: 'Paketi i cene', to: '/paketi-i-cene' },
-        ],
+        q: 'Šta ako klijent otkaže termin?',
+        a: 'Sistem automatski oslobađa termin i tebi stiže obaveštenje u realnom vremenu, pa to vreme može da popuni neko drugi.',
       },
       {
-        title: 'Kompanija',
-        links: [
-          { label: 'O nama', href: '#' },
-          { label: 'Blog', href: '#' },
-        ],
-      },
-      {
-        title: 'Podrška',
-        links: [
-          { label: 'Kontakt', href: '#kontakt' },
-          { label: 'Instagram', href: 'https://instagram.com/tvojred.rs' },
-        ],
+        q: 'Da li sistem prima online plaćanje?',
+        a: 'Po dogovoru — depoziti i pune isplate online, da smanjiš broj klijenata koji ne dođu. Tu ide i SMS potvrda termina i bolja vidljivost na Google-u.',
       },
     ]
 
     return {
       scrolled,
       menuOpen,
-      installments,
       openFaq,
-      email,
-      formSubmitted,
-      submitForm,
-      fmt,
-      displayPlanPrice,
-      choosePlan,
+      showStickyCta,
+      trackLead,
       stats,
       steps,
       features,
       benefits,
-      chartBars,
-      plans,
+      offerIncludes,
       faqs,
-      footerLinks,
       designs,
-      loopDesigns,
-      trackStyle,
-      activeDot,
-      isDragging,
+      viewportRef,
+      activeIndex,
       goToSlide,
-      pauseAuto,
-      resumeAuto,
-      startCarouselDrag,
-      moveCarouselDrag,
-      endCarouselDrag,
-      cancelCarouselDrag,
-      handleCarouselCardClick,
       instagramPosts,
     }
   },
@@ -1839,92 +1650,135 @@ img { max-width: 100%; display: block; }
   background: $white;
 
   &__container {
-    max-width: 1200px;
+    max-width: 1080px;
     margin: 0 auto;
     padding: 0 24px;
   }
 
   &__header {
     text-align: center;
-    margin-bottom: 64px;
+    margin-bottom: 56px;
 
     .section-sub { margin: 0 auto; }
   }
 
+  // ── Mobilni / default: vertikalni timeline ──
   &__steps {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 48px;
     position: relative;
-  }
-
-  &__step {
-    text-align: center;
-    position: relative;
-  }
-
-  &__step-number {
-    font-size: .75rem;
-    font-weight: 800;
-    letter-spacing: .1em;
-    color: $primary;
-    margin-bottom: 16px;
-  }
-
-  &__step-icon {
-    width: 72px;
-    height: 72px;
-    background: $primary-light;
-    border-radius: $radius-lg;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.8rem;
-    margin: 0 auto 20px;
-    border: 2px solid color.adjust($primary-light, $lightness: -5%);
-    transition: $transition;
+    flex-direction: column;
+    gap: 8px;
 
-    &:hover {
-      transform: scale(1.05);
-      border-color: $primary;
+    // Linija koja povezuje korake
+    &::before {
+      content: '';
+      position: absolute;
+      top: 30px;
+      bottom: 30px;
+      left: 27px;
+      width: 2px;
+      background: linear-gradient(180deg, rgba($primary,.35), rgba($primary,.12));
     }
   }
 
+  &__step {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 14px 0;
+  }
+
+  &__step-marker {
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: $white;
+    border: 1px solid $border;
+    box-shadow: 0 6px 18px rgba(15,23,42,.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: $transition;
+  }
+
+  &__step-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: 24px;
+      height: 24px;
+      stroke: $primary;
+      fill: none;
+    }
+  }
+
+  &__step-content {
+    padding-top: 5px;
+  }
+
+  &__step-num {
+    display: block;
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: $primary;
+    margin-bottom: 7px;
+  }
+
   &__step-title {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     font-weight: 700;
-    margin-bottom: 10px;
+    letter-spacing: -.01em;
+    margin-bottom: 8px;
     color: $dark;
   }
 
   &__step-desc {
-    font-size: .9rem;
+    font-size: .92rem;
     color: $mid;
     line-height: 1.7;
   }
 
-  &__step-connector {
-    position: absolute;
-    top: 36px;
-    right: -24px;
-    width: 48px;
-    height: 2px;
-    background: linear-gradient(90deg, $border, $primary);
-    z-index: 1;
-
-    &::after {
-      content: '→';
-      position: absolute;
-      right: -8px;
-      top: -10px;
-      color: $primary;
-      font-size: .85rem;
-    }
+  &__step:hover .how__step-marker {
+    border-color: rgba($primary,.55);
+    box-shadow: 0 8px 22px rgba($primary,.16);
+    transform: translateY(-2px);
   }
 
-  @media (max-width: 768px) {
-    &__steps { grid-template-columns: 1fr; gap: 32px; }
-    &__step-connector { display: none; }
+  // ── Desktop: tri kolone, horizontalna linija iznad markera ──
+  @media (min-width: 769px) {
+    &__steps {
+      flex-direction: row;
+      gap: 36px;
+
+      &::before {
+        top: 28px;
+        bottom: auto;
+        left: 16.66%;
+        right: 16.66%;
+        width: auto;
+        height: 2px;
+        background: linear-gradient(90deg, rgba($primary,.12), rgba($primary,.35), rgba($primary,.12));
+      }
+    }
+
+    &__step {
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 22px;
+      padding: 0;
+    }
+
+    &__step-content { padding-top: 0; max-width: 300px; }
+    &__step-desc { font-size: .9rem; }
   }
 }
 
@@ -1949,32 +1803,26 @@ img { max-width: 100%; display: block; }
   &__viewport {
     --card-w: 300px;
     --card-gap: 24px;
-    overflow: hidden;
-    padding: 8px 0 6px;
-    cursor: grab;
-    touch-action: pan-y;
-    user-select: none;
-    -webkit-user-select: none;
-
-    &--dragging {
-      cursor: grabbing;
-
-      .examples__card {
-        pointer-events: none;
-      }
-    }
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 8px 0 14px;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scroll-padding-left: 0;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
   }
 
   &__track {
     display: flex;
     gap: var(--card-gap);
-    will-change: transform;
-    backface-visibility: hidden;
   }
 
   &__card {
     flex: 0 0 var(--card-w);
     width: var(--card-w);
+    scroll-snap-align: start;
     display: flex;
     flex-direction: column;
     background: $white;
@@ -2100,28 +1948,30 @@ img { max-width: 100%; display: block; }
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
-    margin-top: 32px;
+    gap: 18px;
+    margin-top: 28px;
   }
 
   &__dots {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 9px;
   }
 
   &__dot {
-    width: 7px;
-    height: 7px;
+    width: 9px;
+    height: 9px;
     padding: 0;
     border: 0;
     border-radius: 999px;
-    background: rgba($primary, .25);
+    background: rgba($primary, .22);
     cursor: pointer;
     transition: $transition;
 
+    &:hover { background: rgba($primary, .45); }
+
     &--active {
-      width: 26px;
+      width: 30px;
       background: $primary;
     }
   }
@@ -2130,13 +1980,26 @@ img { max-width: 100%; display: block; }
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    flex-shrink: 0;
+    padding: 11px 20px;
+    border-radius: 999px;
+    border: 1.5px solid rgba($primary, .35);
+    background: $white;
     font-size: .9rem;
     font-weight: 700;
     color: $primary;
+    white-space: nowrap;
     transition: $transition;
 
     svg { transition: transform .22s ease; }
-    &:hover { color: $primary-dark; }
+
+    &:hover {
+      background: $primary;
+      border-color: $primary;
+      color: $white;
+      box-shadow: 0 8px 20px rgba($primary, .3);
+      transform: translateY(-1px);
+    }
     &:hover svg { transform: translateX(3px); }
   }
 
@@ -2144,6 +2007,12 @@ img { max-width: 100%; display: block; }
     padding: 72px 0;
     &__viewport { --card-w: min(300px, 82vw); }
     &__card-title { font-size: 1rem; }
+
+    &__controls {
+      flex-direction: column;
+      gap: 22px;
+    }
+    &__more { width: 100%; justify-content: center; }
   }
 }
 
@@ -2278,160 +2147,107 @@ img { max-width: 100%; display: block; }
   background: $white;
 
   &__container {
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 0 24px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: center;
   }
 
-  &__list {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    margin-top: 36px;
+  &__header {
+    text-align: center;
+    margin-bottom: 56px;
+
+    .section-sub { margin: 0 auto; }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
   }
 
   &__item {
+    position: relative;
     display: flex;
     align-items: flex-start;
-    gap: 16px;
-
-    &-icon {
-      width: 48px;
-      height: 48px;
-      background: $primary-light;
-      border-radius: $radius-md;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-      flex-shrink: 0;
-    }
-
-    h4 {
-      font-size: 1rem;
-      font-weight: 700;
-      color: $dark;
-      margin-bottom: 4px;
-    }
-
-    p {
-      font-size: .9rem;
-      color: $mid;
-      line-height: 1.6;
-    }
-  }
-
-  &__visual {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  &__chart {
-    background: $dark;
+    gap: 20px;
+    padding: 30px 28px;
     border-radius: $radius-lg;
-    padding: 28px;
-    color: $white;
-
-    &-title {
-      font-size: .85rem;
-      font-weight: 600;
-      color: rgba($white,.6);
-      margin-bottom: 24px;
-    }
-
-    &-bars {
-      display: flex;
-      gap: 32px;
-      align-items: flex-end;
-      height: 140px;
-      margin-bottom: 16px;
-    }
-
-    &-bar-group {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      flex: 1;
-    }
-
-    &-bar-wrap {
-      display: flex;
-      gap: 6px;
-      align-items: flex-end;
-      height: 120px;
-    }
-
-    &-bar {
-      width: 24px;
-      background: rgba($white,.2);
-      border-radius: 4px 4px 0 0;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      min-height: 20px;
-      transition: height .8s cubic-bezier(.4,0,.2,1);
-
-      span {
-        font-size: .55rem;
-        font-weight: 700;
-        color: rgba($white,.6);
-        padding-top: 3px;
-      }
-
-      &--after {
-        background: linear-gradient(180deg, $primary, $accent);
-        span { color: $white; }
-      }
-    }
-
-    &-label {
-      font-size: .7rem;
-      color: rgba($white,.5);
-      text-align: center;
-    }
-
-    &-legend {
-      display: flex;
-      gap: 16px;
-      font-size: .75rem;
-      color: rgba($white,.6);
-    }
-  }
-
-  &__note {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 16px 18px;
-    border-radius: $radius-lg;
-    background: $light;
+    background: $white;
     border: 1px solid $border;
+    overflow: hidden;
+    transition: $transition;
 
-    &-icon { font-size: 1.3rem; flex-shrink: 0; }
+    // tanka gradijent linija na vrhu, pojavljuje se na hover
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, $primary, $accent);
+      opacity: 0;
+      transition: $transition;
+    }
 
-    p { font-size: .85rem; color: $mid; line-height: 1.55; }
+    &:hover {
+      border-color: rgba($primary,.35);
+      box-shadow: $shadow-lg;
+      transform: translateY(-4px);
+
+      &::before { opacity: 1; }
+
+      .benefits__item-icon {
+        transform: scale(1.06) rotate(-3deg);
+      }
+    }
   }
 
-  @media (max-width: 900px) {
-    &__container { grid-template-columns: 1fr; gap: 48px; }
+  &__item-icon {
+  flex: 0 0 54px;
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 24px;
+  line-height: 1;
+  border: 1px solid rgba(0,0,0,0.05);
+
+  transition: $transition;
+
+  svg {
+    width: 30px !important;
+    height: 30px !important;
+    display: block;
+    stroke: currentColor;
+    fill: none;
   }
 }
 
-.legend-dot {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 2px;
-  margin-right: 4px;
+  &__item-body {
+    h4 {
+      font-size: 1.06rem;
+      font-weight: 700;
+      letter-spacing: -.01em;
+      color: $dark;
+      margin-bottom: 6px;
+    }
 
-  &--before { background: rgba($white,.2); }
-  &--after { background: $primary; }
+    p {
+      font-size: .92rem;
+      color: $mid;
+      line-height: 1.65;
+    }
+  }
+
+  @media (max-width: 640px) {
+    &__grid { grid-template-columns: 1fr; }
+    &__item { padding: 26px 22px; gap: 18px; }
+  }
 }
 
 // ─── PRICING ─────────────────────────────────────────────
@@ -2658,6 +2474,113 @@ img { max-width: 100%; display: block; }
   }
 }
 
+// ─── FOUNDING OFFER ──────────────────────────────────────
+.offer {
+  max-width: 560px;
+  margin: 0 auto;
+
+  &__panel {
+    background: $dark;
+    color: $white;
+    border: 1px solid rgba($tr-blue, .4);
+    border-radius: $radius-xl;
+    padding: 40px 32px;
+    text-align: center;
+    box-shadow: $shadow-xl;
+  }
+
+  &__founder {
+    display: inline-block;
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: $accent;
+    background: rgba($accent, .12);
+    border: 1px solid rgba($accent, .25);
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 24px;
+  }
+
+  &__price {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+
+  &__price-old {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: rgba($white, .4);
+    text-decoration: line-through;
+  }
+
+  &__price-now {
+    font-size: 3.2rem;
+    font-weight: 900;
+    letter-spacing: -.04em;
+    color: $white;
+    line-height: 1;
+  }
+
+  &__price-note {
+    font-size: .9rem;
+    color: rgba($white, .5);
+  }
+
+  &__desc {
+    font-size: .92rem;
+    color: rgba($white, .62);
+    line-height: 1.7;
+    max-width: 420px;
+    margin: 0 auto 24px;
+  }
+
+  &__list {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 11px;
+    text-align: left;
+    margin: 0 auto 28px;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: .92rem;
+      color: rgba($white, .82);
+
+      svg { stroke: $accent; flex-shrink: 0; }
+    }
+  }
+
+  &__cta {
+    width: 100%;
+    justify-content: center;
+    background: $tr-blue;
+    border-color: $tr-blue;
+    color: $tr-white;
+    box-shadow: 0 6px 22px rgba($tr-blue, .3);
+
+    &:hover {
+      background: $tr-blue-hover;
+      border-color: $tr-blue-hover;
+      box-shadow: 0 8px 26px rgba($tr-blue, .38);
+      transform: translateY(-1px);
+    }
+  }
+
+  &__small {
+    margin-top: 16px;
+    font-size: .8rem;
+    color: rgba($white, .42);
+  }
+}
+
 // ─── FAQ ─────────────────────────────────────────────────
 .faq {
   padding: 100px 0;
@@ -2822,9 +2745,8 @@ img { max-width: 100%; display: block; }
   width: 100%;
   clear: both;
   margin: 0;
-  padding: 100px 0;
+  padding: 110px 0;
   overflow: hidden;
-  text-align: center;
   background:
     radial-gradient(120% 115% at 50% -10%, $tr-bg-soft 0%, $tr-bg 58%, $tr-bg-deep 100%);
 
@@ -2839,115 +2761,163 @@ img { max-width: 100%; display: block; }
     pointer-events: none;
   }
 
-  &__blob {
-    display: none;
-  }
+  &__blob { display: none; }
 
   &__container {
-    max-width: 680px;
+    max-width: 760px;
     margin: 0 auto;
     padding: 0 24px;
     position: relative;
     z-index: 1;
   }
 
-  &__content {
-    position: relative;
-    z-index: 1;
+  &__pitch { text-align: center; }
+
+  &__offerbadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px 7px 11px;
+    border-radius: 999px;
+    background: rgba($accent, .1);
+    border: 1px solid rgba($accent, .26);
+    color: #9fe8de;
+    font-size: .76rem;
+    font-weight: 700;
+    margin-bottom: 26px;
+  }
+
+  &__offerbadge-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: $accent;
+    box-shadow: 0 0 0 3px rgba($accent,.22);
   }
 
   &__title {
-    font-size: clamp(2rem, 4vw, 3rem);
+    font-size: clamp(2.4rem, 5.5vw, 4rem);
     font-weight: 900;
-    color: #F9F9F9;
-    letter-spacing: -.03em;
-    margin-bottom: 16px;
-    line-height: 1.1;
+    color: $tr-white;
+    letter-spacing: -.04em;
+    line-height: 1.04;
+    margin-bottom: 22px;
+  }
+
+  &__accent {
+    background: linear-gradient(135deg, $tr-blue 0%, $tr-blue-hover 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   &__sub {
-    font-size: 1.05rem;
-    color: rgba(249, 249, 249, .62);
-    margin-bottom: 32px;
-    line-height: 1.7;
+    font-size: 1.1rem;
+    color: rgba($tr-white, .64);
+    line-height: 1.65;
+    max-width: 540px;
+    margin: 0 auto 40px;
   }
 
-  &__form {
+  &__steps {
+    list-style: none;
     display: flex;
-    gap: 12px;
-    max-width: 560px;
-    margin: 0 auto 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 14px 30px;
+    margin: 0 0 44px;
+    padding: 0;
   }
 
-  &__input {
-    flex: 1;
-    min-width: 0;
-    padding: 14px 18px;
-    border-radius: $radius-md + 4px;
-    border: 1px solid rgba(249, 249, 249, .14);
-    background: rgba(249, 249, 249, .08);
-    color: #F9F9F9;
-    font-family: inherit;
-    font-size: .95rem;
-    outline: none;
-    transition: $transition;
+  &__step {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
 
-    &::placeholder {
-      color: rgba(249, 249, 249, .45);
-    }
+  &__step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid rgba($tr-blue,.4);
+    background: rgba($tr-blue,.12);
+    color: $tr-blue-hover;
+    font-size: .76rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+  }
 
-    &:focus {
-      border-color: rgba(61, 102, 149, .75);
-      background: rgba(249, 249, 249, .11);
-      box-shadow: 0 0 0 4px rgba(61, 102, 149, .18);
-    }
+  &__step-label {
+    font-size: .96rem;
+    font-weight: 600;
+    color: rgba($tr-white,.82);
   }
 
   .btn--primary {
-    background: #3D6695;
-    color: #F9F9F9;
-    border-color: #3D6695;
-    box-shadow: 0 4px 14px rgba(61, 102, 149, .28);
+    background: $tr-blue;
+    color: $tr-white;
+    border-color: $tr-blue;
+    box-shadow: 0 6px 22px rgba($tr-blue,.34);
 
     &:hover {
-      background: #4B6F95;
-      border-color: #4B6F95;
-      box-shadow: 0 6px 20px rgba(61, 102, 149, .36);
+      background: $tr-blue-hover;
+      border-color: $tr-blue-hover;
+      box-shadow: 0 8px 26px rgba($tr-blue,.42);
       transform: translateY(-1px);
     }
   }
 
-  &__success {
-    display: inline-flex;
-    align-items: center;
+  &__or {
+    margin: 18px 0 12px;
+    font-size: .8rem;
+    color: rgba($tr-white, .4);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+  }
+
+  &__contacts {
+    display: flex;
+    gap: 10px;
     justify-content: center;
-    margin-top: 12px;
-    padding: 10px 16px;
-    border-radius: 999px;
-    background: rgba(74, 222, 128, .12);
-    border: 1px solid rgba(74, 222, 128, .22);
-    color: #F9F9F9;
-    font-size: .9rem;
-    font-weight: 600;
+    flex-wrap: wrap;
+
+    .btn--ghost {
+      background: rgba($tr-white, .07);
+      color: $tr-white;
+      border-color: rgba($tr-white, .16);
+      backdrop-filter: blur(8px);
+
+      &:hover {
+        background: rgba($tr-white, .13);
+        border-color: rgba($tr-white, .3);
+        color: $tr-white;
+        transform: translateY(-1px);
+      }
+    }
   }
 
   &__note {
-    margin-top: 18px;
+    margin: 22px auto 0;
     font-size: .85rem;
-    color: rgba(249, 249, 249, .48);
+    color: rgba($tr-white, .46);
+    max-width: 460px;
   }
 
-  @media (max-width: 640px) {
-    padding: 80px 0;
+  @media (max-width: 600px) {
+    padding: 84px 0;
 
-    &__form {
+    &__steps {
       flex-direction: column;
+      align-items: center;
+      gap: 14px;
     }
 
-    .btn {
-      justify-content: center;
-      width: 100%;
-    }
+    &__primary { width: 100%; justify-content: center; }
+    &__contacts .btn { flex: 1; justify-content: center; }
   }
 }
 
@@ -2971,7 +2941,7 @@ img { max-width: 100%; display: block; }
 
   &__top {
     display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    grid-template-columns: 1.6fr 1fr 1fr;
     gap: 48px;
     padding-bottom: 48px;
     border-bottom: 1px solid rgba($white,.08);
@@ -3056,19 +3026,18 @@ img { max-width: 100%; display: block; }
     gap: 12px;
   }
 
-  &__bottom-links {
-    display: flex;
-    gap: 24px;
-
-    a {
-      color: rgba($white,.35);
-      transition: $transition;
-      &:hover { color: rgba($white,.7); }
-    }
+  &__cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    color: rgba($white,.7);
+    transition: $transition;
+    &:hover { color: $white; }
   }
 
   @media (max-width: 900px) {
-    &__top { grid-template-columns: 1fr 1fr; }
+    &__top { grid-template-columns: 1fr 1fr; gap: 36px; }
     &__brand { grid-column: 1 / -1; }
   }
 
@@ -3087,6 +3056,96 @@ img { max-width: 100%; display: block; }
 @media (prefers-reduced-motion: reduce) {
   .examples__card:hover { transform: none; }
   .examples__card:hover .examples__card-stage img { transform: none; }
+}
+
+// ─── MID CTA BAND ────────────────────────────────────────
+.cta-band {
+  background: $light;
+  padding: 8px 24px 48px;
+
+  &__inner {
+    max-width: 1040px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding: 34px 32px;
+    border-radius: $radius-xl;
+    background: radial-gradient(120% 150% at 0% 0%, $tr-bg-soft 0%, $tr-bg 60%, $tr-bg-deep 100%);
+    border: 1px solid rgba($tr-blue,.3);
+    box-shadow: $shadow-lg;
+  }
+
+  &__text {
+    h2 {
+      margin: 0;
+      font-size: clamp(1.25rem, 2.6vw, 1.7rem);
+      font-weight: 800;
+      letter-spacing: -.02em;
+      color: $tr-white;
+    }
+    p {
+      margin: 8px 0 0;
+      font-size: .95rem;
+      line-height: 1.6;
+      color: rgba($tr-white,.62);
+      max-width: 460px;
+    }
+  }
+
+  &__cta {
+    flex-shrink: 0;
+    background: $tr-blue;
+    border-color: $tr-blue;
+    color: $tr-white;
+    box-shadow: 0 6px 22px rgba($tr-blue,.34);
+
+    &:hover {
+      background: $tr-blue-hover;
+      border-color: $tr-blue-hover;
+      box-shadow: 0 8px 26px rgba($tr-blue,.42);
+      transform: translateY(-1px);
+    }
+  }
+
+  @media (max-width: 720px) {
+    &__inner { padding: 26px 22px; }
+    &__cta { width: 100%; justify-content: center; }
+  }
+}
+
+// ─── STICKY MOBILE CTA ───────────────────────────────────
+.sticky-cta {
+  position: fixed;
+  z-index: 1080;
+  right: 16px;
+  bottom: 16px;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 18px;
+  border-radius: 999px;
+  background: $tr-blue;
+  color: $tr-white;
+  font-size: .92rem;
+  font-weight: 700;
+  border: 1px solid rgba($tr-white,.14);
+  box-shadow: 0 10px 28px rgba(0,0,0,.34), 0 4px 12px rgba($tr-blue,.4);
+  transition: transform .3s cubic-bezier(.4,0,.2,1), opacity .3s ease;
+
+  svg { flex-shrink: 0; }
+
+  &--hidden {
+    opacity: 0;
+    transform: translateY(140%);
+    pointer-events: none;
+  }
+
+  @media (max-width: 900px) {
+    display: inline-flex;
+  }
 }
 
 .logo32{

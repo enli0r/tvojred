@@ -13,7 +13,7 @@
           <span class="demo-brand__text">tvojred<span>.rs</span></span>
         </RouterLink>
 
-        <RouterLink class="btn btn--primary demo-topbar__cta" to="/paketi-i-cene">Paketi i cene</RouterLink>
+        <RouterLink class="btn btn--primary demo-topbar__cta" :to="{ path: '/', hash: '#kontakt-cta' }">Hoću svoj salon online</RouterLink>
       </div>
     </header>
 
@@ -21,14 +21,14 @@
     <section class="demo-intro">
       <div class="demo-intro__inner">
         <span class="demo-eyebrow">Primeri uživo</span>
-        <h1 class="demo-intro__title">Pogledajte salon na delu.</h1>
+        <h1 class="demo-intro__title">Pogledaj salon na delu.</h1>
         <p class="demo-intro__sub">
-          Pravi, klikabilni demo sajtovi i sistemi za zakazivanje — za barber, beauty i nail salone. Otvorite bilo koji i prošetajte se kroz njega kao vaš klijent.
+          Pravi, klikabilni primeri sajtova i sistema za zakazivanje — za barber, beauty i nail salone. Otvori bilo koji i prošetaj se kroz njega kao tvoj klijent.
         </p>
 
         <p class="demo-note">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16v-4M12 8h.01"/><circle cx="12" cy="12" r="9"/></svg>
-          Svaki primer je polazna tačka — dizajn, usluge i način rada prilagođavamo vašem salonu.
+          Svaki primer je polazna tačka — dizajn, usluge i način rada prilagođavamo tvom salonu.
         </p>
       </div>
     </section>
@@ -79,7 +79,7 @@
               <h3 class="demo-card__title">{{ item.title }}</h3>
               <p class="demo-card__desc">{{ item.text }}</p>
               <span class="demo-card__cta">
-                Otvori demo
+                Pogledaj primer
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </span>
             </div>
@@ -100,20 +100,31 @@
     <section class="demo-band">
       <div class="demo-band__inner">
         <div>
-          <h2>Dopada vam se neki od primera?</h2>
-          <p>Krenimo od njega — dizajn i funkcije podešavamo vašem salonu.</p>
+          <h2>Dopada ti se neki od primera?</h2>
+          <p>Krenimo od njega — dizajn i funkcije podešavamo tvom salonu.</p>
         </div>
-        <RouterLink class="btn btn--primary btn--lg" to="/paketi-i-cene">
-          Pogledaj pakete i cene
+        <RouterLink class="btn btn--primary btn--lg btn-fullwidth" :to="{ path: '/', hash: '#kontakt-cta' }">
+          Hoću svoj salon online
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </RouterLink>
       </div>
     </section>
+
+    <!-- STICKY MOBILE CTA -->
+    <RouterLink
+      class="demo-sticky"
+      :class="{ 'demo-sticky--hidden': !showStickyCta }"
+      :to="{ path: '/', hash: '#kontakt-cta' }"
+      aria-label="Hoću svoj salon online"
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span>Hoću svoj salon online</span>
+    </RouterLink>
   </main>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 
 import testHomepage from '@/assets/img/mockup-test-studio.png'
@@ -145,19 +156,18 @@ const designs = [
     category: 'booking',
     vertical: 'Barbershop',
     type: 'Online zakazivanje',
-    title: 'Barber Salon',
-    text: 'Minimalisticki i elegantan dizajn za zakazivanje termina.',
+    title: 'Barber zakazivanje 01',
+    text: 'Minimalistički primer zakazivanja za muški salon — usluga, barber, datum i slobodan termin.',
     image: BarberBooking,
     url: '/barber-booking3',
   },
-
   {
     id: 2,
     category: 'booking',
     vertical: 'Barbershop',
     type: 'Online zakazivanje',
-    title: 'Fade Studio',
-    text: 'Klijent bira uslugu, frizera, datum i termin — bez ijedne poruke.',
+    title: 'Barber zakazivanje 02',
+    text: 'Primer toka u kom klijent bira uslugu, frizera, datum i termin bez poziva i dopisivanja.',
     image: testZakazi,
     url: '/test-studio/zakazivanje',
   },
@@ -166,8 +176,8 @@ const designs = [
     category: 'website',
     vertical: 'Barbershop',
     type: 'Web sajt',
-    title: 'Fade Studio',
-    text: 'Početna koja gradi prvi utisak i vodi posetioca pravo do zakazivanja.',
+    title: 'Barber web sajt 01',
+    text: 'Primer početne strane koja predstavlja usluge, atmosferu salona i vodi klijenta ka zakazivanju.',
     image: testHomepage,
     url: '/test-studio',
   },
@@ -176,8 +186,8 @@ const designs = [
     category: 'booking',
     vertical: 'Barbershop',
     type: 'Online zakazivanje',
-    title: 'Taper',
-    text: 'Moderna minimalisticka stranica za zakazivanje, personalizovana u bojama brenda.',
+    title: 'Barber zakazivanje 03',
+    text: 'Moderan primer stranice za zakazivanje, prilagođen salonima koji žele čist i ozbiljan izgled.',
     image: barberBookingMinimalistic,
     url: '/barber-booking',
   },
@@ -186,8 +196,8 @@ const designs = [
     category: 'booking',
     vertical: 'Barbershop',
     type: 'Online zakazivanje',
-    title: 'Cut IT',
-    text: 'Stranica za zakazivanje sa premium narandzastom bojom i slajderom.',
+    title: 'Barber zakazivanje 04',
+    text: 'Primer zakazivanja sa jačim vizuelnim akcentom, preglednim izborom usluge i slobodnih termina.',
     image: barberBookingSlajder,
     url: '/barber-booking2',
   },
@@ -196,8 +206,8 @@ const designs = [
     category: 'booking',
     vertical: 'Hair & beauty',
     type: 'Online zakazivanje',
-    title: 'Modern Life',
-    text: 'Brz tok zakazivanja: usluga, osoba, datum i termin u par dodira.',
+    title: 'Beauty zakazivanje 01',
+    text: 'Primer brzog zakazivanja za beauty salon — usluga, osoba, datum i termin u nekoliko dodira.',
     image: modernZakazi,
     url: '/modern-life/zakazivanje',
   },
@@ -206,8 +216,8 @@ const designs = [
     category: 'website',
     vertical: 'Hair & beauty',
     type: 'Web sajt',
-    title: 'Modern Life',
-    text: 'Svetao sajt sa uslugama, timom, galerijom radova i zakazivanjem.',
+    title: 'Beauty web sajt 01',
+    text: 'Svetao koncept sajta sa uslugama, timom, galerijom radova i jasnim pozivom na zakazivanje.',
     image: modernHomepage,
     url: '/modern-life',
   },
@@ -216,8 +226,8 @@ const designs = [
     category: 'booking',
     vertical: 'Nail studio',
     type: 'Online zakazivanje',
-    title: 'Glow Nails',
-    text: 'Jasan izbor usluge, slobodnog termina i nail artist-a.',
+    title: 'Nail zakazivanje 01',
+    text: 'Primer zakazivanja za nail studio sa jasnim izborom usluge, termina i nail artist-a.',
     image: nailZakazi,
     url: '/nail-studio/zakazivanje',
   },
@@ -226,8 +236,8 @@ const designs = [
     category: 'website',
     vertical: 'Nail studio',
     type: 'Web sajt',
-    title: 'Glow Nails',
-    text: 'Elegantan sajt sa radovima, cenovnikom i direktnim zakazivanjem.',
+    title: 'Nail web sajt 01',
+    text: 'Elegantan koncept sajta sa radovima, cenovnikom i dugmetom koje vodi ka zakazivanju.',
     image: nailWelcome,
     url: '/nail-studio',
   },
@@ -236,8 +246,8 @@ const designs = [
     category: 'admin',
     vertical: 'Upravljanje',
     type: 'Admin panel',
-    title: 'Kontrolni panel',
-    text: 'Termini, tim, usluge, cene i klijenti — sve sa jednog mesta.',
+    title: 'Admin panel 01',
+    text: 'Primer pregleda termina, zaposlenih, usluga, cena i klijenata na jednom mestu.',
     image: adminPanel,
     url: '/admin-panel',
   },
@@ -260,6 +270,24 @@ function pluralPrimer(n: number) {
 function selectFilter(value: FilterValue) {
   activeFilter.value = value
 }
+
+// ── Sticky mobilni CTA: pojavi se posle malo skrola, sakrij iznad CTA trake ──
+const showStickyCta = ref(false)
+
+function handleStickyScroll() {
+  const y = window.scrollY
+  const nearBottom = y + window.innerHeight > document.documentElement.scrollHeight - 640
+  showStickyCta.value = y > 480 && !nearBottom
+}
+
+onMounted(() => {
+  handleStickyScroll()
+  window.addEventListener('scroll', handleStickyScroll, { passive: true })
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleStickyScroll)
+})
 </script>
 
 <style scoped lang="scss">
@@ -743,6 +771,45 @@ $container: 1160px;
   }
 
   p { margin: 0; color: $mid; font-size: .92rem; }
+}
+
+// ─── STICKY MOBILE CTA ───────────────────────────────────
+.demo-sticky {
+  position: fixed;
+  z-index: 40;
+  right: 16px;
+  bottom: 16px;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 18px;
+  border-radius: 999px;
+  background: $primary;
+  color: $white;
+  font-size: .92rem;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid rgba($white,.16);
+  box-shadow: 0 10px 26px rgba($primary,.42), 0 4px 12px rgba(15,23,42,.18);
+  transition: transform .3s cubic-bezier(.4,0,.2,1), opacity .3s ease;
+
+  svg { flex-shrink: 0; }
+
+  &--hidden {
+    opacity: 0;
+    transform: translateY(140%);
+    pointer-events: none;
+  }
+
+  @media (max-width: 900px) {
+    display: inline-flex;
+  }
+}
+
+.btn-fullwidth{
+  width: 100% !important;
+  // text-align: center !important;
+  justify-content: center !important;
 }
 
 // ─── RESPONSIVE ──────────────────────────────────────────
