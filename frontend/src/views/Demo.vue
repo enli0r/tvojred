@@ -137,6 +137,8 @@ import adminPanel from '@/assets/img/mockup-admin-panel.png'
 import barberBookingSlajder from '@/assets/img/barber-booking2-mockup.png'
 import barberBookingMinimalistic from '@/assets/img/barber-booking1-mockup.png'
 import BarberBooking from '@/assets/img/barber-booking3-mockup.png'
+import Beauty from '@/assets/img/mockup-beauty.png'
+
 
 
 type FilterValue = 'all' | 'booking' | 'website' | 'admin'
@@ -183,6 +185,16 @@ const designs = [
   },
   {
     id: 4,
+    category: 'website',
+    vertical: 'Beauty',
+    type: 'Web sajt',
+    title: 'Beauty web sajt 01',
+    text: 'Moderan beauty salon, na visokom nivou. Sekcije su premium sa puno slika, dizajnerski orjentisano.',
+    image: Beauty,
+    url: '/beauty-salon',
+  },
+  {
+    id: 5,
     category: 'booking',
     vertical: 'Barbershop',
     type: 'Online zakazivanje',
@@ -191,8 +203,9 @@ const designs = [
     image: barberBookingMinimalistic,
     url: '/barber-booking2',
   },
+
   {
-    id: 5,
+    id: 6,
     category: 'booking',
     vertical: 'Barbershop',
     type: 'Online zakazivanje',
@@ -202,7 +215,7 @@ const designs = [
     url: '/barber-booking',
   },
   {
-    id: 6,
+    id: 7,
     category: 'booking',
     vertical: 'Hair & beauty',
     type: 'Online zakazivanje',
@@ -212,17 +225,17 @@ const designs = [
     url: '/modern-life/zakazivanje',
   },
   {
-    id: 7,
+    id: 8,
     category: 'website',
     vertical: 'Hair & beauty',
     type: 'Web sajt',
-    title: 'Beauty web sajt 01',
+    title: 'Beauty web sajt 02',
     text: 'Svetao koncept sajta sa uslugama, timom, galerijom radova i jasnim pozivom na zakazivanje.',
     image: modernHomepage,
     url: '/modern-life',
   },
   {
-    id: 8,
+    id: 9,
     category: 'booking',
     vertical: 'Nail studio',
     type: 'Online zakazivanje',
@@ -232,7 +245,7 @@ const designs = [
     url: '/nail-studio/zakazivanje',
   },
   {
-    id: 9,
+    id: 10,
     category: 'website',
     vertical: 'Nail studio',
     type: 'Web sajt',
@@ -242,7 +255,7 @@ const designs = [
     url: '/nail-studio',
   },
   {
-    id: 10,
+    id: 11,
     category: 'admin',
     vertical: 'Upravljanje',
     type: 'Admin panel',
