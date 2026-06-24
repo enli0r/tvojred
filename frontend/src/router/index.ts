@@ -29,6 +29,7 @@ import BarberBooking2 from '../views/BarberBooking2.vue';
 import BarberBooking3 from '../views/BarberBooking3.vue';
 import BarberBooking4 from '../views/BarberBooking4.vue';
 import NikisHouse from '../views/NikisHouse.vue';
+import BeautySalon1 from '../views/BeautySalon1.vue';
 
 
 
@@ -43,6 +44,8 @@ const routes = [
   { path: '/barber-booking3', name: 'BarberBooking3', component: BarberBooking3 },
   { path: '/barber-booking4', name: 'BarberBooking4', component: BarberBooking4 },
   { path: '/nikishouse', name: 'NikisHouse', component: NikisHouse },
+
+  { path: '/beauty-salon', name: 'BeautySalon1', component: BeautySalon1 },
 
 
 
