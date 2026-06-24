@@ -189,7 +189,7 @@ const designs = [
     title: 'Barber zakazivanje 03',
     text: 'Moderan primer stranice za zakazivanje, prilagođen salonima koji žele čist i ozbiljan izgled.',
     image: barberBookingMinimalistic,
-    url: '/barber-booking',
+    url: '/barber-booking2',
   },
   {
     id: 5,
@@ -199,7 +199,7 @@ const designs = [
     title: 'Barber zakazivanje 04',
     text: 'Primer zakazivanja sa jačim vizuelnim akcentom, preglednim izborom usluge i slobodnih termina.',
     image: barberBookingSlajder,
-    url: '/barber-booking2',
+    url: '/barber-booking',
   },
   {
     id: 6,

@@ -543,9 +543,9 @@ const designs = [
   { id: 2, type: 'Online zakazivanje', title: 'Barber Salon', text: 'Klijent bira uslugu, frizera, datum i termin bez dopisivanja preko poruka.', image: testZakazi, url: '/test-studio/zakazivanje' },
   { id: 3, type: 'Web sajt', title: 'Barber Salon', text: 'Početna strana sa uslugama, atmosferom i jasnim pozivom na zakazivanje.', image: testHomepage, url: '/test-studio' },
 
-  { id: 4, type: 'Online zakazivanje', title: 'Barber Salon', text: 'Moderna minimalisticka stranica za zakazivanje, personalizovana u bojama brenda.', image: barberBookingMinimalistic, url: '/barber-booking' },
+  { id: 4, type: 'Online zakazivanje', title: 'Barber Salon', text: 'Stranica za zakazivanje sa premium narandzastom bojom i slajderom.', image: barberBookingMinimalistic, url: '/barber-booking2' },
 
-  { id: 5, type: 'Online zakazivanje', title: 'Barber Salon', text: 'Stranica za zakazivanje sa premium narandzastom bojom i slajderom.', image: barberBookingSlajder, url: '/barber-booking2' },
+  { id: 5, type: 'Online zakazivanje', title: 'Barber Salon', text: 'Moderna minimalisticka stranica za zakazivanje, personalizovana u bojama brenda i premium osecajem.', image: barberBookingSlajder, url: '/barber-booking' },
 
   { id: 6, type: 'Online zakazivanje', title: 'Beauty Salon', text: 'Klijent bira uslugu, osobu, datum i termin bez dopisivanja preko poruka.', image: modernZakazi, url: '/modern-life/zakazivanje' },
   { id: 7, type: 'Web sajt', title: 'Beauty Salon', text: 'Svetao sajt za hair i beauty salon sa uslugama, timom i zakazivanjem.', image: modernHomepage, url: '/modern-life' },
