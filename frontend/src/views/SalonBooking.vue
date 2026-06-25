@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 
-import maleBarber1 from '@/assets/img/male-barber1.jpg'
-import maleBarber2 from '@/assets/img/male-barber2.jpg'
-import maleBarber3 from '@/assets/img/male-barber3.jpg'
-import maleBarber4 from '@/assets/img/male-barber4.jpg'
-import logo from '@/assets/img/logo33.png'
+import girl11 from '@/assets/img/girl11.jpg'
+import girl12 from '@/assets/img/girl12.jpg'
+import girl13 from '@/assets/img/girl13.jpg'
+import girl14 from '@/assets/img/girl14.jpg'
+import logoS2 from '@/assets/img/logo-s2.png'
 
 /* ───────────────────────── Tipovi ───────────────────────── */
 type Period = 'am' | 'pm'
@@ -38,99 +38,94 @@ interface Barber {
 
 /* ───────────────────────── Dummy podaci ───────────────────────── */
 const services: ServiceOption[] = [
-  { id: 'cut',   name: 'Klasično šišanje',       desc: 'Makaze i mašinica, finiš na suvo', duration: '30 min', price: '800 RSD' },
-  { id: 'fade',  name: 'Fade šišanje',           desc: 'Precizan prelaz — skin ili taper', duration: '40 min', price: '1.000 RSD' },
-  { id: 'beard', name: 'Sređivanje brade',       desc: 'Linija, mašinica i topli peškir',  duration: '20 min', price: '500 RSD' },
-  { id: 'combo', name: 'Šišanje + brada',        desc: 'Kompletan tretman i stajling',     duration: '50 min', price: '1.200 RSD' },
-  { id: 'kids',  name: 'Dečije šišanje',         desc: 'Za klince do 12 godina',           duration: '25 min', price: '600 RSD' },
-  { id: 'shave', name: 'Klasično brijanje',      desc: 'Britva i topli peškir',            duration: '30 min', price: '700 RSD' },
+  { id: 'balayage', name: 'Balayage / pramenovi', desc: 'Mekani prelivi i prirodni tonovi prilagođeni tenu i dužini kose.', duration: '150 min', price: 'od 7.000 RSD' },
+  { id: 'makeup', name: 'Make-up', desc: 'Profesionalna šminka za dnevne, večernje i svečane prilike.', duration: '60 min', price: 'od 4.000 RSD' },
+  { id: 'airtouch', name: 'Air touch', desc: 'Premium tehnika senčenja za čist, mekan i luksuzan prelaz boje.', duration: '210 min', price: 'od 12.000 RSD' },
+  { id: 'color-correction', name: 'Color korekcije', desc: 'Korekcija tona, neutralizacija neželjenih odsjaja i obnova boje.', duration: '180 min', price: 'od 9.000 RSD' },
+  { id: 'mini-val', name: 'Mini val', desc: 'Volumen, tekstura i definisan oblik kose uz moderan dugotrajan rezultat.', duration: '90 min', price: 'od 4.500 RSD' },
+  { id: 'feniranje', name: 'Feniranje / styling', desc: 'Pranje, feniranje i finiš za uredan salonski izgled.', duration: '45 min', price: 'od 1.800 RSD' },
 ]
 
 const days: DayOption[] = [
-  { id: '06', weekday: 'WED', day: '06', month: 'MAY', label: '6. maj' },
-  { id: '07', weekday: 'THU', day: '07', month: 'MAY', label: '7. maj' },
-  { id: '08', weekday: 'FRI', day: '08', month: 'MAY', label: '8. maj' },
-  { id: '11', weekday: 'MON', day: '11', month: 'MAY', label: '11. maj' },
-  { id: '12', weekday: 'TUE', day: '12', month: 'MAY', label: '12. maj' },
-  { id: '13', weekday: 'WED', day: '13', month: 'MAY', label: '13. maj' },
-  { id: '14', weekday: 'THU', day: '14', month: 'MAY', label: '14. maj' },
-  { id: '15', weekday: 'FRI', day: '15', month: 'MAY', label: '15. maj' },
-  { id: '18', weekday: 'MON', day: '18', month: 'MAY', label: '18. maj' },
-  { id: '19', weekday: 'TUE', day: '19', month: 'MAY', label: '19. maj' },
+  { id: '26', weekday: 'PET', day: '26', month: 'JUN', label: '26. jun' },
+  { id: '27', weekday: 'SUB', day: '27', month: 'JUN', label: '27. jun' },
+  { id: '29', weekday: 'PON', day: '29', month: 'JUN', label: '29. jun' },
+  { id: '30', weekday: 'UTO', day: '30', month: 'JUN', label: '30. jun' },
+  { id: '01', weekday: 'SRE', day: '01', month: 'JUL', label: '1. jul' },
+  { id: '02', weekday: 'ČET', day: '02', month: 'JUL', label: '2. jul' },
+  { id: '03', weekday: 'PET', day: '03', month: 'JUL', label: '3. jul' },
+  { id: '04', weekday: 'SUB', day: '04', month: 'JUL', label: '4. jul' },
+  { id: '06', weekday: 'PON', day: '06', month: 'JUL', label: '6. jul' },
+  { id: '07', weekday: 'UTO', day: '07', month: 'JUL', label: '7. jul' },
 ]
 
 const barbers: Barber[] = [
   {
-    id: 'marko',
-    name: 'Marko',
-    specialty: 'Specijalista za klasične i moderne frizure',
+    id: 'ana',
+    name: 'Ana',
+    specialty: 'Balayage, pramenovi i toniranje',
     rating: 4.9,
-    avatar: maleBarber1,
+    avatar: girl11,
     times: {
-      am: ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30'],
-      pm: ['12:00', '12:30', '13:00', '13:30', '14:30', '15:00', '16:00', '17:30', '18:00', '19:00'],
+      am: ['09:00', '09:30', '10:00', '10:30', '11:30'],
+      pm: ['12:00', '13:00', '14:30', '15:00', '16:30', '18:00'],
     },
-    taken: ['10:00', '12:30', '16:00'],
+    taken: ['09:30', '14:30'],
   },
   {
-    id: 'stefan',
-    name: 'Stefan',
-    specialty: 'Fade i moderni muški stilovi',
-    rating: 4.8,
-    avatar: maleBarber2,
+    id: 'mila',
+    name: 'Mila',
+    specialty: 'Air touch i color korekcije',
+    rating: 4.9,
+    avatar: girl12,
     times: {
       am: ['10:00', '10:30', '11:00', '11:30'],
-      pm: ['12:00', '13:00', '14:00', '15:30', '16:00', '17:00', '18:30'],
+      pm: ['12:30', '13:00', '15:00', '16:00', '17:30', '18:30'],
     },
-    taken: ['11:00', '15:30'],
+    taken: ['11:00', '16:00'],
   },
   {
-    id: 'nikola',
-    name: 'Nikola',
-    specialty: 'Brada i klasično brijanje',
-    rating: 4.7,
-    avatar: maleBarber3,
+    id: 'teodora',
+    name: 'Teodora',
+    specialty: 'Profesionalni make-up i styling',
+    rating: 4.8,
+    avatar: girl13,
     times: {
-      am: ['09:00', '09:30', '10:00', '11:00'],
-      pm: ['12:30', '13:30', '14:00', '15:00', '16:30', '17:00', '18:00'],
+      am: ['09:30', '10:00', '10:30', '11:00'],
+      pm: ['12:00', '13:30', '14:00', '15:30', '17:00', '18:00'],
     },
-    taken: ['09:30', '14:00'],
+    taken: ['10:30', '15:30'],
   },
   {
-    id: 'luka',
-    name: 'Luka',
-    specialty: 'Dečije i muško šišanje',
-    rating: 4.9,
-    avatar: maleBarber4,
+    id: 'nina',
+    name: 'Nina',
+    specialty: 'Mini val, nega i završni tretmani',
+    rating: 4.8,
+    avatar: girl14,
     times: {
-      am: ['09:30', '10:30', '11:00', '11:30'],
-      pm: ['12:00', '12:30', '13:00', '14:00', '15:00', '16:00', '17:30'],
+      am: ['09:00', '10:00', '11:00', '11:30'],
+      pm: ['12:30', '13:00', '14:00', '16:30', '17:30'],
     },
-    taken: ['12:00', '17:30'],
+    taken: ['12:30', '17:30'],
   },
 ]
 
-/* Globalno najraniji slobodan termin (kartica na vrhu) */
-const earliest = {
-  time: '09:30',
-  barberName: 'Marko',
-  dayLabel: '6. maj',
-  dayId: '06',
-  barberId: 'marko',
-  period: 'am' as Period,
-}
-
 /* ───────────────────────── Stanje ───────────────────────── */
-const selectedServiceId = ref<string>('cut')
-const selectedDayId = ref<string>('08')
-const selectedBarberId = ref<string>('marko')
-const selectedTime = ref<string>('13:30')
+const selectedServiceId = ref<string>('balayage')
+const selectedDayId = ref<string>('26')
+const selectedBarberId = ref<string>('mila')
+const selectedTime = ref<string>('13:00')
 const period = ref<Period>('pm')
 
-const showNotifs = ref<boolean>(false)
-const notifications = [
-  { id: 1, title: 'Termin potvrđen', body: 'Tvoj termin kod Marka je potvrđen.', time: 'pre 2h' },
-  { id: 2, title: 'Podsetnik', body: 'Sutra u 13:30 imaš zakazano šišanje.', time: 'juče' },
+const sideMenuOpen = ref<boolean>(false)
+const bookingSuccess = ref<boolean>(false)
+
+const drawerLinks = [
+  { label: 'Početna', target: 'home' },
+  { label: 'Usluge', target: 'usluge' },
+  { label: 'Naš tim', target: 'tim' },
+  { label: 'Galerija', target: 'galerija' },
+  { label: 'Kontakt', target: 'kontakt' },
 ]
 
 /* ───────────────────────── Computed ───────────────────────── */
@@ -138,6 +133,10 @@ const selectedDay = computed(() => days.find((d) => d.id === selectedDayId.value
 
 const selectedBarber = computed(
   () => barbers.find((b) => b.id === selectedBarberId.value) ?? null,
+)
+
+const selectedService = computed(
+  () => services.find((s) => s.id === selectedServiceId.value) ?? null,
 )
 
 function earliestFor(barber: Barber): string {
@@ -152,6 +151,28 @@ const periodTimes = computed<string[]>(() => {
 
 const summaryDate = computed(() => selectedDay.value?.label ?? '')
 const canBook = computed(() => !!selectedDay.value && !!selectedBarber.value && !!selectedTime.value)
+
+function goBack() {
+  if (window.history.length > 1) {
+    window.history.back()
+    return
+  }
+
+  window.location.href = '/s2-vracar'
+}
+
+function toggleSideMenu(state?: boolean) {
+  sideMenuOpen.value = typeof state === 'boolean' ? state : !sideMenuOpen.value
+}
+
+function goLanding(target: string) {
+  sideMenuOpen.value = false
+  window.location.href = `/s2-vracar#${target}`
+}
+
+function closeBookingSuccess() {
+  bookingSuccess.value = false
+}
 
 /* ───────────────────────── Akcije ───────────────────────── */
 function selectDay(id: string) {
@@ -183,108 +204,86 @@ function selectTime(t: string) {
   selectedTime.value = t
 }
 
-function bookEarliest() {
-  selectedDayId.value = earliest.dayId
-  selectedBarberId.value = earliest.barberId
-  period.value = earliest.period
-  selectedTime.value = earliest.time
-}
 
 function confirmBooking() {
   if (!canBook.value) return
   // hook za stvarno zakazivanje
   console.log('Zakazano:', {
-    usluga: services.find((s) => s.id === selectedServiceId.value)?.name,
+    usluga: selectedService.value?.name,
     datum: summaryDate.value,
-    barber: selectedBarber.value?.name,
+    majstor: selectedBarber.value?.name,
     vreme: selectedTime.value,
   })
+  bookingSuccess.value = true
 }
 </script>
 
 <template>
   <div class="bb-screen">
     <div class="bb-scroll">
-      <!-- Gornja tamnija zona pozadine -->
-      <div class="bb-bg-top" />
-
       <div class="bb-content">
         <!-- Header -->
         <header class="bb-header">
-          <div class="bb-brand">
-            <img class="bb-brand__logo" :src="logo" alt="tvojred.rs" />
-            <span class="bb-brand__name">tvojred<span class="bb-brand__tld">.rs</span></span>
-          </div>
+          <button class="bb-nav-btn bb-nav-btn--back" type="button" aria-label="Nazad" @click="goBack">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
 
-          <div class="bb-notif">
-            <button
-              class="bb-notif__btn"
-              type="button"
-              aria-label="Notifikacije"
-              @click="showNotifs = !showNotifs"
-            >
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2a6 6 0 0 0-6 6c0 4.5-1.2 6.2-2.2 7.2A1 1 0 0 0 4.5 17h15a1 1 0 0 0 .7-1.7C19.2 14.2 18 12.5 18 8a6 6 0 0 0-6-6zm0 20a2.8 2.8 0 0 0 2.7-2h-5.4A2.8 2.8 0 0 0 12 22z" />
-              </svg>
-              <span v-if="notifications.length" class="bb-notif__badge">{{ notifications.length }}</span>
-            </button>
+          <button class="bb-header-logo" type="button" aria-label="S2 Vračar početna" @click="goLanding('home')">
+            <img :src="logoS2" alt="S2 Vračar" />
+          </button>
 
-            <transition name="bb-pop">
-              <div v-if="showNotifs" class="bb-notif__panel">
-                <div v-for="n in notifications" :key="n.id" class="bb-notif__item">
-                  <span class="bb-notif__dot" />
-                  <div class="bb-notif__content">
-                    <span class="bb-notif__title">{{ n.title }}</span>
-                    <span class="bb-notif__body">{{ n.body }}</span>
-                    <span class="bb-notif__time">{{ n.time }}</span>
-                  </div>
-                </div>
-              </div>
-            </transition>
-          </div>
+          <button class="bb-nav-btn bb-nav-btn--menu" type="button" aria-label="Otvori meni" @click="toggleSideMenu(true)">
+            <span></span>
+            <span></span>
+          </button>
         </header>
 
-        <!-- Naslov -->
-        <div class="bb-title-block">
-          <span class="bb-eyebrow">Online zakazivanje</span>
-          <h1 class="bb-title">Zakaži svoj termin.</h1>
-          <p class="bb-subtitle">Izaberi uslugu, datum i vreme.</p>
-        </div>
+        <!-- Side menu -->
+        <Teleport to="body">
+          <aside class="bb-drawer" :class="{ 'is-open': sideMenuOpen }">
+          <div class="bb-drawer__top">
+            <button class="bb-drawer__logo" type="button" aria-label="S2 Vračar početna" @click="goLanding('home')">
+              <img :src="logoS2" alt="S2 Vračar" />
+            </button>
 
-        <!-- Najraniji slobodan termin (frosted wrapper + tamna kartica) -->
-        <div class="bb-featured-wrap">
-          <section class="bb-featured">
-            <span class="bb-featured__label">Najraniji slobodan termin</span>
-            <span class="bb-featured__time">{{ earliest.time }}</span>
-            <div class="bb-featured__bottom">
-              <div class="bb-featured__meta">
-                <span class="bb-featured__meta-row">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                    <path
-                      d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <circle cx="12" cy="7" r="4" />
-                  </svg>
-                  {{ earliest.barberName }}
-                </span>
-                <span class="bb-featured__meta-row">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                    <rect x="3" y="4" width="18" height="18" rx="2" />
-                    <path d="M16 2v4M8 2v4M3 10h18" stroke-linecap="round" />
-                  </svg>
-                  {{ earliest.dayLabel }}
-                </span>
-              </div>
-              <button class="bb-cta bb-cta--sm" type="button" @click="bookEarliest">
-                Zakaži
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </button>
+            <button class="bb-drawer__close" type="button" aria-label="Zatvori meni" @click="toggleSideMenu(false)">
+              <span></span>
+              <span></span>
+            </button>
+          </div>
+
+          <nav class="bb-drawer__nav">
+            <button v-for="(item, idx) in drawerLinks" :key="item.target" type="button" @click="goLanding(item.target)">
+              <span class="bb-drawer__idx">0{{ idx + 1 }}</span>
+              {{ item.label }}
+            </button>
+          </nav>
+
+          <div class="bb-drawer__foot">
+            <button class="bb-cta bb-drawer__cta" type="button" @click="toggleSideMenu(false)">
+              Nastavi zakazivanje
+            </button>
+
+            <div class="bb-drawer__contact">
+              <a href="tel:+381600000000">+381 60 000 0000</a>
+              <a href="https://www.instagram.com/s2.vracar">@s2.vracar</a>
             </div>
-          </section>
+          </div>
+          </aside>
+        </Teleport>
+
+        <!-- Naslov -->
+        <!-- <div class="bb-title-block">
+          <span class="bb-eyebrow">Online zakazivanje</span>
+          <h1 class="bb-title">Rezervacija na klik.</h1>
+          <p class="bb-subtitle">S2 Vračar ti omogućava da brzo izabereš tretman, majstora i slobodan termin koji ti najviše odgovara.</p>
+        </div> -->
+
+        <div class="bb-mini-intro">
+        <span>Online zakazivanje</span>
+        <p>Izaberi uslugu, majstora i slobodan termin.</p>
         </div>
 
         <!-- Datum -->
@@ -365,10 +364,10 @@ function confirmBooking() {
             </svg>
           </span>
           <div class="bb-section-head__text">
-            <span class="bb-section-head__title">Frizer</span>
-            <span class="bb-section-head__sub">Slobodni frizeri za ovaj dan</span>
+            <span class="bb-section-head__title">Majstor</span>
+            <span class="bb-section-head__sub">Slobodni majstori za ovaj dan</span>
           </div>
-          <span class="bb-pill">{{ barbers.length }} dostupna</span>
+          <span class="bb-pill">{{ barbers.length }} dostupno</span>
         </div>
 
         <div class="bb-barbers">
@@ -473,6 +472,34 @@ function confirmBooking() {
         </svg>
       </button>
     </footer>
+
+    <Teleport to="body">
+      <div v-if="bookingSuccess" class="bb-success" @click.self="closeBookingSuccess">
+        <section class="bb-success__card">
+          <button class="bb-success__close" type="button" aria-label="Zatvori potvrdu" @click="closeBookingSuccess">
+            <span></span>
+            <span></span>
+          </button>
+
+          <span class="bb-success__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+
+          <span class="bb-success__eyebrow">S2 Vračar</span>
+          <h2>Termin je zakazan.</h2>
+          <p>
+            {{ selectedService?.name }} · {{ summaryDate }} u {{ selectedTime }}
+            <template v-if="selectedBarber"> kod {{ selectedBarber.name }}</template>.
+          </p>
+
+          <button class="bb-cta bb-success__btn" type="button" @click="closeBookingSuccess">
+            U redu
+          </button>
+        </section>
+      </div>
+    </Teleport>
   </div>
 </template>
 
@@ -480,21 +507,20 @@ function confirmBooking() {
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700&display=swap');
 
 /* ───────────────────────── Tokeni ───────────────────────── */
-$bb-bg-bottom:     #0f1219; // donja, malo svetlija zona
-$bb-bg-top:        #22262e; // gornja zona — graphite gray
-$bb-card:          #090b0f; // featured kartica = skoro crno (pop na graphite)
-$bb-surface:       #11151f;
-$bb-surface-2:     #161b27;
+$bb-bg-bottom:     #050505; // donja zona, skoro crna
+$bb-card:          #090909; // featured kartica = skoro crno
+$bb-surface:       #111111;
+$bb-surface-2:     #181818;
 $bb-border:        rgba(255, 255, 255, 0.07);
 $bb-border-strong: rgba(255, 255, 255, 0.12);
 $bb-ring-gap:      #0f1219; // boja "rupe" u ringu oko avatara (= donja pozadina)
-$bb-blue:          #406999;
-$bb-blue-hover:    #3a82ff;
-$bb-blue-press:    #1a5fe0;
+$bb-blue:          #d4af5c;
+$bb-blue-hover:    #bf9442;
+$bb-blue-press:    #a77d33;
 $bb-text:          #f4f6f9;
 $bb-text-dim:      #8b93a3;
 $bb-text-mute:     #5c6577;
-$bb-gold:          #f5b740;
+$bb-gold:          #e6b85d;
 $bb-radius-lg:     26px;
 $bb-radius-md:     18px;
 $bb-radius-sm:     14px;
@@ -533,30 +559,6 @@ $bb-display: 'Poppins', $bb-sans;
   -webkit-overflow-scrolling: touch;
 }
 
-/* Gornja zona — fotografija sa čvrstim tamnim overlayem */
-.bb-bg-top {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 290px;
-  z-index: 0;
-  overflow: hidden;
-  // background-color: #090d14;
-  border-radius: 0 0 24px 24px;
-  // background: rgba(0,0,0,0.4);
-  
-  // border-bottom-left-radius: 50px;
-  // border-bottom-right-radius: 50px;
-
-  // &::after {
-  //   content: '';
-  //   position: absolute;
-  //   inset: 0;
-  //   background: rgba(0, 0, 0, 0.3);
-  // }
-}
-
 .bb-content {
   position: relative;
   z-index: 1;
@@ -565,171 +567,274 @@ $bb-display: 'Poppins', $bb-sans;
 
 /* ───────────────────────── Header ───────────────────────── */
 .bb-header {
-  position: relative;
-  z-index: 5;
+  position: sticky;
+  top: 0;
+  z-index: 60;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 22px;
+  margin: -18px -20px 28px;
+  padding: 10px 20px 9px;
+  background: #050505;
+  border-bottom: 1px solid rgba(212, 175, 92, 0.10);
 }
 
-/* Brend (logo + wordmark) */
-.bb-brand {
-  display: flex;
+.bb-header-logo {
+  display: inline-flex;
   align-items: center;
-  gap: 9px;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  line-height: 0;
+  cursor: pointer;
+
+  img {
+    display: block !important;
+    width: auto !important;
+    height: 24px !important;
+    max-height: 24px !important;
+    max-width: 116px !important;
+    object-fit: contain !important;
+  }
+}
+
+.bb-nav-btn {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: $bb-text;
+  cursor: pointer;
+  transition: transform 0.12s ease, color 0.2s ease;
+
+  svg {
+    width: 25px;
+    height: 25px;
+  }
+
+  &:hover {
+    color: #fff;
+  }
+
+  &:active {
+    transform: scale(0.94);
+  }
+
+  &--menu {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    align-items: flex-end;
+    justify-content: center;
+
+    span {
+      display: block;
+      width: 26px;
+      height: 2px;
+      border-radius: 999px;
+      background: currentColor;
+      transition: width 0.3s ease;
+    }
+
+    span:last-child {
+      width: 18px;
+    }
+
+    &:hover span:last-child {
+      width: 26px;
+    }
+  }
+}
+
+.bb-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 18px 28px 42px;
+  background: radial-gradient(130% 90% at 100% 0%, #191919 0%, #050505 58%);
+  color: $bb-text;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-22px);
+  transition:
+    opacity 0.35s ease,
+    transform 0.48s $bb-ease,
+    visibility 0.48s;
+
+  &.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  &__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
 
   &__logo {
-    height: 30px;
-    width: auto;
-    display: block;
-  }
-
-  &__name {
-    font-family: $bb-display;
-    font-size: 19px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: $bb-text;
-    line-height: 1;
-  }
-
-  &__tld {
-    color: $bb-blue; // boja logoa — promeni ako logo nije plav
-  }
-}
-
-/* Notifikacije */
-.bb-notif {
-  position: relative;
-
-  &__btn {
-    position: relative;
-    display: grid;
-    place-items: center;
-    width: 40px;
-    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     padding: 0;
-    border: none;          // bez border-a
-    background: none;      // bez background-a
-    color: $bb-text;
+    border: 0;
+    background: transparent;
+    line-height: 0;
     cursor: pointer;
-    transition: color 0.18s ease, transform 0.1s ease;
 
-    svg {
-      width: 28px;
-      height: 28px;
-      fill: currentColor;  // solid
-    }
-
-    &:hover {
-      color: #fff;
-    }
-
-    &:active {
-      transform: scale(0.94);
+    img {
+      width: auto !important;
+      height: 34px !important;
+      max-width: 160px !important;
+      object-fit: contain !important;
+      display: block !important;
     }
   }
 
-  &__badge {
-    position: absolute;
-    top: -3px;
-    right: -3px;
-    min-width: 18px;
-    height: 18px;
-    padding: 0 5px;
-    border-radius: 999px;
-    border: 2px solid $bb-bg-top; // boja pozadine iza zvonca, da "iseče" rupu
-    background: $bb-blue;         // accent color
-    color: #fff;
-    font-size: 10px;
-    font-weight: 700;
-    line-height: 14px;
-    text-align: center;
-  }
+  &__close {
+    width: 44px;
+    height: 44px;
+    position: relative;
+    flex: none;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
 
-  &__panel {
-    position: absolute;
-    top: calc(100% + 10px);
-    right: 0;
-    z-index: 40;
-    width: 280px;
-    padding: 6px;
-    border-radius: 16px;
-    border: 1px solid $bb-border-strong;
-    background: $bb-surface-2;
-    box-shadow: 0 24px 50px -22px rgba(0, 0, 0, 0.9);
-  }
-
-  &__item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 11px 12px;
-    border-radius: 11px;
-    transition: background 0.16s ease;
-
-    &:hover {
-      background: rgba(255, 255, 255, 0.04);
+    span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 24px;
+      height: 2px;
+      border-radius: 999px;
+      background: $bb-text;
     }
 
-    & + & {
-      margin-top: 2px;
+    span:first-child {
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    span:last-child {
+      transform: translate(-50%, -50%) rotate(-45deg);
     }
   }
 
-  &__dot {
-    flex-shrink: 0;
-    width: 8px;
-    height: 8px;
-    margin-top: 5px;
-    border-radius: 50%;
-    background: $bb-blue;
-  }
-
-  &__content {
+  &__nav {
     display: flex;
     flex-direction: column;
     gap: 2px;
-    min-width: 0;
+    margin: auto 0;
+
+    button {
+      display: flex;
+      align-items: baseline;
+      gap: 18px;
+      padding: 8px 0;
+      border: 0;
+      background: transparent;
+      color: $bb-text;
+      text-align: left;
+      font-family: $bb-display;
+      font-size: clamp(36px, 12vw, 56px);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.04;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(16px);
+      transition:
+        opacity 0.5s ease,
+        transform 0.5s $bb-ease,
+        color 0.25s ease;
+
+      &:hover {
+        color: $bb-blue;
+      }
+    }
   }
 
-  &__title {
-    font-size: 14px;
-    font-weight: 600;
-    color: $bb-text;
+  &__idx {
+    width: 26px;
+    flex: none;
+    transform: translateY(-0.35em);
+    color: $bb-blue;
+    font-family: $bb-display;
+    font-size: 15px;
+    font-weight: 500;
   }
 
-  &__body {
-    font-size: 12.5px;
-    line-height: 1.35;
-    color: $bb-text-dim;
+  &__foot {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    opacity: 0;
+    transition: opacity 0.5s ease 0.42s;
   }
 
-  &__time {
-    margin-top: 2px;
-    font-size: 11px;
-    color: $bb-text-mute;
+  &__cta {
+    width: 100%;
+    justify-content: center;
   }
-}
 
-/* Pop tranzicija za panel */
-.bb-pop-enter-active,
-.bb-pop-leave-active {
-  transition: opacity 0.18s ease, transform 0.18s $bb-ease;
-  transform-origin: top right;
-}
+  &__contact {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 
-.bb-pop-enter-from,
-.bb-pop-leave-to {
-  opacity: 0;
-  transform: scale(0.92) translateY(-6px);
+    a {
+      color: rgba(245, 241, 232, 0.62);
+      text-decoration: none;
+      font-size: 15px;
+    }
+  }
+  &.is-open &__nav button {
+    opacity: 1;
+    transform: none;
+  }
+
+  &.is-open &__nav button:nth-child(1) {
+    transition-delay: 0.16s;
+  }
+
+  &.is-open &__nav button:nth-child(2) {
+    transition-delay: 0.22s;
+  }
+
+  &.is-open &__nav button:nth-child(3) {
+    transition-delay: 0.28s;
+  }
+
+  &.is-open &__nav button:nth-child(4) {
+    transition-delay: 0.34s;
+  }
+
+  &.is-open &__nav button:nth-child(5) {
+    transition-delay: 0.40s;
+  }
+
+  &.is-open &__foot {
+    opacity: 1;
+  }
+
 }
 
 /* ───────────────────────── Naslov ───────────────────────── */
 .bb-title-block {
-  margin-bottom: 24px;
-  margin-top: 30px;
+  margin-bottom: 34px;
+  margin-top: 0;
   // width: 100%;
 }
 
@@ -760,80 +865,12 @@ $bb-display: 'Poppins', $bb-sans;
 .bb-subtitle {
   margin: 0;
   // max-width: 300px;
+  max-width: 360px;
   font-size: 14px;
-  line-height: 1.2;
+  line-height: 1.45;
   color: rgba(244, 246, 249, 0.64);
   text-align: left;
   // width: 100%;
-}
-
-/* ───────────────────────── Featured kartica ───────────────────────── */
-.bb-featured-wrap {
-  padding: 10px;
-  margin-bottom: 30px;
-  border-radius: $bb-radius-lg;
-  // border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.08);
-  // backdrop-filter: blur(14px);
-  // -webkit-backdrop-filter: blur(14px);
-  // width: 320px;
-  margin: 0 auto 30px auto;
-}
-
-.bb-featured {
-  display: flex;
-  flex-direction: column;
-  padding: 16px 18px;
-  border-radius: $bb-radius-md;
-  background: $bb-card;
-
-  &__label {
-    align-self: left;
-    margin-bottom: 6px;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.6);
-  }
-
-  &__time {
-    font-family: $bb-display;
-    font-size: 30px;
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: -0.02em;
-    color: $bb-text;
-    margin-top: 5px;
-  }
-
-  &__bottom {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    margin-top: 5px;
-    gap: 12px;
-  }
-
-  &__meta {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-  }
-
-  &__meta-row {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    color: rgba(255,255,255,0.6);
-
-    svg {
-      width: 16px;
-      height: 16px;
-      color: rgba(255,255,255,0.6);
-    }
-  }
 }
 
 /* ───────────────────────── CTA dugme (Apple stil) ───────────────────────── */
@@ -845,7 +882,7 @@ $bb-display: 'Poppins', $bb-sans;
   border: none;
   border-radius: 999px;
   background: $bb-blue;
-  color: #fff;
+  color: #080808;
   font-family: $bb-sans;
   font-size: 14px;
   font-weight: 600;
@@ -867,8 +904,8 @@ $bb-display: 'Poppins', $bb-sans;
   }
 
   &:disabled {
-    background: rgba(31, 111, 255, 0.35);
-    color: rgba(255, 255, 255, 0.6);
+    background: rgba(212, 175, 92, 0.35);
+    color: rgba(8, 8, 8, 0.55);
     cursor: not-allowed;
   }
 
@@ -1000,11 +1037,11 @@ $bb-display: 'Poppins', $bb-sans;
 
     .bb-day__weekday,
     .bb-day__month {
-      color: rgba(255, 255, 255, 0.85);
+      color: rgba(8, 8, 8, 0.70);
     }
 
     .bb-day__num {
-      color: #fff;
+      color: #080808;
     }
 
     &:hover {
@@ -1015,7 +1052,7 @@ $bb-display: 'Poppins', $bb-sans;
 
 /* ───────────────────────── Usluga (editorial lista) ───────────────────────── */
 .bb-services {
-  margin-bottom: 30px;
+  margin-bottom: 58px;
   border-top: 1px solid $bb-border;
 }
 
@@ -1118,7 +1155,7 @@ $bb-display: 'Poppins', $bb-sans;
     .bb-service-item__check {
       background: $bb-blue;
       border-color: $bb-blue;
-      color: #fff;
+      color: #080808;
     }
   }
 }
@@ -1234,7 +1271,7 @@ $bb-display: 'Poppins', $bb-sans;
     flex-shrink: 0;
     border-radius: 50%;
     background: $bb-blue;
-    color: #fff;
+    color: #080808;
     opacity: 0;
     transform: scale(0.6);
     transition: opacity 0.18s ease, transform 0.18s ease;
@@ -1286,7 +1323,7 @@ $bb-display: 'Poppins', $bb-sans;
     transition: color 0.2s ease;
 
     &--active {
-      color: #fff;
+      color: #080808;
     }
   }
 
@@ -1340,7 +1377,7 @@ $bb-display: 'Poppins', $bb-sans;
   &--active {
     background: $bb-blue;
     border-color: $bb-blue;
-    color: #fff;
+    color: #080808;
   }
 
   &--taken {
@@ -1353,6 +1390,110 @@ $bb-display: 'Poppins', $bb-sans;
     &:hover {
       border-color: $bb-border;
     }
+  }
+}
+
+
+/* ───────────────────────── Success popup ───────────────────────── */
+.bb-success {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.76);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  &__card {
+    position: relative;
+    width: min(360px, 100%);
+    padding: 34px 26px 26px;
+    border-radius: 28px;
+    border: 1px solid rgba(212, 175, 92, 0.22);
+    background: linear-gradient(180deg, #161616 0%, #080808 100%);
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.62);
+    color: $bb-text;
+    text-align: center;
+  }
+
+  &__close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 38px;
+    height: 38px;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+
+    span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 18px;
+      height: 2px;
+      border-radius: 999px;
+      background: $bb-text;
+    }
+
+    span:first-child {
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    span:last-child {
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+  }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    background: $bb-blue;
+    color: #080808;
+    box-shadow: 0 0 0 10px rgba(212, 175, 92, 0.12);
+
+    svg {
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  &__eyebrow {
+    display: block;
+    margin-bottom: 9px;
+    color: $bb-blue;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin: 0 0 10px;
+    font-family: $bb-display;
+    font-size: 25px;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    margin: 0 auto 22px;
+    max-width: 280px;
+    color: rgba(244, 246, 249, 0.68);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  &__btn {
+    width: 100%;
+    justify-content: center;
   }
 }
 
@@ -1371,7 +1512,7 @@ $bb-display: 'Poppins', $bb-sans;
   max-width: 440px;
   padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
   border-top: 1px solid $bb-border;
-  background: rgba(15, 18, 25, 0.82);
+  background: rgba(5, 5, 5, 0.86);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
 
@@ -1404,8 +1545,31 @@ $bb-display: 'Poppins', $bb-sans;
   .bb-time,
   .bb-barber__check,
   .bb-service-item::before,
-  .bb-barber::before {
+  .bb-barber::before,
+  .bb-drawer,
+  .bb-success__card {
     transition: none !important;
+  }
+}
+
+.bb-mini-intro {
+  margin: 18px 0 26px;
+
+  span {
+    display: block;
+    margin-bottom: 7px;
+    color: $bb-gold;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  p {
+    margin: 0;
+    color: rgba(245, 241, 232, 0.68);
+    font-size: 14px;
+    line-height: 1.35;
   }
 }
 </style>

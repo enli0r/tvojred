@@ -30,6 +30,9 @@ import BarberBooking3 from '../views/BarberBooking3.vue';
 import BarberBooking4 from '../views/BarberBooking4.vue';
 import NikisHouse from '../views/NikisHouse.vue';
 import BeautySalon1 from '../views/BeautySalon1.vue';
+import BarberBooking5 from '../views/BarberBooking5.vue';
+import SalonLanding from '../views/SalonLanding.vue';
+import SalonBooking from '../views/SalonBooking.vue';
 
 
 
@@ -60,10 +63,21 @@ const routes = [
   { path: '/nail-studio', name: 'NailSalon', component: NailSalon },
   { path: '/nail-studio/zakazivanje', name: 'NailSalonBooking', component: NailSalonBooking },
 
+  //Barber Test Studio.
+  { path: '/nail-studio', name: 'NailSalon', component: NailSalon },
+  { path: '/nail-studio/zakazivanje', name: 'NailSalonBooking', component: NailSalonBooking },
+
+  //
+  { path: '/barber-booking5', name: 'BarberBooking5', component: BarberBooking5 },
+
+  //Landing
+  { path: '/s2-vracar', name: 'SalonLanding', component: SalonLanding },
+  { path: '/s2-vracar/zakazivanje', name: 'SalonBooking', component: SalonBooking },
+
+
   //Test Studio
   { path: '/:tenantSlug', name: 'TestStudio', component: TestStudio },
   { path: '/:tenantSlug/zakazivanje', name: 'TestStudioBooking', component: TestStudioBooking },
-
   { path: '/:tenantSlug/admin', name: 'AdminLogin', component: Admin },
 
   {
