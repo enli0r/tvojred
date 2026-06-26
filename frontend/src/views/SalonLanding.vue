@@ -13,6 +13,15 @@ import slika4 from '@/assets/img/slika57.png'
 import slika5 from '@/assets/img/slika55.png'
 import slika6 from '@/assets/img/slika60.png'
 
+import slika100 from '@/assets/img/slika100.jpg'
+import slika101 from '@/assets/img/slika101.jpg'
+import slika102 from '@/assets/img/slika102.jpg'
+import slika103 from '@/assets/img/slika103.jpg'
+import slika104 from '@/assets/img/slika104.jpg'
+import slika105 from '@/assets/img/slika105.jpg'
+import slika107 from '@/assets/img/slika107.png'
+
+
 /* ------------------------------------------------------------------ */
 /*  STATE                                                              */
 /* ------------------------------------------------------------------ */
@@ -114,6 +123,7 @@ const nav = [
   { label: 'Usluge', id: 'usluge' },
   { label: 'Naš tim', id: 'tim' },
   { label: 'Galerija', id: 'galerija' },
+  { label: 'Instagram', id: 'instagram' },
   { label: 'Kontakt', id: 'kontakt' }
 ]
 
@@ -142,13 +152,13 @@ const services = [
   }
 ]
 
-import girl11 from '@/assets/img/girl11.jpg'
+import girl11 from '@/assets/img/slika107.png'
 import girl12 from '@/assets/img/girl12.jpg'
 import girl13 from '@/assets/img/girl13.jpg'
 import girl14 from '@/assets/img/girl14.jpg'
 
 const team = [
-  { name: 'Ana Marić', role: 'Art direktor', img: girl11 },
+  { name: 'Vaše Ime', role: 'Vaša specijalnost', img: girl11 },
   { name: 'Mila Jović', role: 'Senior kolorista', img: girl12 },
   { name: 'Teodora Pavić', role: 'Stilista', img: girl13 },
   { name: 'Nina Lukić', role: 'Tretmani & nega', img: girl14 }
@@ -162,6 +172,15 @@ import friz5 from '@/assets/img/friz5.png'
 import friz6 from '@/assets/img/friz6.png'
 
 const gallery = [
+  slika100,
+  slika101,
+  slika102,
+  slika103,
+  slika104,
+  slika105
+]
+
+const instagram = [
   slika1,
   slika2,
   slika3,
@@ -169,6 +188,22 @@ const gallery = [
   slika5,
   slika6
 ]
+
+const igHandle = '@s2_salon_vracar'
+const igUrl = 'https://instagram.com/s2_salon_vracar'
+
+const contact = {
+  adresa: 'Novopazarska 9, Vračar, Beograd',
+  telefon: '063 879 0594',
+  telefonHref: 'tel:0638790594',
+  email: 'vaš-email@gmail.com',
+  radno: [
+    'Ponedeljak – Petak: 09:00 – 19:00',
+    'Subota: 09:00 – 17:00',
+    'Nedelja: Zatvoreno'
+  ],
+  mapSrc: 'https://www.google.com/maps?q=Novopazarska%209,%20Beograd&output=embed'
+}
 
 const pricing = [
   { name: 'Šišanje (žensko)', price: '2.500' },
@@ -253,8 +288,8 @@ const reviews = [
         </button>
 
         <div class="aur-drawer__contact">
-          <a href="tel:+381600000000">+381 60 000 0000</a>
-          <a href="#">@s2.vracar</a>
+          <a :href="contact.telefonHref">{{ contact.telefon }}</a>
+          <a :href="igUrl" target="_blank" rel="noopener">{{ igHandle }}</a>
         </div>
       </div>
     </aside>
@@ -280,7 +315,7 @@ const reviews = [
 
             <button class="aur-play" @click="goTo('galerija')">
               <span class="aur-play__ico"></span>
-              <span class="aur-play__txt">Pogledaj atmosferu</span>
+              <span class="aur-play__txt">Pogledaj galeriju</span>
             </button>
           </div>
         </div>
@@ -488,54 +523,107 @@ const reviews = [
       </div>
     </section>
 
-    <!-- ====================== CONTACT / BOOKING ====================== -->
-    <section class="aur-sec" id="kontakt">
-      <div class="aur-wrap aur-contact">
-        <div class="aur-contact__info" data-reveal>
+    <!-- ====================== INSTAGRAM ====================== -->
+    <section class="aur-sec aur-ig" id="instagram">
+      <div class="aur-wrap">
+        <div class="aur-sec__head" data-reveal>
           <h2 class="aur-h2 aur-h2--ink">
-            <span class="aur-num aur-num--ink">07</span><span class="aur-slash">/</span> Zakaži termin
+            <span class="aur-num aur-num--ink">07</span><span class="aur-slash">/</span> Instagram
           </h2>
 
           <p class="aur-sec__lead">
-            Ostavite par detalja i javljamo vam se u najkraćem roku radi potvrde termina.
+            Najnoviji radovi i atmosfera iz salona. Pratite nas
+            <a class="aur-ig__handle" :href="igUrl" target="_blank" rel="noopener">{{ igHandle }}</a>.
           </p>
-
-          <ul class="aur-contact__meta">
-            <li><span>Adresa</span> Knez Mihailova 1, Beograd</li>
-            <li><span>Telefon</span> <a href="tel:+381600000000">+381 60 000 0000</a></li>
-            <li><span>Radno vreme</span> Pon–Sub · 09–20h</li>
-            <li><span>Instagram</span> <a href="#">@s2.vracar</a></li>
-          </ul>
         </div>
 
-        <form class="aur-form" data-reveal @submit.prevent>
-          <label>
-            <span>Ime i prezime</span>
-            <input type="text" placeholder="Vaše ime" required />
-          </label>
+        <div class="aur-ig__grid">
+          <a
+            v-for="(g, idx) in instagram"
+            :key="idx"
+            class="aur-ig__item"
+            :href="igUrl"
+            target="_blank"
+            rel="noopener"
+            data-reveal
+            aria-label="Otvori Instagram profil salona S2 Vračar"
+          >
+            <img :src="g" alt="Instagram objava — S2 Vračar" />
+            <span class="aur-ig__overlay">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="5" />
+                <circle cx="12" cy="12" r="4" />
+                <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none" />
+              </svg>
+            </span>
+          </a>
+        </div>
 
-          <label>
-            <span>Telefon</span>
-            <input type="tel" placeholder="06x xxx xxxx" required />
-          </label>
+        <div class="aur-ig__cta" data-reveal>
+          <a class="aur-btn aur-btn--dark" :href="igUrl" target="_blank" rel="noopener">
+            Prati {{ igHandle }}
+          </a>
+        </div>
+      </div>
+    </section>
 
-          <label>
-            <span>Usluga</span>
-            <select>
-              <option v-for="s in services" :key="s.n">{{ s.title }}</option>
-              <option>Drugo / konsultacija</option>
-            </select>
-          </label>
+    <!-- ====================== KONTAKT ====================== -->
+    <section class="aur-sec aur-contact" id="kontakt">
+      <div class="aur-wrap">
+        <div class="aur-sec__head" data-reveal>
+          <h2 class="aur-h2">
+            <span class="aur-num">08</span><span class="aur-slash">/</span> Kontakt
+          </h2>
 
-          <label>
-            <span>Poruka</span>
-            <textarea rows="3" placeholder="Željeni dan i vreme, dodatne napomene…"></textarea>
-          </label>
+          <p class="aur-sec__lead aur-sec__lead--light">
+            Posetite nas u srcu Vračara ili nas pozovite — tu smo za svako pitanje.
+          </p>
+        </div>
 
-          <button class="aur-btn aur-btn--dark aur-form__submit" type="submit">
-            Pošalji zahtev
-          </button>
-        </form>
+        <div class="aur-contact__inner">
+          <div class="aur-contact__details" data-reveal>
+            <div class="aur-contact__row">
+              <span class="aur-contact__k">Adresa</span>
+              <span class="aur-contact__v">{{ contact.adresa }}</span>
+            </div>
+
+            <div class="aur-contact__row">
+              <span class="aur-contact__k">Telefon</span>
+              <span class="aur-contact__v"><a :href="contact.telefonHref">{{ contact.telefon }}</a></span>
+            </div>
+
+            <div class="aur-contact__row">
+              <span class="aur-contact__k">Email</span>
+              <span class="aur-contact__v"><a :href="`mailto:${contact.email}`">{{ contact.email }}</a></span>
+            </div>
+
+            <div class="aur-contact__row">
+              <span class="aur-contact__k">Radno vreme</span>
+              <span class="aur-contact__v">
+                <span v-for="line in contact.radno" :key="line" class="aur-contact__line">{{ line }}</span>
+              </span>
+            </div>
+
+            <a class="aur-btn aur-btn--dark aur-contact__call" :href="contact.telefonHref">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" />
+              </svg>
+              Pozovi nas
+            </a>
+          </div>
+
+          <div class="aur-contact__map" data-reveal>
+            <iframe
+              :src="contact.mapSrc"
+              width="100%"
+              height="100%"
+              style="border: 0"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Mapa — S2 Vračar, Novopazarska 9"
+            ></iframe>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -1043,6 +1131,10 @@ const reviews = [
     transition-delay: 0.40s;
   }
 
+  &.is-open &__nav button:nth-child(6) {
+    transition-delay: 0.46s;
+  }
+
   &__idx {
     font-family: 'Fraunces', serif;
     font-weight: 400;
@@ -1107,7 +1199,7 @@ const reviews = [
     right: 0;
     bottom: 0;
     height: 1px;
-    background: rgba(212, 175, 92, 0.10);
+    background: rgba(212, 175, 92, 0.20);
     pointer-events: none;
   }
 
@@ -1606,78 +1698,151 @@ const reviews = [
   }
 }
 
-/* ---------- CONTACT ---------- */
+/* ---------- INSTAGRAM ---------- */
+.aur-ig__handle {
+  color: #c8942e;
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.aur-ig__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.aur-ig__item {
+  position: relative;
+  display: block;
+  aspect-ratio: 1 / 1;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--ink);
+
+  img {
+    transition: transform 0.6s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.06);
+  }
+}
+
+.aur-ig__overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(8, 8, 8, 0);
+  opacity: 0;
+  transition: opacity 0.3s ease, background 0.3s ease;
+
+  svg {
+    width: 36px;
+    height: 36px;
+    color: #fff;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+  }
+}
+
+.aur-ig__item:hover .aur-ig__overlay {
+  opacity: 1;
+  background: rgba(8, 8, 8, 0.42);
+}
+
+.aur-ig__cta {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+/* ---------- KONTAKT ---------- */
 .aur-contact {
-  display: grid;
-  grid-template-columns: 1fr 1.1fr;
-  gap: 64px;
-  align-items: start;
+  background: var(--ink);
+  color: var(--cream);
 }
 
-.aur-contact__meta {
-  list-style: none;
-  margin: 30px 0 0;
-  padding: 0;
+.aur-contact__inner {
+  display: grid;
+  grid-template-columns: 1fr 1.05fr;
+  gap: 56px;
+  align-items: stretch;
+}
 
-  li {
-    padding: 16px 0;
-    border-bottom: 1px solid var(--line);
-    font-size: 16px;
+.aur-contact__details {
+  display: flex;
+  flex-direction: column;
+}
 
-    span {
-      display: block;
-      font-size: 12px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
+.aur-contact__row {
+  display: grid;
+  grid-template-columns: 124px 1fr;
+  gap: 28px;
+  align-items: baseline;
+  padding: 22px 2px;
+  border-top: 1px solid rgba(245, 241, 232, 0.12);
 
-    a {
-      color: var(--ink);
-      text-decoration: none;
-    }
+  &:last-of-type {
+    border-bottom: 1px solid rgba(245, 241, 232, 0.12);
   }
 }
 
-.aur-form {
-  background: #fff;
-  border-radius: 24px;
-  padding: 34px;
-  display: grid;
-  gap: 18px;
-  box-shadow: 0 24px 60px rgba(14, 12, 11, 0.06);
+.aur-contact__k {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-strong);
+  font-weight: 500;
+}
 
-  label {
-    display: grid;
-    gap: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--ink);
-  }
+.aur-contact__v {
+  font-size: 17px;
+  line-height: 1.6;
+  color: rgba(245, 241, 232, 0.92);
 
-  input,
-  select,
-  textarea {
-    font-family: inherit;
-    font-size: 15px;
-    padding: 13px 15px;
-    border-radius: 12px;
-    border: 1px solid var(--line);
-    background: var(--cream);
-    color: var(--ink);
-    resize: vertical;
+  a {
+    color: rgba(245, 241, 232, 0.92);
+    text-decoration: none;
+    transition: color 0.2s ease;
 
-    &:focus {
-      outline: 2px solid var(--gold);
-      outline-offset: 1px;
-      border-color: transparent;
+    &:hover {
+      color: var(--gold);
     }
   }
+}
 
-  &__submit {
-    margin-top: 6px;
-    justify-self: start;
+.aur-contact__line {
+  display: block;
+}
+
+.aur-contact__call {
+  margin-top: 34px;
+  align-self: flex-start;
+  gap: 10px;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.aur-contact__map {
+  height: 100%;
+  min-height: 420px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(245, 241, 232, 0.14);
+
+  iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 420px;
+    filter: invert(0.92) hue-rotate(180deg) brightness(0.95) contrast(0.9);
   }
 }
 
@@ -1686,6 +1851,7 @@ const reviews = [
   background: var(--ink);
   color: var(--cream);
   padding: 56px 0;
+  border-top: 1px solid rgba(245, 241, 232, 0.08);
 
   &__inner {
     display: flex;
@@ -1859,7 +2025,12 @@ const reviews = [
     gap: 36px;
   }
 
-  .aur-contact {
+  .aur-ig__grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .aur-contact__inner {
     grid-template-columns: 1fr;
     gap: 36px;
   }
@@ -1946,8 +2117,15 @@ const reviews = [
     gap: 16px;
   }
 
-  .aur-form {
-    padding: 26px 22px;
+  .aur-ig__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .aur-contact__row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 18px 2px;
   }
 
   .aur-foot__inner {
